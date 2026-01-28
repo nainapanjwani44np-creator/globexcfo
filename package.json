@@ -1,0 +1,22 @@
+{
+  "name": "globex-cfo-advisory",
+  "version": "1.0.0",
+  "description": "Globex CFO Advisory Website",
+  "scripts": {
+    "build": "cd nabbasic && npm install && npm run build",
+    "start": "cd nabBack && npm install --production && node server.js",
+    "install:all": "cd nabbasic && npm install && cd ../nabBack && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "cfo",
+    "advisory",
+    "finance"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
