@@ -10,15 +10,28 @@ console.log('Database Name:', process.env.DB_NAME);
 console.log('Collection Name: UserData');
 console.log('============================\n');
 
-const client = new MongoClient(process.env.MONGODB_URI);
+// MongoDB client - only initialize if URI is provided
+let client = null;
+let db = null;
 const collectionName = 'UserData';
-let db;
+
+if (process.env.MONGODB_URI) {
+  client = new MongoClient(process.env.MONGODB_URI);
+} else {
+  console.warn('⚠️  WARNING: MONGODB_URI not set. MongoDB features will be disabled.');
+  console.warn('⚠️  Website will still work, but forms/queries will not save data.\n');
+}
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 async function connectToMongo(){
+  // If no MongoDB URI configured, return null
+  if (!client) {
+    throw new Error('MongoDB not configured. Set MONGODB_URI environment variable.');
+  }
+  
   if(!db){
     try {
       console.log('Attempting to connect to MongoDB...');
@@ -60,10 +73,15 @@ async function connectToMongo(){
 }
 
 // Connect on startup (but don't crash if it fails)
-connectToMongo().catch(err => {
-  console.error('⚠️  Failed to connect to MongoDB on startup:', err.message);
-  console.error('⚠️  Server will continue running. MongoDB will retry on first API request.');
-});
+if (client) {
+  connectToMongo().catch(err => {
+    console.error('⚠️  Failed to connect to MongoDB on startup:', err.message);
+    console.error('⚠️  Server will continue running. MongoDB will retry on first API request.');
+  });
+} else {
+  console.log('ℹ️  Skipping MongoDB connection (not configured)');
+  console.log('ℹ️  Static website will work, but API endpoints will return errors\n');
+}
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -73,7 +91,8 @@ app.get('/health', (req, res) => {
     status: 'healthy', 
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    mongodb: client ? (db ? 'connected' : 'not connected') : 'not configured'
   });
 });
 
@@ -245,7 +264,8 @@ app.get('/api/content', async (req, res) => {
 });
 
 // Serve Vue.js frontend for all non-API routes (SPA support)
-app.get('*', (req, res) => {
+// Express 5 compatible catch-all route
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
@@ -255,11 +275,19 @@ app.listen(PORT, HOST, () => {
   console.log('\n🚀 Server started successfully!');
   console.log(`📡 Server running on http://${HOST}:${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`💾 MongoDB: ${client ? (db ? '✅ Connected' : '⏳ Connecting...') : '⚠️  Not Configured'}`);
   console.log('\n📌 Available Endpoints:');
+  console.log(`   - GET  /health (Server health check)`);
   console.log(`   - GET  /api/test-connection (Test MongoDB)`);
   console.log(`   - GET  /api/queries (View all saved queries)`);
   console.log(`   - POST /api/query (Submit new query)`);
   console.log(`   - GET  /api/blogs (Get blog posts)`);
-  console.log('\n💡 To test MongoDB connection, visit:');
-  console.log(`   /api/test-connection\n`);
+  console.log(`   - GET  /api/content (Get all content)`);
+  console.log(`   - GET  /api/content/:key (Get specific content)`);
+  if (!client) {
+    console.log('\n⚠️  Note: MongoDB not configured. Website will work, but API endpoints will fail.');
+    console.log('   To enable MongoDB, set MONGODB_URI and DB_NAME environment variables.');
+  }
+  console.log('\n💡 To test the server, visit:');
+  console.log(`   http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}/health\n`);
 });
