@@ -59,12 +59,23 @@ async function connectToMongo(){
   return db;
 }
 
-// Connect on startup
+// Connect on startup (but don't crash if it fails)
 connectToMongo().catch(err => {
-  console.error('Failed to connect to MongoDB on startup:', err);
+  console.error('⚠️  Failed to connect to MongoDB on startup:', err.message);
+  console.error('⚠️  Server will continue running. MongoDB will retry on first API request.');
 });
 
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// Health check endpoint for Dokploy
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // Test MongoDB connection endpoint
 app.get('/api/test-connection', async (req, res) => {
@@ -239,14 +250,16 @@ app.get('*', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
   console.log('\n🚀 Server started successfully!');
-  console.log(`📡 Server running on http://localhost:${PORT}`);
+  console.log(`📡 Server running on http://${HOST}:${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log('\n📌 Available Endpoints:');
-  console.log(`   - GET  http://localhost:${PORT}/api/test-connection (Test MongoDB)`);
-  console.log(`   - GET  http://localhost:${PORT}/api/queries (View all saved queries)`);
-  console.log(`   - POST http://localhost:${PORT}/api/query (Submit new query)`);
-  console.log(`   - GET  http://localhost:${PORT}/api/blogs (Get blog posts)`);
+  console.log(`   - GET  /api/test-connection (Test MongoDB)`);
+  console.log(`   - GET  /api/queries (View all saved queries)`);
+  console.log(`   - POST /api/query (Submit new query)`);
+  console.log(`   - GET  /api/blogs (Get blog posts)`);
   console.log('\n💡 To test MongoDB connection, visit:');
-  console.log(`   http://localhost:${PORT}/api/test-connection\n`);
+  console.log(`   /api/test-connection\n`);
 });
