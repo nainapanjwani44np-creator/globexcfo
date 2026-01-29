@@ -1,164 +1,170 @@
 <template>
-  <div class="blackground">
-  <img id="top_image" src="./../images/img1.png" alt="Sample Image" class="main-image" />
-  <div class="homepage colorful">
-    <!-- HERO SECTION -->
-
-    <section class="hero box section-gradient-1 expanded" v-if="content.hero">
-      <h1>{{ content.hero.title }}</h1>
-      <p class="subheading">
-        {{ content.hero.subtitle }}
-      </p>
-      <blockquote>
-        {{ content.hero.quote }}
-      </blockquote>
-    </section>
-
-    <!-- COLLAPSIBLE SECTIONS -->
-    <div class="collapsible-container">
-      <!-- WHY CFO SECTION -->
-      <section v-if="content.cfoSection" class="collapsible-box section-gradient-2 cfo-section" :class="{ expanded: expandedBox === 'cfo' }">
-        <h2>{{ content.cfoSection.heading }}</h2>
-        
-        <!-- Preview Content -->
-        <div class="preview-content">
-          <p class="preview-text">{{ content.cfoSection.subheading }}</p>
-          <button class="explore-more-btn" @click.stop="toggleBox('cfo')">
-            <span v-if="expandedBox !== 'cfo'">Explore More →</span>
-            <span v-else>Show Less ↑</span>
-          </button>
-        </div>
-        
-        <!-- Full Content -->
-        <div class="full-content" v-if="expandedBox === 'cfo'">
-          <p class="subheading highlight-text">
-            {{ content.cfoSection.subheading }}
-          </p>
-          <p class="intro-text">
-            {{ content.cfoSection.description }}
-          </p>
-          <ul class="benefits-list">
-            <li class="benefit-item" v-for="(benefit, index) in content.cfoSection.benefits" :key="index">
-              <span class="benefit-icon">{{ index + 1 }}</span>
-              <div class="benefit-content">
-                <strong class="benefit-title">{{ benefit.title }}</strong>
-                <span class="benefit-desc">{{ benefit.description }}</span>
-              </div>
-            </li>
-          </ul>
-          <p class="closing highlight-quote">
-            {{ content.cfoSection.closingQuote }}
-          </p>
-        </div>
-      </section>
-
-      <!-- WHY WORK WITH US SECTION -->
-      <section v-if="content.whyUs" class="collapsible-box section-gradient-3 why-us-section" :class="{ expanded: expandedBox === 'why-us' }">
-        <h2>{{ content.whyUs.heading }}</h2>
-        
-        <!-- Preview Content -->
-        <div class="preview-content">
-          <p class="preview-text">{{ content.whyUs.subheading }}</p>
-          <button class="explore-more-btn" @click.stop="toggleBox('why-us')">
-            <span v-if="expandedBox !== 'why-us'">Explore More →</span>
-            <span v-else>Show Less ↑</span>
-          </button>
-        </div>
-        
-        <!-- Full Content -->
-        <div class="full-content" v-if="expandedBox === 'why-us'">
-          <p class="subheading highlight-text">
-            {{ content.whyUs.subheading }}
-          </p>
-          <ul class="benefits-list">
-            <li class="benefit-item" v-for="(benefit, index) in content.whyUs.benefits" :key="index">
-              <span class="benefit-icon">{{ index + 1 }}</span>
-              <div class="benefit-content">
-                <strong class="benefit-title">{{ benefit.title }}</strong>
-                <span class="benefit-desc">{{ benefit.description }}</span>
-              </div>
-            </li>
-          </ul>
-          <p class="closing highlight-quote">
-            {{ content.whyUs.closingQuote }}
-          </p>
-        </div>
-      </section>
-
-      <!-- FINANCIAL MODELS SECTION -->
-      <section v-if="content.financialModels" class="collapsible-box section-gradient-4 financial-models-section" :class="{ expanded: expandedBox === 'models' }">
-        <h2>{{ content.financialModels.heading }}</h2>
-        
-        <!-- Preview Content -->
-        <div class="preview-content">
-          <p class="preview-text">{{ content.financialModels.subheading }}</p>
-          <button class="explore-more-btn" @click.stop="toggleBox('models')">
-            <span v-if="expandedBox !== 'models'">Explore More →</span>
-            <span v-else>Show Less ↑</span>
-          </button>
-        </div>
-        
-        <!-- Full Content -->
-        <div class="full-content" v-if="expandedBox === 'models'">
-          <p class="subheading highlight-text">{{ content.financialModels.subheading }}</p>
-          
-          <div class="why-it-matters-block">
-            <h3 class="section-title">
-              <span class="icon icon-lightbulb"></span>
-              {{ content.financialModels.whyItMatters.title }}
-            </h3>
-            <p class="description-text">
-              {{ content.financialModels.whyItMatters.description }}
-            </p>
-          </div>
-          
-          <div class="model-types-block">
-            <h3 class="section-title">
-              <span class="icon icon-chart"></span>
-              {{ content.financialModels.modelTypes.title }}
-            </h3>
-            <div class="models-grid">
-              <div v-for="(model, index) in content.financialModels.modelTypes.list" :key="index" class="model-card">
-                <span class="model-icon">{{ index + 1 }}</span>
-                <span class="model-name">{{ model }}</span>
-              </div>
-            </div>
-          </div>
-          
-          <blockquote class="closing-quote-financial">
-            {{ content.financialModels.closingQuote }}
-          </blockquote>
-        </div>
-      </section>
+  <div class="home-page">
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-overlay">
+      <div class="loading-spinner"></div>
+      <p>Loading content...</p>
     </div>
 
-    <!-- PROFESSIONAL SIGNATURE -->
-    <section class="professional-signature box section-gradient-1">
-      <div class="signature-content">
-        <p class="signature-text">
-          At <strong>Globex CFO Advisory LLP</strong>, we believe that every business deserves financial clarity, strategic guidance, and a partner who cares about your growth as much as you do.
-        </p>
-        <p class="signature-closing">
-          Let's build something extraordinary together.
-        </p>
-        <div class="signature-line">
-          <p class="signature-name"><strong>— The Globex CFO Advisory Team</strong></p>
-          <p class="signature-tagline">"Your Financial Partners in Growth"</p>
+    <!-- Hero Section -->
+    <section v-if="content.hero" class="hero-section" data-aos="fade-up">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title">{{ content.hero.title }}</h1>
+          <p class="hero-subtitle">{{ content.hero.subtitle }}</p>
+          <div class="hero-cta">
+            <router-link to="/query" class="btn btn-primary">
+              Get Started
+              <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </router-link>
+            <router-link to="/services" class="btn btn-secondary">
+              Our Services
+            </router-link>
+          </div>
+          <div class="hero-quote">
+            <div class="quote-icon">"</div>
+            <p>{{ content.hero.quote }}</p>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="floating-card card-1">
+            <div class="card-icon">📊</div>
+            <p>Financial Clarity</p>
+          </div>
+          <div class="floating-card card-2">
+            <div class="card-icon">📈</div>
+            <p>Growth Strategy</p>
+          </div>
+          <div class="floating-card card-3">
+            <div class="card-icon">💰</div>
+            <p>Cash Flow Mastery</p>
+          </div>
         </div>
       </div>
     </section>
-  </div>
+
+    <!-- CFO Section -->
+    <section v-if="content.cfoSection" class="section cfo-section" data-aos="fade-up">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title">{{ content.cfoSection.heading }}</h2>
+          <p class="section-subtitle">{{ content.cfoSection.subheading }}</p>
+        </div>
+        
+        <p class="section-description">{{ content.cfoSection.description }}</p>
+
+        <div class="benefits-grid">
+          <div 
+            v-for="(benefit, index) in content.cfoSection.benefits" 
+            :key="index"
+            class="benefit-card"
+            :data-aos="'fade-up'"
+            :data-aos-delay="index * 100"
+          >
+            <div class="benefit-icon">{{ benefit.icon }}</div>
+            <h3 class="benefit-title">{{ benefit.title }}</h3>
+            <p class="benefit-description">{{ benefit.description }}</p>
+          </div>
+        </div>
+
+        <div class="section-quote">
+          <p>{{ content.cfoSection.closingQuote }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section v-if="content.whyUs" class="section why-us-section" data-aos="fade-up">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title">{{ content.whyUs.heading }}</h2>
+          <p class="section-subtitle">{{ content.whyUs.subheading }}</p>
+        </div>
+
+        <div class="features-list">
+          <div 
+            v-for="(benefit, index) in content.whyUs.benefits" 
+            :key="index"
+            class="feature-item"
+            :data-aos="'fade-right'"
+            :data-aos-delay="index * 100"
+          >
+            <div class="feature-number">{{ index + 1 }}</div>
+            <div class="feature-content">
+              <div class="feature-icon">{{ benefit.icon }}</div>
+              <h3 class="feature-title">{{ benefit.title }}</h3>
+              <p class="feature-description">{{ benefit.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-quote">
+          <p>{{ content.whyUs.closingQuote }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Financial Models Section -->
+    <section v-if="content.financialModels" class="section models-section" data-aos="fade-up">
+      <div class="section-container">
+        <div class="section-header">
+          <h2 class="section-title">{{ content.financialModels.heading }}</h2>
+          <p class="section-subtitle">{{ content.financialModels.subheading }}</p>
+        </div>
+
+        <div class="models-content">
+          <div class="models-intro">
+            <h3>{{ content.financialModels.whyItMatters.title }}</h3>
+            <p>{{ content.financialModels.whyItMatters.description }}</p>
+          </div>
+
+          <div class="models-grid">
+            <div 
+              v-for="(model, index) in content.financialModels.modelTypes.list" 
+              :key="index"
+              class="model-card"
+              :data-aos="'zoom-in'"
+              :data-aos-delay="index * 50"
+            >
+              <div class="model-icon">📑</div>
+              <h4>{{ model }}</h4>
+            </div>
+          </div>
+
+          <div class="section-quote">
+            <p>{{ content.financialModels.closingQuote }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" data-aos="fade-up">
+      <div class="cta-container">
+        <h2>Ready to Transform Your Financial Strategy?</h2>
+        <p>Let's discuss how we can help your business grow</p>
+        <router-link to="/query" class="btn btn-cta">
+          Schedule a Consultation
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </router-link>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default {
-  name: "GlobexHome",
+  name: 'HomePage',
   data() {
     return {
-      expandedBox: null,
       loading: true,
       content: {
         hero: null,
@@ -170,13 +176,20 @@ export default {
   },
   async mounted() {
     await this.loadAllContent();
+    
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100
+    });
   },
   methods: {
-    toggleBox(box) {
-      this.expandedBox = this.expandedBox === box ? null : box;
-    },
     async loadAllContent() {
       try {
+        this.loading = true;
+        
         // Fetch all content sections in parallel
         const [heroRes, cfoRes, whyUsRes, modelsRes] = await Promise.all([
           axios.get('/api/content/hero').catch(() => null),
@@ -202,918 +215,584 @@ export default {
           this.content.financialModels = modelsRes.data.data;
         }
       } catch (error) {
-        // Silently fail - page will be blank if no content
+        console.error('Error loading content:', error);
       } finally {
         this.loading = false;
       }
     }
-  },
+  }
 };
 </script>
 
 <style scoped>
-.homepage {
-  font-family: "Inter", sans-serif;
-  max-width: 1200px;
-  margin: auto;
-  padding: 40px;
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-  min-height: 100vh;
-  line-height: 1.7;
-  color: #1e293b;
+/* ==================== VARIABLES ==================== */
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1e40af;
+  --primary-light: #3b82f6;
+  --secondary-color: #64748b;
+  --accent-color: #0ea5e9;
+  --success-color: #10b981;
+  --background: #ffffff;
+  --surface: #f8fafc;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
 
-.blackground{
-  background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
-  min-height: 100vh;
+/* ==================== GLOBAL STYLES ==================== */
+.home-page {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-primary);
+  background: var(--background);
+  overflow-x: hidden;
 }
 
-.box {
-  padding: 40px;
-  border-radius: 16px;
-  margin-bottom: 40px;
-  color: #1e293b;
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Hero section light blue textured background */
-.hero::after {
-  content: '';
-  position: absolute;
+/* ==================== LOADING STATE ==================== */
+.loading-overlay {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.15) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.3;
-  z-index: 0;
-}
-
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* HERO SECTION - Main Heading */
-.hero h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  letter-spacing: -1px;
-  text-shadow: 0 3px 15px rgba(59, 130, 246, 0.3);
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero .subheading {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 500;
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  color: #334155;
-  max-width: 900px;
-}
-
-/* Blockquote Styling */
-blockquote {
-  font-family: 'Georgia', serif;
-  font-size: 1.2rem;
-  font-style: italic;
-  line-height: 1.8;
-  color: #1e293b;
-  border-left: 4px solid #3b82f6;
-  padding-left: 2rem;
-  margin: 2rem 0;
-  background: rgba(191, 219, 254, 0.3);
-  padding: 1.5rem 2rem;
-  border-radius: 8px;
-  position: relative;
-}
-
-blockquote::before {
-  content: '"';
-  font-size: 4rem;
-  position: absolute;
-  left: 10px;
-  top: -10px;
-  opacity: 0.2;
-  font-family: 'Georgia', serif;
-  color: #3b82f6;
-}
-
-.collapsible-container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.collapsible-box {
-  flex: 1 1 calc(33% - 20px);
-  min-height: 150px;
-  border-radius: 16px;
-  padding: 25px;
-  cursor: pointer;
-  color: #1e293b;
-  transition: all 0.4s ease;
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Light blue textured background for tabs */
-.collapsible-box::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.collapsible-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.3;
-  z-index: 0;
-}
-
-/* Ensure content appears above the pattern */
-.collapsible-box > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Section Headings (h2) */
-.collapsible-box h2 {
-  margin: 0 0 20px 0;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-  padding-left: 20px;
-  position: relative;
-  color: #1e40af;
-  line-height: 1.4;
-}
-
-/* Professional blue accent bar before heading */
-.collapsible-box h2::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 70%;
-  background: linear-gradient(180deg, #3b82f6, #60a5fa);
-  border-radius: 2px;
-}
-
-.collapsible-box.expanded {
-  flex: 1 1 100%;
-  padding: 40px;
-}
-
-/* Preview Content Styling */
-.preview-content {
-  margin-top: 15px;
-}
-
-.preview-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #334155;
-  margin-bottom: 20px;
-  font-weight: 400;
-}
-
-/* Explore More Button - Professional Blue Accent */
-.explore-more-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 32px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  border: 2px solid #3b82f6;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-}
-
-.explore-more-btn:hover {
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  border-color: #2563eb;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
-}
-
-.explore-more-btn:active {
-  transform: translateY(0);
-}
-
-/* Full Content Styling */
-.full-content {
-  margin-top: 30px;
-  animation: fadeIn 0.4s ease;
-  border-top: 2px solid rgba(59, 130, 246, 0.3);
-  padding-top: 30px;
-}
-
-.content {
-  margin-top: 25px;
-  animation: fadeIn 0.4s ease;
-}
-
-/* Content Subheadings */
-.content .subheading {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-  color: #334155;
-  letter-spacing: 0.2px;
-}
-
-/* Subsection Headings (h3) */
-.content h3 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  color: #1e40af;
-  letter-spacing: 0.3px;
-}
-
-/* Paragraphs */
-.content p {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-  color: #334155;
-  font-weight: 400;
-}
-
-/* Lists */
-.content ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 1.5rem 0;
-}
-
-.content ul li {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-  color: #334155;
-  padding-left: 2rem;
-  position: relative;
-}
-
-.content ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 10px;
-  width: 8px;
-  height: 8px;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-}
-
-.content ul li strong {
-  font-weight: 700;
-  color: #1e40af;
-  letter-spacing: 0.3px;
-  font-size: 1.08rem;
-}
-
-/* Closing Quotes */
-.content .closing {
-  font-family: 'Georgia', serif;
-  font-size: 1.15rem;
-  font-style: italic;
-  line-height: 1.8;
-  color: #1e293b;
-  margin-top: 2rem;
-  padding: 1.5rem 2rem;
-  border-left: 4px solid #3b82f6;
-  background: rgba(191, 219, 254, 0.4);
-  border-radius: 8px;
-}
-
-/* ===== ENHANCED CFO SECTION STYLING ===== */
-
-/* Highlighted Subheading */
-.highlight-text {
-  font-size: 1.35rem !important;
-  font-weight: 500 !important;
-  line-height: 1.9 !important;
-  padding: 1.25rem;
-  background: rgba(59, 130, 246, 0.12);
-  border-radius: 10px;
-  border-left: 4px solid #3b82f6;
-  margin-bottom: 1.75rem !important;
-  color: #334155 !important;
-}
-
-/* Emphasis Spans */
-.emphasis {
-  font-weight: 700;
-  color: #1e40af;
-  position: relative;
-  padding: 0 4px;
-  background: rgba(59, 130, 246, 0.15);
-  border-radius: 4px;
-  letter-spacing: 0.3px;
-}
-
-/* Intro Text */
-.intro-text {
-  font-size: 1.1rem !important;
-  line-height: 1.9 !important;
-  margin-bottom: 2rem !important;
-  padding: 1rem 0;
-}
-
-/* Benefits List Container */
-.benefits-list {
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 2rem 0 !important;
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-}
-
-/* Individual Benefit Item */
-.benefit-item {
-  display: flex !important;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem !important;
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 12px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  transition: all 0.3s ease;
-  margin-bottom: 0 !important;
-}
-
-.benefit-item::before {
-  content: '' !important;
-  display: none !important;
-}
-
-.benefit-item:hover {
-  background: rgba(59, 130, 246, 0.15);
-  transform: translateX(8px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-}
-
-/* Benefit Icon - Professional Numbered Badge */
-.benefit-icon {
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
-  flex-shrink: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: white;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.benefit-item:hover .benefit-icon {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
-}
-
-/* Benefit Content */
-.benefit-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-/* Benefit Title */
-.benefit-title {
-  font-family: 'Poppins', sans-serif !important;
-  font-size: 1.15rem !important;
-  font-weight: 700 !important;
-  color: #1e40af !important;
-  letter-spacing: 0.5px !important;
-  line-height: 1.4 !important;
-  display: block;
-}
-
-/* Benefit Description */
-.benefit-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.98rem;
-  font-weight: 400;
-  color: #334155;
-  line-height: 1.6;
-  display: block;
-}
-
-/* Enhanced Quote Styling */
-.highlight-quote {
-  font-family: 'Georgia', serif !important;
-  font-size: 1.25rem !important;
-  font-style: italic !important;
-  line-height: 1.9 !important;
-  color: #1e293b !important;
-  margin-top: 2.5rem !important;
-  padding: 2rem 2.5rem !important;
-  border-left: 5px solid #3b82f6 !important;
-  background: rgba(191, 219, 254, 0.4) !important;
-  border-radius: 12px !important;
-  position: relative;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-}
-
-.quote-mark {
-  font-size: 2.5rem;
-  font-family: 'Georgia', serif;
-  color: rgba(59, 130, 246, 0.4);
-  font-style: normal;
-  line-height: 0;
-}
-
-/* Responsive for Benefits List */
-@media (max-width: 768px) {
-  .benefit-item {
-    padding: 1rem !important;
-    gap: 0.75rem;
-  }
-  
-  .benefit-icon {
-    font-size: 1.1rem;
-    width: 40px;
-    height: 40px;
-  }
-  
-  .model-card .model-icon {
-    font-size: 1.1rem;
-    width: 40px;
-    height: 40px;
-  }
-  
-  .financial-models-section .section-title .icon {
-    width: 35px;
-    height: 35px;
-  }
-  
-  .icon-lightbulb::before,
-  .icon-chart::before {
-    font-size: 1.3rem;
-  }
-  
-  .benefit-title {
-    font-size: 1.05rem !important;
-  }
-  
-  .benefit-desc {
-    font-size: 0.9rem;
-  }
-  
-  .highlight-quote {
-    font-size: 1.1rem !important;
-    padding: 1.5rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .benefit-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .benefit-content {
-    align-items: center;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* LIGHT BLUE GRADIENTS */
-.section-gradient-1 {
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  border-top: 3px solid #3b82f6;
-}
-
-.section-gradient-2 {
-  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-  border-left: 3px solid #3b82f6;
-}
-
-.section-gradient-3 {
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  border-left: 3px solid #3b82f6;
-}
-
-.section-gradient-4 {
-  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
-  border-left: 3px solid #3b82f6;
-}
-
-/* Hover effects for boxes - only when not expanded */
-.section-gradient-2:not(.expanded):hover {
-  background: linear-gradient(135deg, #bae6fd, #7dd3fc);
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
-}
-
-.section-gradient-3:not(.expanded):hover {
-  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
-}
-
-.section-gradient-4:not(.expanded):hover {
-  background: linear-gradient(135deg, #93c5fd, #60a5fa);
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
-}
-
-/* Top Image */
-#top_image {
-  width: 100vw;
-  height: 60vh;
-  object-fit: cover;
-  object-position: center 35%;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Loading Indicator */
-.loading-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
-  gap: 1rem;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(59, 130, 246, 0.3);
-  border-top-color: #3b82f6;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary-color);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-.loading-indicator p {
-  color: #1e293b;
-  font-size: 1.1rem;
+.loading-overlay p {
+  margin-top: 20px;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
-/* Financial Models Section Styling */
-.financial-models-section .why-it-matters-block,
-.financial-models-section .model-types-block {
-  margin: 2.5rem 0;
-}
-
-.financial-models-section .section-title {
+/* ==================== HERO SECTION ==================== */
+.hero-section {
+  min-height: 90vh;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e40af;
-  margin-bottom: 1.25rem;
-  text-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-.financial-models-section .section-title .icon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  flex-shrink: 0;
-}
-
-/* Professional Icon Styles */
-.icon-lightbulb::before {
-  content: '◉';
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.icon-chart::before {
-  content: '▣';
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.financial-models-section .description-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: #334155;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  padding: 1rem 0;
-}
-
-/* Models Grid */
-.models-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-.model-card {
-  background: rgba(59, 130, 246, 0.12);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.18);
-  border-radius: 12px;
-  padding: 1.5rem 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
-
-.model-card:hover {
-  background: rgba(59, 130, 246, 0.22);
-  border-color: rgba(59, 130, 246, 0.35);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
-}
-
-.model-card .model-icon {
-  font-size: 1.25rem;
-  font-weight: 700;
-  flex-shrink: 0;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: white;
-  border-radius: 10px;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  transition: all 0.3s ease;
-}
-
-.model-card:hover .model-icon {
-  transform: scale(1.1) rotate(8deg);
-  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
-}
-
-.model-card .model-name {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #1e40af;
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-  text-shadow: 0 1px 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Closing Quote for Financial Section */
-.closing-quote-financial {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: rgba(191, 219, 254, 0.4);
-  border-left: 4px solid #3b82f6;
-  border-radius: 8px;
-  font-family: 'Georgia', serif;
-  font-size: 1.2rem;
-  font-style: italic;
-  color: #1e293b;
-  line-height: 1.8;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
-}
-
-/* Professional Signature Section */
-.professional-signature {
-  margin-top: 40px;
-  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   overflow: hidden;
 }
 
-.professional-signature::after {
+.hero-section::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.15) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.professional-signature::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   opacity: 0.3;
-  z-index: 0;
 }
 
-.signature-content {
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
   position: relative;
   z-index: 1;
 }
 
-.signature-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: #334155;
-  margin-bottom: 1.5rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+.hero-content {
+  color: white;
 }
 
-.signature-text strong {
-  color: #1e40af;
-  font-weight: 700;
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
 }
 
-.signature-closing {
-  font-family: 'Georgia', serif;
-  font-size: 1.3rem;
-  font-style: italic;
-  color: #1e40af;
-  margin-bottom: 2rem;
+.hero-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 60px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 10px;
   font-weight: 600;
-}
-
-.signature-line {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 2px solid rgba(59, 130, 246, 0.3);
-}
-
-.signature-name {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1e40af;
-  margin-bottom: 0.5rem;
-}
-
-.signature-tagline {
-  font-family: 'Georgia', serif;
   font-size: 1rem;
-  font-style: italic;
-  color: #334155;
-  margin-top: 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-/* Responsive Typography */
-@media (max-width: 768px) {
-  .hero h1 {
+.btn-primary {
+  background: white;
+  color: var(--primary-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.hero-quote {
+  position: relative;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quote-icon {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 4rem;
+  opacity: 0.3;
+  line-height: 1;
+}
+
+.hero-quote p {
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Floating Cards Animation */
+.hero-image {
+  position: relative;
+  height: 500px;
+}
+
+.floating-card {
+  position: absolute;
+  background: white;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: float 6s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.floating-card .card-icon {
+  font-size: 2rem;
+}
+
+.floating-card p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-1 {
+  top: 10%;
+  right: 10%;
+  animation-delay: 0s;
+}
+
+.card-2 {
+  top: 45%;
+  right: 25%;
+  animation-delay: 2s;
+}
+
+.card-3 {
+  bottom: 15%;
+  right: 5%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ==================== SECTIONS ==================== */
+.section {
+  padding: 120px 40px;
+  position: relative;
+}
+
+.section:nth-child(even) {
+  background: var(--surface);
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.section-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.section-description {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px;
+  line-height: 1.8;
+}
+
+.section-quote {
+  text-align: center;
+  margin-top: 80px;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  border-radius: 20px;
+  color: white;
+}
+
+.section-quote p {
+  font-size: 1.5rem;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ==================== BENEFITS GRID ==================== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.benefit-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.benefit-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.benefit-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ==================== FEATURES LIST ==================== */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.feature-item {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+}
+
+.feature-item:hover {
+  transform: translateX(8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.feature-number {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.feature-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.feature-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ==================== MODELS SECTION ==================== */
+.models-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
+
+.models-intro h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.models-intro p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.model-card {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.model-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+.model-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.model-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ==================== CTA SECTION ==================== */
+.cta-section {
+  padding: 120px 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.2;
+}
+
+.cta-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-container h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.cta-container p {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  opacity: 0.95;
+}
+
+.btn-cta {
+  background: white;
+  color: var(--primary-color);
+  padding: 18px 48px;
+  font-size: 1.125rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 968px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .hero-title {
     font-size: 2.5rem;
   }
-  
-  .hero .subheading {
-    font-size: 1.15rem;
+
+  .hero-image {
+    height: 400px;
   }
-  
-  .collapsible-box h2 {
-    font-size: 1.4rem;
+
+  .section {
+    padding: 80px 24px;
   }
-  
-  .content .subheading {
-    font-size: 1.1rem;
+
+  .section-title {
+    font-size: 2rem;
   }
-  
-  .content p,
-  .content ul li {
-    font-size: 1rem;
-  }
-  
-  .models-grid {
+
+  .benefits-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
-  
-  .model-card {
-    padding: 1.25rem 1rem;
+
+  .hero-cta {
+    flex-direction: column;
   }
-  
-  .financial-models-section .section-title {
-    font-size: 1.5rem;
-  }
-  
-  .closing-quote-financial {
-    font-size: 1.05rem;
-    padding: 1.5rem;
+
+  .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
-@media (max-width: 480px) {
-  .hero h1 {
+@media (max-width: 640px) {
+  .hero-title {
     font-size: 2rem;
   }
-  
-  .hero .subheading {
-    font-size: 1rem;
+
+  .hero-subtitle {
+    font-size: 1.1rem;
   }
-  
-  .homepage {
-    padding: 20px;
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .feature-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .models-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
