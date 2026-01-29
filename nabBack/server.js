@@ -20,7 +20,7 @@ console.log('Database Name:', DB_NAME);
 console.log('Collection Name: UserData');
 if (isProduction && process.env.MONGODB_URI_PROD) {
   console.log('✅ Using PRODUCTION MongoDB URI');
-} else if (process.env.MONGODB_URI) {
+} else if (MONGODB_URI) {
   console.log('ℹ️  Using DEVELOPMENT MongoDB URI');
 }
 console.log('============================\n');
@@ -137,7 +137,7 @@ app.get('/api/test-connection', async (req, res) => {
     res.json({
       status: '✅ SUCCESS',
       message: 'MongoDB connection is working!',
-      database: DB_NAME,
+      database: process.env.DB_NAME,
       collection: collectionName,
       totalDocuments: count,
       testInsertId: result.insertedId,
@@ -149,7 +149,7 @@ app.get('/api/test-connection', async (req, res) => {
       status: '❌ FAILED',
       message: 'MongoDB connection failed',
       error: err.message,
-      database: DB_NAME,
+      database: process.env.DB_NAME,
       collection: collectionName
     });
   }
@@ -190,7 +190,7 @@ app.post('/api/query', async (req, res) => {
      res.send({ 
        'status': 'ok',
        'insertedId': result.insertedId,
-       'database': DB_NAME,
+       'database': process.env.DB_NAME,
        'collection': collectionName
      });
    } catch (err) {
@@ -215,7 +215,7 @@ app.get('/api/queries', async (req, res) => {
     
     res.json({ 
       status: 'success', 
-      database: DB_NAME,
+      database: process.env.DB_NAME,
       collection: collectionName,
       count: queries.length,
       data: queries 
@@ -279,7 +279,7 @@ app.get('/api/content', async (req, res) => {
 });
 
 // Serve Vue.js frontend for all non-API routes (SPA support)
-// Express 5 compatible catch-all route
+// Express 5 compatible catch-all route (excludes /api/* routes)
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
