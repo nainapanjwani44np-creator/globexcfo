@@ -52,7 +52,7 @@ const goToHome = () => {
   align-items: center;
   min-height: 80vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
 }
 
 .success-card {
@@ -81,7 +81,7 @@ const goToHome = () => {
   width: 80px;
   height: 80px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -134,7 +134,7 @@ const goToHome = () => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
   color: white;
   padding: 0.875rem 2rem;
   border: none;
@@ -143,14 +143,14 @@ const goToHome = () => {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
   animation: fadeIn 0.5s ease-out 0.5s backwards;
 }
 
 .home-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-  background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
 }
 
 .home-button:active {
