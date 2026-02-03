@@ -3,57 +3,29 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const path = require('path');
 
-// Determine which MongoDB URI to use based on environment
-const isProduction = process.env.NODE_ENV === 'production';
-const MONGODB_URI = isProduction 
-  ? (process.env.MONGODB_URI_PROD || process.env.MONGODB_URI)
-  : process.env.MONGODB_URI;
-const DB_NAME = isProduction 
-  ? (process.env.DB_NAME_PROD || process.env.DB_NAME)
-  : process.env.DB_NAME;
-
 // Log environment variables (without exposing password)
 console.log('=== MongoDB Configuration ===');
-console.log('Environment:', process.env.NODE_ENV || 'development');
-console.log('MongoDB URI exists:', !!MONGODB_URI);
-console.log('Database Name:', DB_NAME);
+console.log('MongoDB URI exists:', !!process.env.MONGODB_URI);
+console.log('Database Name:', process.env.DB_NAME);
 console.log('Collection Name: UserData');
-if (isProduction && process.env.MONGODB_URI_PROD) {
-  console.log('✅ Using PRODUCTION MongoDB URI');
-} else if (MONGODB_URI) {
-  console.log('ℹ️  Using DEVELOPMENT MongoDB URI');
-}
 console.log('============================\n');
 
-// MongoDB client - only initialize if URI is provided
-let client = null;
-let db = null;
+const client = new MongoClient(process.env.MONGODB_URI);
 const collectionName = 'UserData';
-
-if (MONGODB_URI) {
-  client = new MongoClient(MONGODB_URI);
-} else {
-  console.warn('⚠️  WARNING: MONGODB_URI not set. MongoDB features will be disabled.');
-  console.warn('⚠️  Website will still work, but forms/queries will not save data.\n');
-}
+let db;
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 async function connectToMongo(){
-  // If no MongoDB URI configured, return null
-  if (!client) {
-    throw new Error('MongoDB not configured. Set MONGODB_URI environment variable.');
-  }
-  
   if(!db){
     try {
       console.log('Attempting to connect to MongoDB...');
       await client.connect();
       console.log('✅ Successfully connected to MongoDB!');
-      db = client.db(DB_NAME);
-      console.log(`✅ Using database: ${DB_NAME}`);
+      db = client.db(process.env.DB_NAME);
+      console.log(`✅ Using database: ${process.env.DB_NAME}`);
       
       // Test the connection by listing collections
       const collections = await db.listCollections().toArray();
@@ -87,29 +59,12 @@ async function connectToMongo(){
   return db;
 }
 
-// Connect on startup (but don't crash if it fails)
-if (client) {
-  connectToMongo().catch(err => {
-    console.error('⚠️  Failed to connect to MongoDB on startup:', err.message);
-    console.error('⚠️  Server will continue running. MongoDB will retry on first API request.');
-  });
-} else {
-  console.log('ℹ️  Skipping MongoDB connection (not configured)');
-  console.log('ℹ️  Static website will work, but API endpoints will return errors\n');
-}
+// Connect on startup
+connectToMongo().catch(err => {
+  console.error('Failed to connect to MongoDB on startup:', err);
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// Health check endpoint for Dokploy
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development',
-    mongodb: client ? (db ? 'connected' : 'not connected') : 'not configured'
-  });
-});
 
 // Test MongoDB connection endpoint
 app.get('/api/test-connection', async (req, res) => {
@@ -173,7 +128,7 @@ app.post('/api/query', async (req, res) => {
      console.log('📝 User query data:', JSON.stringify(req.body, null, 2));
      
      await connectToMongo();
-     console.log(`💾 Saving to database: ${DB_NAME}`);
+     console.log(`💾 Saving to database: ${process.env.DB_NAME}`);
      console.log(`📁 Collection: ${collectionName}`);
      
      let result = await db.collection(collectionName).insertOne(req.body);
@@ -205,7 +160,7 @@ app.get('/api/queries', async (req, res) => {
   try {
     console.log('\n=== Fetching All Queries ===');
     await connectToMongo();
-    console.log(`📂 Database: ${DB_NAME}`);
+    console.log(`📂 Database: ${process.env.DB_NAME}`);
     console.log(`📁 Collection: ${collectionName}`);
     
     const queries = await db.collection(collectionName).find({}).sort({ _id: -1 }).toArray();
@@ -279,7 +234,7 @@ app.get('/api/content', async (req, res) => {
 });
 
 // Serve Vue.js frontend for all non-API routes (SPA support)
-// Express 5 compatible catch-all route (excludes /api/* routes)
+// Express 5 compatible: Use regex instead of '*'
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
@@ -289,20 +244,11 @@ const HOST = process.env.HOST || '0.0.0.0';
 app.listen(PORT, HOST, () => {
   console.log('\n🚀 Server started successfully!');
   console.log(`📡 Server running on http://${HOST}:${PORT}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`💾 MongoDB: ${client ? (db ? '✅ Connected' : '⏳ Connecting...') : '⚠️  Not Configured'}`);
   console.log('\n📌 Available Endpoints:');
-  console.log(`   - GET  /health (Server health check)`);
-  console.log(`   - GET  /api/test-connection (Test MongoDB)`);
-  console.log(`   - GET  /api/queries (View all saved queries)`);
-  console.log(`   - POST /api/query (Submit new query)`);
-  console.log(`   - GET  /api/blogs (Get blog posts)`);
-  console.log(`   - GET  /api/content (Get all content)`);
-  console.log(`   - GET  /api/content/:key (Get specific content)`);
-  if (!client) {
-    console.log('\n⚠️  Note: MongoDB not configured. Website will work, but API endpoints will fail.');
-    console.log('   To enable MongoDB, set MONGODB_URI and DB_NAME environment variables.');
-  }
-  console.log('\n💡 To test the server, visit:');
-  console.log(`   http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}/health\n`);
+  console.log(`   - GET  http://localhost:${PORT}/api/test-connection (Test MongoDB)`);
+  console.log(`   - GET  http://localhost:${PORT}/api/queries (View all saved queries)`);
+  console.log(`   - POST http://localhost:${PORT}/api/query (Submit new query)`);
+  console.log(`   - GET  http://localhost:${PORT}/api/blogs (Get blog posts)`);
+  console.log('\n💡 To test MongoDB connection, visit:');
+  console.log(`   http://localhost:${PORT}/api/test-connection\n`);
 });

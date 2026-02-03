@@ -7,20 +7,20 @@
     </div>
 
     <!-- Hero Section -->
-    <section v-if="content.hero" class="hero-section" data-aos="fade-up">
+    <section v-if="content.hero" class="hero-section">
       <div class="hero-container">
         <div class="hero-content">
           <h1 class="hero-title">{{ content.hero.title }}</h1>
           <p class="hero-subtitle">{{ content.hero.subtitle }}</p>
           <div class="hero-cta">
             <router-link to="/query" class="btn btn-primary">
-              Get Started
+              <span class="btn-text">Get Started</span>
               <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </router-link>
             <router-link to="/services" class="btn btn-secondary">
-              Our Services
+              <span class="btn-text">Our Services</span>
             </router-link>
           </div>
           <div class="hero-quote">
@@ -29,16 +29,23 @@
           </div>
         </div>
         <div class="hero-image">
+          <!-- Professional SVG Icons instead of Emojis -->
           <div class="floating-card card-1">
-            <div class="card-icon">📊</div>
+            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
             <p>Financial Clarity</p>
           </div>
           <div class="floating-card card-2">
-            <div class="card-icon">📈</div>
+            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
             <p>Growth Strategy</p>
           </div>
           <div class="floating-card card-3">
-            <div class="card-icon">💰</div>
+            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             <p>Cash Flow Mastery</p>
           </div>
         </div>
@@ -46,7 +53,7 @@
     </section>
 
     <!-- CFO Section -->
-    <section v-if="content.cfoSection" class="section cfo-section" data-aos="fade-up">
+    <section v-if="content.cfoSection" class="section cfo-section">
       <div class="section-container">
         <div class="section-header">
           <h2 class="section-title">{{ content.cfoSection.heading }}</h2>
@@ -60,10 +67,8 @@
             v-for="(benefit, index) in content.cfoSection.benefits" 
             :key="index"
             class="benefit-card"
-            :data-aos="'fade-up'"
-            :data-aos-delay="index * 100"
           >
-            <div class="benefit-icon">{{ benefit.icon }}</div>
+            <div class="benefit-icon-text">{{ benefit.icon }}</div>
             <h3 class="benefit-title">{{ benefit.title }}</h3>
             <p class="benefit-description">{{ benefit.description }}</p>
           </div>
@@ -76,7 +81,7 @@
     </section>
 
     <!-- Why Us Section -->
-    <section v-if="content.whyUs" class="section why-us-section" data-aos="fade-up">
+    <section v-if="content.whyUs" class="section why-us-section">
       <div class="section-container">
         <div class="section-header">
           <h2 class="section-title">{{ content.whyUs.heading }}</h2>
@@ -88,12 +93,10 @@
             v-for="(benefit, index) in content.whyUs.benefits" 
             :key="index"
             class="feature-item"
-            :data-aos="'fade-right'"
-            :data-aos-delay="index * 100"
           >
             <div class="feature-number">{{ index + 1 }}</div>
             <div class="feature-content">
-              <div class="feature-icon">{{ benefit.icon }}</div>
+              <div class="feature-icon-text">{{ benefit.icon }}</div>
               <h3 class="feature-title">{{ benefit.title }}</h3>
               <p class="feature-description">{{ benefit.description }}</p>
             </div>
@@ -107,7 +110,7 @@
     </section>
 
     <!-- Financial Models Section -->
-    <section v-if="content.financialModels" class="section models-section" data-aos="fade-up">
+    <section v-if="content.financialModels" class="section models-section">
       <div class="section-container">
         <div class="section-header">
           <h2 class="section-title">{{ content.financialModels.heading }}</h2>
@@ -125,10 +128,10 @@
               v-for="(model, index) in content.financialModels.modelTypes.list" 
               :key="index"
               class="model-card"
-              :data-aos="'zoom-in'"
-              :data-aos-delay="index * 50"
             >
-              <div class="model-icon">📑</div>
+              <svg class="model-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
               <h4>{{ model }}</h4>
             </div>
           </div>
@@ -141,12 +144,12 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section" data-aos="fade-up">
+    <section class="cta-section">
       <div class="cta-container">
         <h2>Ready to Transform Your Financial Strategy?</h2>
         <p>Let's discuss how we can help your business grow</p>
         <router-link to="/query" class="btn btn-cta">
-          Schedule a Consultation
+          <span class="btn-text">Schedule a Consultation</span>
           <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
@@ -158,8 +161,6 @@
 
 <script>
 import axios from 'axios';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 export default {
   name: 'HomePage',
@@ -176,14 +177,6 @@ export default {
   },
   async mounted() {
     await this.loadAllContent();
-    
-    // Initialize AOS animations
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 100
-    });
   },
   methods: {
     async loadAllContent() {
@@ -225,29 +218,17 @@ export default {
 </script>
 
 <style scoped>
-/* ==================== VARIABLES ==================== */
-:root {
-  --primary-color: #2563eb;
-  --primary-dark: #1e40af;
-  --primary-light: #3b82f6;
-  --secondary-color: #64748b;
-  --accent-color: #0ea5e9;
-  --success-color: #10b981;
-  --background: #ffffff;
-  --surface: #f8fafc;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
-  --border: #e2e8f0;
-  --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
+/* ==================== GLOBAL STYLES ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ==================== GLOBAL STYLES ==================== */
 .home-page {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: var(--text-primary);
-  background: var(--background);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: #0f172a;
+  background: #ffffff;
   overflow-x: hidden;
 }
 
@@ -258,7 +239,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -269,8 +250,8 @@ export default {
 .loading-spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid var(--border);
-  border-top-color: var(--primary-color);
+  border: 4px solid #e2e8f0;
+  border-top-color: #2563eb;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -281,8 +262,9 @@ export default {
 
 .loading-overlay p {
   margin-top: 20px;
-  color: var(--text-secondary);
+  color: #475569;
   font-weight: 500;
+  font-size: 1rem;
 }
 
 /* ==================== HERO SECTION ==================== */
@@ -342,75 +324,87 @@ export default {
   display: flex;
   gap: 16px;
   margin-bottom: 60px;
+  flex-wrap: wrap;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
+  gap: 10px;
+  padding: 16px 36px;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.05rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
+  border: none;
+}
+
+.btn-text {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .btn-primary {
   background: white;
-  color: var(--primary-color);
+  color: #2563eb;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.15);
   color: white;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-icon {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
 }
 
 .hero-quote {
   position: relative;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 28px 32px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(15px);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .quote-icon {
   position: absolute;
-  top: -10px;
+  top: -15px;
   left: 20px;
-  font-size: 4rem;
-  opacity: 0.3;
+  font-size: 5rem;
+  opacity: 0.2;
   line-height: 1;
+  color: white;
 }
 
 .hero-quote p {
   font-style: italic;
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.15rem;
+  line-height: 1.7;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* Floating Cards Animation */
+/* ==================== FLOATING CARDS (Professional SVG Icons) ==================== */
 .hero-image {
   position: relative;
   height: 500px;
@@ -419,23 +413,30 @@ export default {
 .floating-card {
   position: absolute;
   background: white;
-  padding: 24px 32px;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 28px 36px;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   animation: float 6s ease-in-out infinite;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
+  min-width: 180px;
 }
 
-.floating-card .card-icon {
-  font-size: 2rem;
+.card-svg-icon {
+  width: 48px;
+  height: 48px;
+  color: #2563eb;
+  stroke-width: 2;
 }
 
 .floating-card p {
   margin: 0;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #0f172a;
+  font-size: 1.05rem;
+  text-align: center;
 }
 
 .card-1 {
@@ -467,12 +468,12 @@ export default {
 
 /* ==================== SECTIONS ==================== */
 .section {
-  padding: 120px 40px;
+  padding: 100px 40px;
   position: relative;
 }
 
 .section:nth-child(even) {
-  background: var(--surface);
+  background: #f8fafc;
 }
 
 .section-container {
@@ -482,28 +483,28 @@ export default {
 
 .section-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 70px;
 }
 
 .section-title {
   font-size: 2.75rem;
   font-weight: 800;
-  margin-bottom: 16px;
-  color: var(--text-primary);
+  margin-bottom: 20px;
+  color: #0f172a;
   letter-spacing: -0.02em;
 }
 
 .section-subtitle {
   font-size: 1.25rem;
-  color: var(--text-secondary);
+  color: #475569;
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.7;
 }
 
 .section-description {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
+  font-size: 1.15rem;
+  color: #475569;
   text-align: center;
   max-width: 800px;
   margin: 0 auto 60px;
@@ -512,57 +513,61 @@ export default {
 
 .section-quote {
   text-align: center;
-  margin-top: 80px;
-  padding: 40px;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  margin-top: 70px;
+  padding: 45px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 20px;
   color: white;
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
 }
 
 .section-quote p {
   font-size: 1.5rem;
   font-style: italic;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ==================== BENEFITS GRID ==================== */
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  gap: 32px;
   margin-top: 60px;
 }
 
 .benefit-card {
   background: white;
-  padding: 40px;
+  padding: 45px;
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
+  text-align: center;
 }
 
 .benefit-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6;
 }
 
-.benefit-icon {
-  font-size: 3rem;
-  margin-bottom: 20px;
+.benefit-icon-text {
+  font-size: 3.5rem;
+  margin-bottom: 24px;
+  line-height: 1;
 }
 
 .benefit-title {
-  font-size: 1.375rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text-primary);
+  margin-bottom: 14px;
+  color: #0f172a;
 }
 
 .benefit-description {
-  font-size: 1rem;
-  color: var(--text-secondary);
+  font-size: 1.05rem;
+  color: #64748b;
   line-height: 1.7;
   margin: 0;
 }
@@ -571,58 +576,61 @@ export default {
 .features-list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 28px;
 }
 
 .feature-item {
   display: flex;
-  gap: 30px;
-  padding: 40px;
+  gap: 32px;
+  padding: 45px;
   background: white;
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
 }
 
 .feature-item:hover {
-  transform: translateX(8px);
-  box-shadow: var(--shadow-lg);
+  transform: translateX(10px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6;
 }
 
 .feature-number {
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }
 
 .feature-content {
   flex: 1;
 }
 
-.feature-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
+.feature-icon-text {
+  font-size: 2.5rem;
+  margin-bottom: 14px;
+  line-height: 1;
 }
 
 .feature-title {
-  font-size: 1.375rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--text-primary);
+  margin-bottom: 10px;
+  color: #0f172a;
 }
 
 .feature-description {
-  font-size: 1rem;
-  color: var(--text-secondary);
+  font-size: 1.05rem;
+  color: #64748b;
   line-height: 1.7;
   margin: 0;
 }
@@ -632,59 +640,66 @@ export default {
   text-align: center;
   max-width: 800px;
   margin: 0 auto 60px;
+  padding: 40px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 20px;
 }
 
 .models-intro h3 {
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 700;
-  margin-bottom: 16px;
-  color: var(--text-primary);
+  margin-bottom: 18px;
+  color: #1e40af;
 }
 
 .models-intro p {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
+  font-size: 1.15rem;
+  color: #1e40af;
   line-height: 1.8;
 }
 
 .models-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 26px;
   margin-top: 60px;
 }
 
 .model-card {
   background: white;
-  padding: 32px;
+  padding: 36px;
   border-radius: 16px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   text-align: center;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
 }
 
 .model-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary-color);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6;
 }
 
-.model-icon {
-  font-size: 2.5rem;
-  margin-bottom: 16px;
+.model-svg-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  color: #2563eb;
+  stroke-width: 2;
 }
 
 .model-card h4 {
-  font-size: 1.125rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #0f172a;
   margin: 0;
+  line-height: 1.4;
 }
 
 /* ==================== CTA SECTION ==================== */
 .cta-section {
-  padding: 120px 40px;
+  padding: 100px 40px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   position: relative;
@@ -711,28 +726,29 @@ export default {
 }
 
 .cta-container h2 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   letter-spacing: -0.02em;
 }
 
 .cta-container p {
-  font-size: 1.25rem;
-  margin-bottom: 40px;
+  font-size: 1.35rem;
+  margin-bottom: 45px;
   opacity: 0.95;
 }
 
 .btn-cta {
   background: white;
-  color: var(--primary-color);
-  padding: 18px 48px;
-  font-size: 1.125rem;
+  color: #2563eb;
+  padding: 20px 50px;
+  font-size: 1.2rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
 }
 
 .btn-cta:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   box-shadow: 0 15px 60px rgba(0, 0, 0, 0.3);
 }
 
@@ -741,10 +757,15 @@ export default {
   .hero-container {
     grid-template-columns: 1fr;
     gap: 60px;
+    padding: 60px 30px;
   }
 
   .hero-title {
     font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
   }
 
   .hero-image {
@@ -752,19 +773,21 @@ export default {
   }
 
   .section {
-    padding: 80px 24px;
+    padding: 70px 24px;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 2.1rem;
   }
 
   .benefits-grid {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .hero-cta {
     flex-direction: column;
+    width: 100%;
   }
 
   .btn {
@@ -779,20 +802,47 @@ export default {
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .section-title {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
   }
 
   .feature-item {
     flex-direction: column;
     text-align: center;
+    padding: 35px;
   }
 
   .models-grid {
     grid-template-columns: 1fr;
+  }
+
+  .floating-card {
+    min-width: 150px;
+    padding: 20px 24px;
+  }
+
+  .card-svg-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .floating-card p {
+    font-size: 0.95rem;
+  }
+
+  .cta-container h2 {
+    font-size: 2rem;
+  }
+
+  .cta-container p {
+    font-size: 1.15rem;
   }
 }
 </style>
