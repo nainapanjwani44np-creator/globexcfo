@@ -116,8 +116,11 @@
 
 .social-links {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 0.75rem;
   align-items: center;
+  justify-content: center;
 }
 
 .social-icon {
@@ -291,12 +294,17 @@
   }
 
   .social-links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 0.6rem;
+    justify-content: center;
   }
 
   .social-icon {
     width: 32px;
     height: 32px;
+    flex-shrink: 0;
   }
 
   .social-icon svg {
@@ -306,15 +314,28 @@
 
   .menu ul {
     max-width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 0.5rem;
     padding: 0.75rem 0.5rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .menu ul::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .menu li {
+    flex-shrink: 0;
   }
   
   .menu li a {
     padding: 0.6rem 0.9rem;
     font-size: 0.85rem;
     letter-spacing: 0.3px;
+    white-space: nowrap;
   }
   
   .menu li a:hover {
@@ -335,9 +356,18 @@
     font-size: 0.75rem;
   }
 
+  .social-links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
   .social-icon {
     width: 30px;
     height: 30px;
+    flex-shrink: 0;
   }
 
   .social-icon svg {
@@ -346,26 +376,35 @@
   }
 
   .menu ul {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.4rem;
     padding: 0.5rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .menu ul::-webkit-scrollbar {
+    display: none;
   }
   
   .menu li {
-    width: 100%;
-    flex: 1;
+    flex-shrink: 0;
   }
   
   .menu li a {
     display: block;
     text-align: center;
-    padding: 0.75rem;
-    font-size: 0.9rem;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
   
   .menu li a:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
 }
 
