@@ -166,27 +166,98 @@ const goToHome = () => {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .success-container {
+    padding: 1.5rem;
+    min-height: 70vh;
+  }
+
   .success-card {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
+  }
+
+  .success-title {
+    font-size: 1.75rem;
+  }
+
+  .success-message {
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .home-button {
+    padding: 0.8rem 1.75rem;
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .success-container {
+    padding: 1rem;
+    min-height: 60vh;
+  }
+
+  .success-card {
+    padding: 2rem 1.25rem;
+    border-radius: 16px;
   }
 
   .success-title {
     font-size: 1.5rem;
+    line-height: 1.3;
   }
 
   .success-message {
     font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
   }
 
   .success-icon {
     width: 70px;
     height: 70px;
+    margin-bottom: 1.25rem;
   }
 
   .success-icon svg {
     width: 40px;
     height: 40px;
+  }
+
+  .home-button {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .success-card {
+    padding: 1.75rem 1rem;
+  }
+
+  .success-title {
+    font-size: 1.35rem;
+  }
+
+  .success-message {
+    font-size: 0.95rem;
+  }
+
+  .success-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .success-icon svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  .home-button {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
   }
 }
 </style>
