@@ -3,7 +3,7 @@
     <div class="homepage">
       <!-- HERO SECTION -->
       <section class="hero box">
-        <h1>Contact Us</h1>
+        <h1>Get In Touch</h1>
         <p class="subheading">
           We welcome the opportunity to discuss how our financial expertise can support your business objectives. Please complete the form below, and our team will respond to your inquiry within 24 hours.
         </p>
