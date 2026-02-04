@@ -83,12 +83,17 @@
     <!-- Why Us Section -->
     <section v-if="content.whyUs" class="section why-us-section">
       <div class="section-container">
-        <div class="section-header">
-          <h2 class="section-title">{{ content.whyUs.heading }}</h2>
-          <p class="section-subtitle">{{ content.whyUs.subheading }}</p>
-        </div>
-
         <div class="unified-features-card">
+          <!-- Header inside card -->
+          <div class="unified-card-header">
+            <h2 class="unified-card-title">{{ content.whyUs.heading }}</h2>
+            <p class="unified-card-subtitle">{{ content.whyUs.subheading }}</p>
+          </div>
+
+          <!-- Divider after header -->
+          <div class="unified-header-divider"></div>
+
+          <!-- Features list -->
           <div class="features-unified-list">
             <div 
               v-for="(benefit, index) in content.whyUs.benefits" 
@@ -103,6 +108,7 @@
             </div>
           </div>
 
+          <!-- Quote at bottom -->
           <div class="unified-quote">
             <p>{{ content.whyUs.closingQuote }}</p>
           </div>
@@ -633,6 +639,33 @@ export default {
   border: 2px solid #e2e8f0;
 }
 
+.unified-card-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.unified-card-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.unified-card-subtitle {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.unified-header-divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  margin-bottom: 28px;
+}
+
 .features-unified-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -992,6 +1025,23 @@ export default {
     border-radius: 12px;
   }
 
+  .unified-card-header {
+    margin-bottom: 20px;
+  }
+
+  .unified-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .unified-card-subtitle {
+    font-size: 1rem;
+  }
+
+  .unified-header-divider {
+    margin-bottom: 20px;
+  }
+
   .features-unified-list {
     gap: 18px;
     margin-bottom: 20px;
@@ -1127,6 +1177,23 @@ export default {
 
   .unified-features-card {
     padding: 20px;
+  }
+
+  .unified-card-header {
+    margin-bottom: 18px;
+  }
+
+  .unified-card-title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .unified-card-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .unified-header-divider {
+    margin-bottom: 18px;
   }
 
   .features-unified-list {
