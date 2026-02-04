@@ -295,7 +295,7 @@ export default {
   margin-top: 20px;
   color: #475569;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 2rem;
 }
 
 /* ==================== HERO BANNER IMAGE ==================== */
@@ -349,7 +349,7 @@ export default {
 }
 
 .hero-title {
-  font-size: 2.25rem;
+  font-size: 3.25rem;
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 16px;
@@ -357,7 +357,7 @@ export default {
 }
 
 .hero-subtitle {
-  font-size: 1.05rem;
+  font-size: 2.05rem;
   line-height: 1.6;
   margin-bottom: 24px;
   opacity: 0.95;
@@ -378,7 +378,7 @@ export default {
   padding: 12px 28px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -433,7 +433,7 @@ export default {
   position: absolute;
   top: -12px;
   left: 18px;
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   opacity: 0.2;
   line-height: 1;
   color: white;
@@ -441,7 +441,7 @@ export default {
 
 .hero-quote p {
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   line-height: 1.6;
   margin: 0;
   position: relative;
@@ -479,7 +479,7 @@ export default {
   margin: 0;
   font-weight: 600;
   color: #0f172a;
-  font-size: 1.05rem;
+  font-size: 2.05rem;
   text-align: center;
 }
 
@@ -531,7 +531,7 @@ export default {
 }
 
 .section-title {
-  font-size: 1.85rem;
+  font-size: 2.85rem;
   font-weight: 700;
   margin-bottom: 16px;
   color: #0f172a;
@@ -539,7 +539,7 @@ export default {
 }
 
 .section-subtitle {
-  font-size: 1.05rem;
+  font-size: 2.05rem;
   color: #475569;
   max-width: 700px;
   margin: 0 auto;
@@ -547,7 +547,7 @@ export default {
 }
 
 .section-description {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   color: #475569;
   text-align: center;
   max-width: 800px;
@@ -566,7 +566,7 @@ export default {
 }
 
 .section-quote p {
-  font-size: 1.05rem;
+  font-size: 2.05rem;
   font-style: italic;
   margin: 0;
   line-height: 1.6;
@@ -610,14 +610,14 @@ export default {
 }
 
 .benefit-title {
-  font-size: 1.15rem;
+  font-size: 2.15rem;
   font-weight: 700;
   margin-bottom: 8px;
   color: #0f172a;
 }
 
 .benefit-description {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   color: #64748b;
   line-height: 1.5;
   margin: 0;
@@ -640,7 +640,7 @@ export default {
 }
 
 .unified-card-title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 8px;
   color: #0f172a;
@@ -648,7 +648,7 @@ export default {
 }
 
 .unified-card-subtitle {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   color: #475569;
   line-height: 1.5;
   margin: 0;
@@ -719,7 +719,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 2.1rem;
   font-weight: 700;
   box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
   transition: all 0.3s ease;
@@ -735,14 +735,14 @@ export default {
 }
 
 .feature-unified-title {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   font-weight: 700;
   margin-bottom: 4px;
   color: #0f172a;
 }
 
 .feature-unified-description {
-  font-size: 0.85rem;
+  font-size: 1.85rem;
   color: #64748b;
   line-height: 1.5;
   margin: 0;
@@ -758,7 +758,7 @@ export default {
 }
 
 .unified-quote p {
-  font-size: 0.9rem;
+  font-size: 1.9rem;
   font-style: italic;
   margin: 0;
   line-height: 1.6;
@@ -775,14 +775,14 @@ export default {
 }
 
 .models-intro h3 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 14px;
   color: #1e40af;
 }
 
 .models-intro p {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   color: #1e40af;
   line-height: 1.6;
 }
@@ -819,7 +819,7 @@ export default {
 }
 
 .model-card h4 {
-  font-size: 0.95rem;
+  font-size: 1.95rem;
   font-weight: 600;
   color: #0f172a;
   margin: 0;
@@ -855,14 +855,14 @@ export default {
 }
 
 .cta-container h2 {
-  font-size: 1.85rem;
+  font-size: 2.85rem;
   font-weight: 700;
   margin-bottom: 20px;
   letter-spacing: -0.01em;
 }
 
 .cta-container p {
-  font-size: 1.05rem;
+  font-size: 2.05rem;
   margin-bottom: 36px;
   opacity: 0.95;
 }
@@ -871,7 +871,7 @@ export default {
   background: white;
   color: #2563eb;
   padding: 14px 36px;
-  font-size: 1rem;
+  font-size: 2rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   display: inline-flex;
 }
@@ -898,12 +898,12 @@ export default {
   }
 
   .hero-title {
-    font-size: 1.85rem;
+    font-size: 2.85rem;
     line-height: 1.2;
   }
 
   .hero-subtitle {
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .hero-image {
@@ -920,11 +920,11 @@ export default {
   }
 
   .section-title {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
   .section-description {
-    font-size: 1.05rem;
+    font-size: 2.05rem;
   }
 
   .benefits-grid {
@@ -973,13 +973,13 @@ export default {
   }
 
   .hero-title {
-    font-size: 1.4rem;
+    font-size: 2.4rem;
     line-height: 1.2;
     margin-bottom: 14px;
   }
 
   .hero-subtitle {
-    font-size: 0.9rem;
+    font-size: 1.9rem;
     margin-bottom: 28px;
   }
 
@@ -989,7 +989,7 @@ export default {
 
   .btn {
     padding: 12px 24px;
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .btn-icon {
@@ -1002,12 +1002,12 @@ export default {
   }
 
   .hero-quote p {
-    font-size: 1rem;
+    font-size: 2rem;
     line-height: 1.6;
   }
 
   .quote-icon {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     top: -10px;
   }
 
@@ -1020,18 +1020,18 @@ export default {
   }
 
   .section-title {
-    font-size: 1.3rem;
+    font-size: 2.3rem;
     line-height: 1.3;
     margin-bottom: 14px;
   }
 
   .section-subtitle {
-    font-size: 0.9rem;
+    font-size: 1.9rem;
     line-height: 1.5;
   }
 
   .section-description {
-    font-size: 0.85rem;
+    font-size: 1.85rem;
     margin-bottom: 24px;
   }
 
@@ -1049,12 +1049,12 @@ export default {
   }
 
   .benefit-title {
-    font-size: 1.2rem;
+    font-size: 2.2rem;
     margin-bottom: 12px;
   }
 
   .benefit-description {
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .unified-features-card {
@@ -1067,12 +1067,12 @@ export default {
   }
 
   .unified-card-title {
-    font-size: 1.3rem;
+    font-size: 2.3rem;
     margin-bottom: 8px;
   }
 
   .unified-card-subtitle {
-    font-size: 0.9rem;
+    font-size: 1.9rem;
   }
 
   .unified-header-divider {
@@ -1094,16 +1094,16 @@ export default {
   .feature-unified-number {
     width: 36px;
     height: 36px;
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .feature-unified-title {
-    font-size: 1.05rem;
+    font-size: 2.05rem;
     margin-bottom: 6px;
   }
 
   .feature-unified-description {
-    font-size: 0.9rem;
+    font-size: 1.9rem;
   }
 
   .unified-quote {
@@ -1112,7 +1112,7 @@ export default {
   }
 
   .unified-quote p {
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .models-intro {
@@ -1121,12 +1121,12 @@ export default {
   }
 
   .models-intro h3 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     margin-bottom: 14px;
   }
 
   .models-intro p {
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .models-grid {
@@ -1145,7 +1145,7 @@ export default {
   }
 
   .model-card h4 {
-    font-size: 1.05rem;
+    font-size: 2.05rem;
   }
 
   .section-quote {
@@ -1155,7 +1155,7 @@ export default {
   }
 
   .section-quote p {
-    font-size: 1rem;
+    font-size: 2rem;
     line-height: 1.5;
   }
 
@@ -1164,19 +1164,19 @@ export default {
   }
 
   .cta-container h2 {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
     line-height: 1.3;
     margin-bottom: 16px;
   }
 
   .cta-container p {
-    font-size: 1.05rem;
+    font-size: 2.05rem;
     margin-bottom: 35px;
   }
 
   .btn-cta {
     padding: 16px 36px;
-    font-size: 1.05rem;
+    font-size: 2.05rem;
     width: 100%;
     justify-content: center;
   }
@@ -1197,11 +1197,11 @@ export default {
   }
 
   .hero-title {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
   .hero-subtitle {
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .section {
@@ -1209,11 +1209,11 @@ export default {
   }
 
   .section-title {
-    font-size: 1.4rem;
+    font-size: 2.4rem;
   }
 
   .section-subtitle {
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .benefit-card,
@@ -1230,12 +1230,12 @@ export default {
   }
 
   .unified-card-title {
-    font-size: 1.2rem;
+    font-size: 2.2rem;
     margin-bottom: 6px;
   }
 
   .unified-card-subtitle {
-    font-size: 0.85rem;
+    font-size: 1.85rem;
   }
 
   .unified-header-divider {
@@ -1255,7 +1255,7 @@ export default {
   .feature-unified-number {
     width: 34px;
     height: 34px;
-    font-size: 0.95rem;
+    font-size: 1.95rem;
   }
 
   .unified-quote {
@@ -1267,16 +1267,16 @@ export default {
   }
 
   .section-quote p {
-    font-size: 1rem;
+    font-size: 2rem;
   }
 
   .cta-container h2 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
   .btn-cta {
     padding: 14px 28px;
-    font-size: 1rem;
+    font-size: 2rem;
   }
 }
 </style>
