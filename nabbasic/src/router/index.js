@@ -5,6 +5,7 @@ import Services from '../pages/Services.vue'
 import Query from '../pages/Query.vue'
 import Blogs from '../pages/Blogs.vue'
 import Success from '../pages/Success.vue'
+import Error from '../pages/Error.vue'
 const routes = [
   { path:'/',component:Home},
   { path: '/Home', component: Home },
@@ -12,7 +13,8 @@ const routes = [
   { path: '/Services', component: Services},
   { path: '/Query', component: Query},
   { path: '/Blogs', component: Blogs},
-  { path: '/Success', component: Success}
+  { path: '/Success', component: Success},
+  { path: '/Error', component: Error}
 ]
 
 export default createRouter({

@@ -332,7 +332,8 @@ const submit = async () => {
     router.push('/Success');
   } catch (error) {
     isSubmitting.value = false;
-    alert("We apologize for the inconvenience. An error occurred while submitting your inquiry. Please verify your internet connection and try again, or contact us directly via phone or email.");
+    console.error('Submission error:', error);
+    router.push('/Error');
   }
 };
 
