@@ -668,37 +668,71 @@ export default {
 
 .features-unified-list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   margin-bottom: 28px;
 }
 
 .feature-unified-item {
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e2e8f0;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-unified-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-unified-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+  border-color: #93c5fd;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+}
+
+.feature-unified-item:hover::before {
+  transform: scaleX(1);
 }
 
 .feature-unified-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  border: 2px solid #e2e8f0;
 }
 
 .feature-unified-number {
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  border-radius: 50%;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  transition: all 0.3s ease;
+}
+
+.feature-unified-item:hover .feature-unified-number {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
 }
 
 .feature-unified-content {
@@ -1043,20 +1077,21 @@ export default {
   }
 
   .features-unified-list {
-    gap: 18px;
+    grid-template-columns: 1fr;
+    gap: 16px;
     margin-bottom: 20px;
   }
 
   .feature-unified-item {
-    flex-direction: row;
-    gap: 16px;
-    padding-bottom: 18px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px;
   }
 
   .feature-unified-number {
-    width: 38px;
-    height: 38px;
-    font-size: 1.1rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
   }
 
   .feature-unified-title {
@@ -1197,18 +1232,19 @@ export default {
   }
 
   .features-unified-list {
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .feature-unified-item {
-    gap: 14px;
-    padding-bottom: 16px;
+    gap: 12px;
+    padding: 20px;
   }
 
   .feature-unified-number {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.05rem;
   }
 
   .unified-quote {
