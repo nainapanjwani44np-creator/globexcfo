@@ -272,15 +272,105 @@ const validateForm = () => {
 
 // Send data to backend
 async function sendData(data) {
+  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #3b82f6');
+  console.log('%c📤 SENDING DATA TO BACKEND', 'color: #3b82f6; font-weight: bold; font-size: 14px');
+  console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #3b82f6');
+  console.log('📍 File: Query.vue:~276 (sendData function)');
+  console.log('⏰ Time:', new Date().toISOString());
+  console.log('🌐 Environment:', import.meta.env.MODE);
+  
+  console.log('\n📡 API REQUEST DETAILS:');
+  console.log('   Method: POST');
+  console.log('   Endpoint: /api/query');
+  console.log('   Content-Type: application/json');
+  console.log('   Base URL:', window.location.origin);
+  console.log('   Full URL:', window.location.origin + '/api/query');
+  
+  console.log('\n📋 REQUEST PAYLOAD:');
+  console.table(data);
+  console.log('   Raw JSON:', JSON.stringify(data, null, 2));
+  
   try {
+    console.log('\n⏳ Sending request...');
+    const startTime = performance.now();
+    
     const response = await axios.post('/api/query', data, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
+    
+    const endTime = performance.now();
+    const duration = (endTime - startTime).toFixed(2);
+    
+    console.log('\n✅ RESPONSE RECEIVED');
+    console.log('   Status Code:', response.status);
+    console.log('   Status Text:', response.statusText);
+    console.log('   Response Time:', duration + 'ms');
+    console.log('\n📦 RESPONSE DATA:');
+    console.table(response.data);
+    console.log('   Raw Response:', JSON.stringify(response.data, null, 2));
+    
+    if (response.data.environment) {
+      console.log('\n💾 DATABASE INFO:');
+      console.log('   Environment:', response.data.environment);
+      console.log('   Database:', response.data.database || 'N/A');
+      console.log('   Collection:', response.data.collection || 'N/A');
+      console.log('   Inserted ID:', response.data.insertedId || 'N/A');
+    }
+    
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #10b981');
+    console.log('%c✅ DATA SENT SUCCESSFULLY', 'color: #10b981; font-weight: bold; font-size: 14px');
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #10b981');
+    console.log('\n');
+    
     return response.data;
   } catch (error) {
-    console.error('Error sending data:', error);
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #ef4444');
+    console.log('%c❌ ERROR OCCURRED', 'color: #ef4444; font-weight: bold; font-size: 14px');
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #ef4444');
+    console.log('📍 File: Query.vue:~320 (catch block)');
+    console.log('⏰ Error Time:', new Date().toISOString());
+    
+    console.error('\n❌ ERROR DETAILS:');
+    console.error('   Error Message:', error.message);
+    console.error('   Error Name:', error.name);
+    
+    if (error.response) {
+      console.error('\n📡 SERVER RESPONSE:');
+      console.error('   Status Code:', error.response.status);
+      console.error('   Status Text:', error.response.statusText);
+      console.error('   Response Data:', error.response.data);
+      console.error('   Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('\n📡 REQUEST INFO:');
+      console.error('   No response received from server');
+      console.error('   Request:', error.request);
+    } else {
+      console.error('\n⚠️  REQUEST SETUP ERROR:');
+      console.error('   ', error.message);
+    }
+    
+    console.error('\n📋 DATA THAT FAILED TO SEND:');
+    console.table(data);
+    
+    console.error('\n🔍 TROUBLESHOOTING:');
+    if (error.response?.status === 500) {
+      console.error('   - Server error occurred');
+      console.error('   - Check server logs in terminal');
+      console.error('   - Verify MongoDB connection');
+    } else if (error.response?.status === 404) {
+      console.error('   - API endpoint not found');
+      console.error('   - Verify backend server is running');
+    } else if (!error.response) {
+      console.error('   - Cannot reach server');
+      console.error('   - Check if backend is running on port 3000');
+      console.error('   - Check network connection');
+    }
+    
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #ef4444');
+    console.log('\n');
+    
     throw error;
   }
 }
@@ -291,8 +381,41 @@ const showValidationError = ref(false);
 
 // Submit Form
 const submit = async () => {
+  console.clear(); // Clear previous logs for clarity
+  console.log('%c╔════════════════════════════════════════════════════════════════════╗', 'color: #8b5cf6; font-weight: bold');
+  console.log('%c║             FORM SUBMISSION STARTED - Query.vue                   ║', 'color: #8b5cf6; font-weight: bold');
+  console.log('%c╚════════════════════════════════════════════════════════════════════╝', 'color: #8b5cf6; font-weight: bold');
+  console.log('📍 File: Query.vue:~293 (submit function)');
+  console.log('⏰ Submission Time:', new Date().toISOString());
+  console.log('🌐 Page URL:', window.location.href);
+  console.log('🖥️  User Agent:', navigator.userAgent.substring(0, 80) + '...');
+  
+  console.log('\n📝 FORM DATA COLLECTED:');
+  console.log('   Name:', name.value || '(empty)');
+  console.log('   Company:', companyName.value || '(empty)');
+  console.log('   Email:', email.value || '(empty)');
+  console.log('   Contact Number:', contactNumber.value || '(empty)');
+  console.log('   Services Selected:', selectedOptions.value.length, 'items');
+  if (selectedOptions.value.length > 0) {
+    selectedOptions.value.forEach((service, idx) => {
+      console.log(`      ${idx + 1}. ${service}`);
+    });
+  } else {
+    console.log('      (none selected)');
+  }
+  console.log('   Message Length:', userMessage.value.length, 'characters');
+  console.log('   Message:', userMessage.value ? userMessage.value.substring(0, 100) + (userMessage.value.length > 100 ? '...' : '') : '(empty)');
+  
   // Validate all fields before submission
+  console.log('\n🔍 STEP 1: Validating Form...');
   if (!validateForm()) {
+    console.log('%c⚠️  VALIDATION FAILED', 'color: #f59e0b; font-weight: bold; font-size: 13px');
+    console.log('❌ Form validation errors detected:');
+    if (errors.value.name) console.log('   - Name:', errors.value.name);
+    if (errors.value.email) console.log('   - Email:', errors.value.email);
+    if (errors.value.contactNumber) console.log('   - Contact:', errors.value.contactNumber);
+    if (errors.value.userMessage) console.log('   - Message:', errors.value.userMessage);
+    
     showValidationError.value = true;
     // Auto-hide after 5 seconds
     setTimeout(() => {
@@ -305,19 +428,19 @@ const submit = async () => {
       firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
       firstError.focus();
     }
+    
+    console.log('⏸️  Submission stopped due to validation errors\n');
     return;
   }
   
+  console.log('✅ All fields validated successfully');
+  
   try {
+    console.log('\n🔄 STEP 2: Preparing Submission...');
     isSubmitting.value = true;
     showValidationError.value = false;
-    
-    console.log("Name:", name.value);
-    console.log("Company:", companyName.value);
-    console.log("Email:", email.value);
-    console.log("Contact:", contactNumber.value);
-    console.log("Selected Checkboxes:", selectedOptions.value);
-    console.log("User Message:", userMessage.value);
+    console.log('   Submit button disabled');
+    console.log('   Loading state activated');
     
     let formData = {
       name: name.value,
@@ -328,11 +451,40 @@ const submit = async () => {
       userMessage: userMessage.value
     };
     
-    await sendData(formData);
+    console.log('\n📦 FORM DATA OBJECT CREATED:');
+    console.log('   Object keys:', Object.keys(formData).join(', '));
+    console.log('   Total fields:', Object.keys(formData).length);
+    console.log('\n   Complete FormData:');
+    console.table(formData);
+    
+    console.log('\n🚀 STEP 3: Sending to Backend...');
+    const result = await sendData(formData);
+    
+    console.log('\n✅ STEP 4: Backend Response Successful');
+    console.log('   Response:', result);
+    
+    console.log('\n🔀 STEP 5: Redirecting to Success Page...');
+    console.log('   Target: /Success');
+    console.log('%c╔════════════════════════════════════════════════════════════════════╗', 'color: #10b981; font-weight: bold');
+    console.log('%c║                  FORM SUBMITTED SUCCESSFULLY! ✓                    ║', 'color: #10b981; font-weight: bold');
+    console.log('%c╚════════════════════════════════════════════════════════════════════╝', 'color: #10b981; font-weight: bold');
+    console.log('\n');
+    
     router.push('/Success');
   } catch (error) {
     isSubmitting.value = false;
-    console.error('Submission error:', error);
+    console.log('\n❌ STEP 4: Backend Request Failed');
+    console.error('%c╔════════════════════════════════════════════════════════════════════╗', 'color: #ef4444; font-weight: bold');
+    console.error('%c║                    SUBMISSION FAILED                               ║', 'color: #ef4444; font-weight: bold');
+    console.error('%c╚════════════════════════════════════════════════════════════════════╝', 'color: #ef4444; font-weight: bold');
+    console.error('📍 Error Location: Query.vue:~370 (submit catch block)');
+    console.error('🚫 Submission Error:', error.message);
+    console.error('   Full Error Object:', error);
+    
+    console.log('\n🔀 Redirecting to Error Page...');
+    console.log('   Target: /Error');
+    console.log('\n');
+    
     router.push('/Error');
   }
 };
