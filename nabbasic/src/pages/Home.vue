@@ -19,7 +19,7 @@
           <p class="hero-subtitle">{{ content.hero.subtitle }}</p>
           <div class="hero-cta">
             <router-link to="/query" class="btn btn-primary">
-              <span class="btn-text">Get Started</span>
+              <span class="btn-text">Get In Touch</span>
               <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
@@ -690,7 +690,7 @@ export default {
 .unified-features-card {
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   border-radius: 14px;
-  padding: 24px;
+  padding: 18px;
   box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
   border: 2px solid #bfdbfe;
   max-width: 1100px;
@@ -735,15 +735,15 @@ export default {
 .features-unified-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .feature-unified-item {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 18px;
+  gap: 8px;
+  padding: 14px;
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   border-radius: 12px;
   border: 2px solid #bfdbfe;
