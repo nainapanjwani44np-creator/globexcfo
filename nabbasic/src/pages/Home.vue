@@ -373,6 +373,7 @@ export default {
   gap: 12px;
   margin-bottom: 32px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btn {
