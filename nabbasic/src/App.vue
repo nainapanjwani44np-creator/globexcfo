@@ -50,11 +50,46 @@
           </router-link>
         </div>
         <ul>
-          <li><router-link to="/Home">Home</router-link></li>
-          <li><router-link to="/About">About Us</router-link></li>
-          <li><router-link to="/Services">Services</router-link></li>
-          <li><router-link to="/Query">Query</router-link></li>
-          <li><router-link to="/Blogs">Blogs</router-link></li>
+          <li>
+            <router-link to="/Home">
+              <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span class="nav-text">Home</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/About">
+              <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="nav-text">About Us</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/Services">
+              <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span class="nav-text">Services</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/Query">
+              <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="nav-text">Query</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/Blogs">
+              <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+              <span class="nav-text">Blogs</span>
+            </router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -245,31 +280,52 @@ html, body {
 }
 
 .menu li a {
-  display: inline-block;
-  padding: 0.7rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
   color: #ffffff;
   text-decoration: none;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   position: relative;
   transition: all 0.35s ease;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.3);
   white-space: nowrap;
   min-width: fit-content;
 }
 
+.nav-icon {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2.5;
+  transition: all 0.3s ease;
+}
+
+.nav-text {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
 /* Clean Zoom Hover Effect */
 .menu li a:hover {
-  transform: scale(1.12);
+  transform: scale(1.08);
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.7);
   color: #fff;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.menu li a:hover .nav-icon {
+  transform: scale(1.15);
 }
 
 /* Active/Current Route Styling */
@@ -286,14 +342,14 @@ html, body {
   transform: scale(1.12);
 }
 
-/* Clean Underline Animation */
+/* Clean Underline Animation (below text) */
 .menu li a::after {
   content: '';
   position: absolute;
-  bottom: 6px;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%) scaleX(0);
-  width: 60%;
+  width: 50%;
   height: 2px;
   background: #ffffff;
   border-radius: 2px;
@@ -317,12 +373,21 @@ html, body {
 
   .menu ul {
     max-width: 800px;
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
   
   .menu li a {
-    padding: 0.65rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.6rem 0.85rem;
+    gap: 0.3rem;
+  }
+
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .nav-text {
+    font-size: 0.7rem;
   }
 }
 
@@ -391,14 +456,22 @@ html, body {
   }
   
   .menu li a {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.85rem;
-    letter-spacing: 0.3px;
+    padding: 0.5rem 0.7rem;
+    gap: 0.25rem;
     white-space: nowrap;
+  }
+
+  .nav-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .nav-text {
+    font-size: 0.65rem;
   }
   
   .menu li a:hover {
-    transform: scale(1.08);
+    transform: scale(1.05);
   }
 }
 
@@ -464,15 +537,26 @@ html, body {
   }
   
   .menu li a {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 0.65rem 0.8rem;
-    font-size: 0.75rem;
+    padding: 0.5rem 0.6rem;
+    gap: 0.2rem;
     white-space: nowrap;
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-text {
+    font-size: 0.6rem;
   }
   
   .menu li a:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 }
 
