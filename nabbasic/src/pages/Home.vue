@@ -6,12 +6,13 @@
       <p>Loading content...</p>
     </div>
 
-    <!-- Hero Section -->
-    <section v-if="content.hero" class="hero-section">
-      <div class="hero-background">
-        <img src="../images/img1.png" alt="Financial Advisory Team" class="hero-bg-image" />
-        <div class="hero-overlay"></div>
-      </div>
+    <!-- Hero Banner Image (Separate from content) -->
+    <section class="hero-banner">
+      <img src="../images/img1.png" alt="Financial Advisory Team" class="hero-banner-image" />
+    </section>
+
+    <!-- Hero Content Section (After image) -->
+    <section v-if="content.hero" class="hero-content-section">
       <div class="hero-container">
         <div class="hero-content">
           <h1 class="hero-title">{{ content.hero.title }}</h1>
@@ -297,41 +298,31 @@ export default {
   font-size: 1rem;
 }
 
-/* ==================== HERO SECTION ==================== */
-.hero-section {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
+/* ==================== HERO BANNER IMAGE ==================== */
+.hero-banner {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero-banner-image {
+  width: 100%;
+  height: 60vh;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ==================== HERO CONTENT SECTION ==================== */
+.hero-content-section {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  padding: 60px 20px;
   position: relative;
   overflow: hidden;
 }
 
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.hero-bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(96, 165, 250, 0.85) 0%, rgba(59, 130, 246, 0.85) 100%);
-}
-
-.hero-section::before {
+.hero-content-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -345,7 +336,7 @@ export default {
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 40px;
+  padding: 0 40px;
   position: relative;
   z-index: 1;
 }
@@ -353,6 +344,8 @@ export default {
 .hero-content {
   color: white;
   max-width: 800px;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .hero-title {
@@ -892,10 +885,16 @@ export default {
 
 /* Tablet (768px - 968px) */
 @media (max-width: 968px) {
+  .hero-banner-image {
+    height: 50vh;
+  }
+
+  .hero-content-section {
+    padding: 50px 20px;
+  }
+
   .hero-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 50px 30px;
+    padding: 0 30px;
   }
 
   .hero-title {
@@ -961,14 +960,16 @@ export default {
 
 /* Mobile (376px - 640px) */
 @media (max-width: 640px) {
-  .hero-section {
-    min-height: auto;
-    padding: 40px 0;
+  .hero-banner-image {
+    height: 40vh;
+  }
+
+  .hero-content-section {
+    padding: 40px 16px;
   }
 
   .hero-container {
-    padding: 40px 20px;
-    gap: 30px;
+    padding: 0 16px;
   }
 
   .hero-title {
@@ -1183,8 +1184,16 @@ export default {
 
 /* Small Mobile (320px - 375px) */
 @media (max-width: 375px) {
+  .hero-banner-image {
+    height: 35vh;
+  }
+
+  .hero-content-section {
+    padding: 35px 16px;
+  }
+
   .hero-container {
-    padding: 30px 16px;
+    padding: 0 16px;
   }
 
   .hero-title {
