@@ -8,6 +8,10 @@
 
     <!-- Hero Section -->
     <section v-if="content.hero" class="hero-section">
+      <div class="hero-background">
+        <img src="../images/img1.png" alt="Financial Advisory Team" class="hero-bg-image" />
+        <div class="hero-overlay"></div>
+      </div>
       <div class="hero-container">
         <div class="hero-content">
           <h1 class="hero-title">{{ content.hero.title }}</h1>
@@ -26,27 +30,6 @@
           <div class="hero-quote">
             <div class="quote-icon">"</div>
             <p>{{ content.hero.quote }}</p>
-          </div>
-        </div>
-        <div class="hero-image">
-          <!-- Professional SVG Icons instead of Emojis -->
-          <div class="floating-card card-1">
-            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            <p>Financial Clarity</p>
-          </div>
-          <div class="floating-card card-2">
-            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <p>Growth Strategy</p>
-          </div>
-          <div class="floating-card card-3">
-            <svg class="card-svg-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p>Cash Flow Mastery</p>
           </div>
         </div>
       </div>
@@ -326,12 +309,36 @@ export default {
 
 /* ==================== HERO SECTION ==================== */
 .hero-section {
-  min-height: 90vh;
+  min-height: 70vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   position: relative;
   overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.85) 0%, rgba(59, 130, 246, 0.85) 100%);
 }
 
 .hero-section::before {
@@ -348,31 +355,28 @@ export default {
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
+  padding: 60px 40px;
   position: relative;
   z-index: 1;
 }
 
 .hero-content {
   color: white;
+  max-width: 800px;
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 24px;
-  letter-spacing: -0.02em;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  line-height: 1.7;
-  margin-bottom: 40px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
   opacity: 0.95;
   font-weight: 400;
 }
@@ -387,11 +391,11 @@ export default {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 36px;
-  border-radius: 10px;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -435,18 +439,18 @@ export default {
 
 .hero-quote {
   position: relative;
-  padding: 28px 32px;
+  padding: 20px 28px;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(15px);
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .quote-icon {
   position: absolute;
-  top: -15px;
-  left: 20px;
-  font-size: 5rem;
+  top: -12px;
+  left: 18px;
+  font-size: 3.5rem;
   opacity: 0.2;
   line-height: 1;
   color: white;
@@ -454,8 +458,8 @@ export default {
 
 .hero-quote p {
   font-style: italic;
-  font-size: 1.15rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.6;
   margin: 0;
   position: relative;
   z-index: 1;
@@ -544,45 +548,45 @@ export default {
 }
 
 .section-title {
-  font-size: 2.75rem;
-  font-weight: 800;
-  margin-bottom: 20px;
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 16px;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .section-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   color: #475569;
   max-width: 700px;
   margin: 0 auto;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .section-description {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   color: #475569;
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 60px;
-  line-height: 1.8;
+  margin: 0 auto 50px;
+  line-height: 1.7;
 }
 
 .section-quote {
   text-align: center;
-  margin-top: 70px;
-  padding: 45px;
+  margin-top: 50px;
+  padding: 32px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 20px;
+  border-radius: 16px;
   color: white;
   box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
 }
 
 .section-quote p {
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-style: italic;
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 /* ==================== BENEFITS GRID ==================== */
@@ -623,16 +627,16 @@ export default {
 }
 
 .benefit-title {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   color: #0f172a;
 }
 
 .benefit-description {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #64748b;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -693,16 +697,16 @@ export default {
 }
 
 .feature-title {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #0f172a;
 }
 
 .feature-description {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #64748b;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -717,16 +721,16 @@ export default {
 }
 
 .models-intro h3 {
-  font-size: 2.1rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   color: #1e40af;
 }
 
 .models-intro p {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   color: #1e40af;
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 .models-grid {
@@ -761,7 +765,7 @@ export default {
 }
 
 .model-card h4 {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #0f172a;
   margin: 0;
@@ -797,23 +801,23 @@ export default {
 }
 
 .cta-container h2 {
-  font-size: 2.75rem;
-  font-weight: 800;
-  margin-bottom: 24px;
-  letter-spacing: -0.02em;
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
 }
 
 .cta-container p {
-  font-size: 1.35rem;
-  margin-bottom: 45px;
+  font-size: 1.05rem;
+  margin-bottom: 36px;
   opacity: 0.95;
 }
 
 .btn-cta {
   background: white;
   color: #2563eb;
-  padding: 20px 50px;
-  font-size: 1.2rem;
+  padding: 14px 36px;
+  font-size: 1rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   display: inline-flex;
 }
@@ -834,12 +838,12 @@ export default {
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.85rem;
     line-height: 1.2;
   }
 
   .hero-subtitle {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 
   .hero-image {
@@ -856,7 +860,7 @@ export default {
   }
 
   .section-title {
-    font-size: 2.1rem;
+    font-size: 1.5rem;
   }
 
   .section-description {
@@ -907,14 +911,14 @@ export default {
   }
 
   .hero-title {
-    font-size: 1.75rem;
+    font-size: 1.4rem;
     line-height: 1.2;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .hero-subtitle {
-    font-size: 1rem;
-    margin-bottom: 30px;
+    font-size: 0.9rem;
+    margin-bottom: 28px;
   }
 
   .hero-cta {
@@ -954,19 +958,19 @@ export default {
   }
 
   .section-title {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     line-height: 1.3;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .section-subtitle {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   .section-description {
-    font-size: 0.95rem;
-    margin-bottom: 40px;
+    font-size: 0.85rem;
+    margin-bottom: 36px;
   }
 
   .benefits-grid {

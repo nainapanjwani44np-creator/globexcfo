@@ -43,13 +43,20 @@
 
     <!-- Navigation Menu -->
     <nav class="menu">
-      <ul>
-        <li><router-link to="/Home">Home</router-link></li>
-        <li><router-link to="/About">About Us</router-link></li>
-        <li><router-link to="/Services">Services</router-link></li>
-        <li><router-link to="/Query">Query</router-link></li>
-        <li><router-link to="/Blogs">Blogs</router-link></li>
-      </ul>
+      <div class="menu-container">
+        <div class="logo-container">
+          <router-link to="/Home">
+            <img src="./images/logo.png" alt="Globex CFO Logo" class="logo" />
+          </router-link>
+        </div>
+        <ul>
+          <li><router-link to="/Home">Home</router-link></li>
+          <li><router-link to="/About">About Us</router-link></li>
+          <li><router-link to="/Services">Services</router-link></li>
+          <li><router-link to="/Query">Query</router-link></li>
+          <li><router-link to="/Blogs">Blogs</router-link></li>
+        </ul>
+      </div>
     </nav>
     <router-view />
   </div>
@@ -197,12 +204,36 @@ html, body {
   background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%);
 }
 
+.menu-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.5rem 2rem;
+}
+
+.logo-container {
+  flex-shrink: 0;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
 .menu ul {
   display: flex;
   list-style: none;
-  padding: 0.75rem 0;
-  margin: 0 auto;
-  max-width: 900px;
+  padding: 0;
+  margin: 0;
+  flex: 1;
   justify-content: center;
   align-items: center;
   gap: 0.75rem;
@@ -331,12 +362,21 @@ html, body {
     height: 16px;
   }
 
+  .menu-container {
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
   .menu ul {
     max-width: 100%;
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 0.5rem;
-    padding: 0.75rem 0.5rem;
+    padding: 0;
     justify-content: flex-start;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -394,13 +434,22 @@ html, body {
     height: 15px;
   }
 
+  .menu-container {
+    padding: 0.4rem 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .logo {
+    height: 35px;
+  }
+
   .menu ul {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 0.4rem;
-    padding: 0.5rem;
+    padding: 0;
     justify-content: flex-start;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
