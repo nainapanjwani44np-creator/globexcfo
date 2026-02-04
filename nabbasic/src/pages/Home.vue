@@ -431,10 +431,10 @@ export default {
 .hero-quote {
   position: relative;
   padding: 20px 28px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(219, 234, 254, 0.25);
   backdrop-filter: blur(15px);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(191, 219, 254, 0.4);
 }
 
 .quote-icon {
@@ -464,15 +464,16 @@ export default {
 
 .floating-card {
   position: absolute;
-  background: white;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   padding: 28px 36px;
   border-radius: 18px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
   animation: float 6s ease-in-out infinite;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  border: 1px solid #bfdbfe;
   min-width: 180px;
 }
 
@@ -637,19 +638,20 @@ export default {
 }
 
 .benefit-card {
-  background: white;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   padding: 28px;
   border-radius: 14px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.15);
   transition: all 0.3s ease;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #bfdbfe;
   text-align: center;
 }
 
 .benefit-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
   border-color: #3b82f6;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
 }
 
 .benefit-icon-svg {
@@ -686,11 +688,11 @@ export default {
 
 /* ==================== UNIFIED FEATURES CARD ==================== */
 .unified-features-card {
-  background: white;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  border: 2px solid #e2e8f0;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+  border: 2px solid #bfdbfe;
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -742,9 +744,9 @@ export default {
   flex-direction: column;
   gap: 10px;
   padding: 18px;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   border-radius: 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #bfdbfe;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -765,9 +767,9 @@ export default {
 
 .feature-unified-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.25);
   border-color: #93c5fd;
-  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
 }
 
 .feature-unified-item:hover::before {
@@ -775,7 +777,7 @@ export default {
 }
 
 .feature-unified-item:last-child {
-  border: 2px solid #e2e8f0;
+  border: 2px solid #bfdbfe;
 }
 
 .feature-unified-number {
@@ -892,19 +894,20 @@ export default {
 }
 
 .model-card {
-  background: white;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.15);
   transition: all 0.3s ease;
   text-align: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #bfdbfe;
 }
 
 .model-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
   border-color: #3b82f6;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
 }
 
 .model-svg-icon {
