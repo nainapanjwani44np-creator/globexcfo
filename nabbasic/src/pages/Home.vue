@@ -88,40 +88,24 @@
           <p class="section-subtitle">{{ content.whyUs.subheading }}</p>
         </div>
 
-        <div class="features-list">
-          <div 
-            v-for="(benefit, index) in content.whyUs.benefits" 
-            :key="index"
-            class="feature-item"
-          >
-            <div class="feature-number">{{ index + 1 }}</div>
-            <div class="feature-content">
-              <div class="feature-icon-svg">
-                <!-- Professional SVG icons -->
-                <svg v-if="index === 0" class="feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <svg v-else-if="index === 1" class="feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-                <svg v-else-if="index === 2" class="feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <svg v-else-if="index === 3" class="feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <svg v-else class="feature-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                </svg>
+        <div class="unified-features-card">
+          <div class="features-unified-list">
+            <div 
+              v-for="(benefit, index) in content.whyUs.benefits" 
+              :key="index"
+              class="feature-unified-item"
+            >
+              <div class="feature-unified-number">{{ index + 1 }}</div>
+              <div class="feature-unified-content">
+                <h3 class="feature-unified-title">{{ benefit.title }}</h3>
+                <p class="feature-unified-description">{{ benefit.description }}</p>
               </div>
-              <h3 class="feature-title">{{ benefit.title }}</h3>
-              <p class="feature-description">{{ benefit.description }}</p>
             </div>
           </div>
-        </div>
 
-        <div class="section-quote">
-          <p>{{ content.whyUs.closingQuote }}</p>
+          <div class="unified-quote">
+            <p>{{ content.whyUs.closingQuote }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -640,74 +624,82 @@ export default {
   margin: 0;
 }
 
-/* ==================== FEATURES LIST ==================== */
-.features-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* ==================== UNIFIED FEATURES CARD ==================== */
+.unified-features-card {
+  background: white;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e2e8f0;
 }
 
-.feature-item {
+.features-unified-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.feature-unified-item {
   display: flex;
   gap: 20px;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  border: 1px solid #e2e8f0;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.feature-item:hover {
-  transform: translateX(10px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  border-color: #3b82f6;
+.feature-unified-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.feature-number {
+.feature-unified-number {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-.feature-content {
+.feature-unified-content {
   flex: 1;
 }
 
-.feature-icon-svg {
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.feature-svg {
-  width: 36px;
-  height: 36px;
-  color: #3b82f6;
-  stroke-width: 1.5;
-}
-
-.feature-title {
-  font-size: 1.15rem;
+.feature-unified-title {
+  font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 6px;
   color: #0f172a;
 }
 
-.feature-description {
+.feature-unified-description {
   font-size: 0.95rem;
   color: #64748b;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
+}
+
+.unified-quote {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 12px;
+  color: white;
+  margin-top: 28px;
+}
+
+.unified-quote p {
+  font-size: 1.05rem;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* ==================== MODELS SECTION ==================== */
@@ -995,36 +987,43 @@ export default {
     font-size: 0.95rem;
   }
 
-  .feature-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px 16px;
-    gap: 14px;
+  .unified-features-card {
+    padding: 24px;
+    border-radius: 12px;
   }
 
-  .feature-number {
-    width: 55px;
-    height: 55px;
-    font-size: 1.5rem;
+  .features-unified-list {
+    gap: 18px;
+    margin-bottom: 20px;
   }
 
-  .feature-svg {
-    width: 40px;
-    height: 40px;
+  .feature-unified-item {
+    flex-direction: row;
+    gap: 16px;
+    padding-bottom: 18px;
   }
 
-  .feature-icon-svg {
-    justify-content: center;
-    margin-bottom: 12px;
+  .feature-unified-number {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
   }
 
-  .feature-title {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
+  .feature-unified-title {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
   }
 
-  .feature-description {
+  .feature-unified-description {
+    font-size: 0.9rem;
+  }
+
+  .unified-quote {
+    padding: 18px;
+    margin-top: 20px;
+  }
+
+  .unified-quote p {
     font-size: 0.95rem;
   }
 
@@ -1122,9 +1121,31 @@ export default {
   }
 
   .benefit-card,
-  .feature-item,
   .model-card {
     padding: 24px 16px;
+  }
+
+  .unified-features-card {
+    padding: 20px;
+  }
+
+  .features-unified-list {
+    gap: 16px;
+  }
+
+  .feature-unified-item {
+    gap: 14px;
+    padding-bottom: 16px;
+  }
+
+  .feature-unified-number {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .unified-quote {
+    padding: 16px;
   }
 
   .section-quote {
