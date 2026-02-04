@@ -3,14 +3,28 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const path = require('path');
 
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Select MongoDB URI based on environment
+const MONGODB_URI = isProduction 
+  ? process.env.MONGODB_URI_PROD 
+  : process.env.MONGODB_URI;
+
+const DB_NAME = isProduction 
+  ? process.env.DB_NAME_PROD 
+  : process.env.DB_NAME;
+
 // Log environment variables (without exposing password)
 console.log('=== MongoDB Configuration ===');
-console.log('MongoDB URI exists:', !!process.env.MONGODB_URI);
-console.log('Database Name:', process.env.DB_NAME);
+console.log('Environment:', process.env.NODE_ENV || 'development');
+console.log('Using Production DB:', isProduction);
+console.log('MongoDB URI exists:', !!MONGODB_URI);
+console.log('Database Name:', DB_NAME);
 console.log('Collection Name: UserData');
 console.log('============================\n');
 
-const client = new MongoClient(process.env.MONGODB_URI);
+const client = new MongoClient(MONGODB_URI);
 const collectionName = 'UserData';
 let db;
 const express = require('express');
@@ -24,8 +38,8 @@ async function connectToMongo(){
       console.log('Attempting to connect to MongoDB...');
       await client.connect();
       console.log('✅ Successfully connected to MongoDB!');
-      db = client.db(process.env.DB_NAME);
-      console.log(`✅ Using database: ${process.env.DB_NAME}`);
+      db = client.db(DB_NAME);
+      console.log(`✅ Using database: ${DB_NAME}`);
       
       // Test the connection by listing collections
       const collections = await db.listCollections().toArray();
@@ -92,7 +106,7 @@ app.get('/api/test-connection', async (req, res) => {
     res.json({
       status: '✅ SUCCESS',
       message: 'MongoDB connection is working!',
-      database: process.env.DB_NAME,
+      database: DB_NAME,
       collection: collectionName,
       totalDocuments: count,
       testInsertId: result.insertedId,
@@ -104,7 +118,7 @@ app.get('/api/test-connection', async (req, res) => {
       status: '❌ FAILED',
       message: 'MongoDB connection failed',
       error: err.message,
-      database: process.env.DB_NAME,
+      database: DB_NAME,
       collection: collectionName
     });
   }
@@ -128,7 +142,7 @@ app.post('/api/query', async (req, res) => {
      console.log('📝 User query data:', JSON.stringify(req.body, null, 2));
      
      await connectToMongo();
-     console.log(`💾 Saving to database: ${process.env.DB_NAME}`);
+     console.log(`💾 Saving to database: ${DB_NAME}`);
      console.log(`📁 Collection: ${collectionName}`);
      
      let result = await db.collection(collectionName).insertOne(req.body);
@@ -145,7 +159,7 @@ app.post('/api/query', async (req, res) => {
      res.send({ 
        'status': 'ok',
        'insertedId': result.insertedId,
-       'database': process.env.DB_NAME,
+       'database': DB_NAME,
        'collection': collectionName
      });
    } catch (err) {
@@ -160,7 +174,7 @@ app.get('/api/queries', async (req, res) => {
   try {
     console.log('\n=== Fetching All Queries ===');
     await connectToMongo();
-    console.log(`📂 Database: ${process.env.DB_NAME}`);
+    console.log(`📂 Database: ${DB_NAME}`);
     console.log(`📁 Collection: ${collectionName}`);
     
     const queries = await db.collection(collectionName).find({}).sort({ _id: -1 }).toArray();
@@ -170,7 +184,7 @@ app.get('/api/queries', async (req, res) => {
     
     res.json({ 
       status: 'success', 
-      database: process.env.DB_NAME,
+      database: DB_NAME,
       collection: collectionName,
       count: queries.length,
       data: queries 

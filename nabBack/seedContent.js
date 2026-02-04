@@ -2,7 +2,25 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
-const client = new MongoClient(process.env.MONGODB_URI);
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Select MongoDB URI based on environment
+const MONGODB_URI = isProduction 
+  ? process.env.MONGODB_URI_PROD 
+  : process.env.MONGODB_URI;
+
+const DB_NAME = isProduction 
+  ? process.env.DB_NAME_PROD 
+  : process.env.DB_NAME;
+
+console.log('=== Seeding Configuration ===');
+console.log('Environment:', process.env.NODE_ENV || 'development');
+console.log('Using Production DB:', isProduction);
+console.log('Database Name:', DB_NAME);
+console.log('============================\n');
+
+const client = new MongoClient(MONGODB_URI);
 
 async function seedContent() {
   try {
@@ -11,7 +29,7 @@ async function seedContent() {
     await client.connect();
     console.log('✅ Connected to MongoDB');
     
-    const db = client.db(process.env.DB_NAME);
+    const db = client.db(DB_NAME);
     const collection = db.collection('contentLoader');
     
     // Complete content for home page
