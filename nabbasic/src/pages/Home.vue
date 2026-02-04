@@ -310,7 +310,7 @@ export default {
   width: 100%;
   height: 60vh;
   object-fit: cover;
-  object-position: center;
+  object-position: center 20%;
   display: block;
 }
 
@@ -354,12 +354,7 @@ export default {
   line-height: 1.2;
   margin-bottom: 16px;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3);
-  filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.5));
+  color: #ffffff;
 }
 
 .hero-subtitle {
