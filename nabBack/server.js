@@ -15,14 +15,52 @@ const DB_NAME = isProduction
   ? process.env.DB_NAME_PROD 
   : process.env.DB_NAME;
 
-// Log environment variables (without exposing password)
-console.log('=== MongoDB Configuration ===');
-console.log('Environment:', process.env.NODE_ENV || 'development');
-console.log('Using Production DB:', isProduction);
-console.log('MongoDB URI exists:', !!MONGODB_URI);
-console.log('Database Name:', DB_NAME);
-console.log('Collection Name: UserData');
-console.log('============================\n');
+// Enhanced logging with file and line info
+const logWithLocation = (message, data = null) => {
+  const stack = new Error().stack;
+  const caller = stack.split('\n')[2];
+  const match = caller.match(/at\s+(.+?)\s+\((.+?):(\d+):(\d+)\)/);
+  const location = match ? `${match[2]}:${match[3]}` : 'unknown';
+  
+  console.log(`[${new Date().toISOString()}] [${location}] ${message}`);
+  if (data) {
+    console.log(JSON.stringify(data, null, 2));
+  }
+};
+
+// Log environment variables (with detailed info)
+console.log('\n' + '='.repeat(60));
+console.log('           MONGODB CONFIGURATION');
+console.log('='.repeat(60));
+console.log('📍 File: server.js');
+console.log('📅 Startup Time:', new Date().toISOString());
+console.log('\n🌍 ENVIRONMENT DETAILS:');
+console.log('   NODE_ENV:', process.env.NODE_ENV || 'development (not set)');
+console.log('   Is Production?:', isProduction ? 'YES ✓' : 'NO (Development)');
+console.log('   PORT:', process.env.PORT || 3000);
+console.log('   HOST:', process.env.HOST || '0.0.0.0');
+
+console.log('\n💾 DATABASE CONFIGURATION:');
+console.log('   Using:', isProduction ? 'PRODUCTION Database' : 'DEVELOPMENT Database');
+console.log('   Database Name:', DB_NAME);
+
+// Mask the password in URI for security
+const maskedURI = MONGODB_URI ? MONGODB_URI.replace(/:[^:@]*@/, ':****@') : 'NOT SET';
+console.log('   MongoDB URI:', maskedURI);
+console.log('   URI Source:', isProduction ? 'MONGODB_URI_PROD' : 'MONGODB_URI');
+console.log('   URI Exists?:', !!MONGODB_URI ? 'YES ✓' : 'NO ✗');
+
+console.log('\n📁 COLLECTIONS:');
+console.log('   UserData Collection: For query submissions');
+console.log('   contentLoader Collection: For page content');
+
+console.log('\n⚙️  ENVIRONMENT VARIABLES CHECK:');
+console.log('   MONGODB_URI:', !!process.env.MONGODB_URI ? 'SET ✓' : 'NOT SET ✗');
+console.log('   MONGODB_URI_PROD:', !!process.env.MONGODB_URI_PROD ? 'SET ✓' : 'NOT SET ✗');
+console.log('   DB_NAME:', !!process.env.DB_NAME ? 'SET ✓' : 'NOT SET ✗');
+console.log('   DB_NAME_PROD:', !!process.env.DB_NAME_PROD ? 'SET ✓' : 'NOT SET ✗');
+
+console.log('='.repeat(60) + '\n');
 
 const client = new MongoClient(MONGODB_URI);
 const collectionName = 'UserData';
@@ -35,37 +73,96 @@ app.use(express.json());
 async function connectToMongo(){
   if(!db){
     try {
-      console.log('Attempting to connect to MongoDB...');
+      console.log('\n' + '-'.repeat(60));
+      console.log('🔗 MONGODB CONNECTION ATTEMPT');
+      console.log('-'.repeat(60));
+      console.log('📍 File: server.js:~80 (connectToMongo function)');
+      console.log('⏰ Time:', new Date().toISOString());
+      console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+      console.log('💾 Target Database:', DB_NAME);
+      
+      const maskedURI = MONGODB_URI ? MONGODB_URI.replace(/:[^:@]*@/, ':****@') : 'NOT SET';
+      console.log('🔗 MongoDB URI:', maskedURI);
+      console.log('📂 Database Type:', isProduction ? 'PRODUCTION (Dokploy)' : 'DEVELOPMENT (Atlas/Local)');
+      
+      console.log('\nConnecting...');
       await client.connect();
-      console.log('✅ Successfully connected to MongoDB!');
+      console.log('✅ MongoDB connection established!');
+      
       db = client.db(DB_NAME);
-      console.log(`✅ Using database: ${DB_NAME}`);
+      console.log(`✅ Database selected: ${DB_NAME}`);
       
       // Test the connection by listing collections
+      console.log('\n📋 Listing available collections...');
       const collections = await db.listCollections().toArray();
-      console.log('📋 Available collections:', collections.map(c => c.name).join(', '));
+      console.log('   Available collections:', collections.map(c => c.name).join(', '));
+      console.log('   Total collections:', collections.length);
+      
+      // Count documents in key collections
+      try {
+        const userDataCount = await db.collection('UserData').countDocuments();
+        const contentCount = await db.collection('contentLoader').countDocuments();
+        console.log('\n📊 Collection Stats:');
+        console.log('   UserData documents:', userDataCount);
+        console.log('   contentLoader documents:', contentCount);
+      } catch (e) {
+        console.log('   (Could not fetch collection stats)');
+      }
+      
+      console.log('-'.repeat(60) + '\n');
       
     } catch (error) {
-      console.error('\n❌ MongoDB Connection Error:', error.message);
-      console.error('\n🔍 Common Solutions:');
+      console.error('\n' + '='.repeat(60));
+      console.error('           ❌ MONGODB CONNECTION FAILED');
+      console.error('='.repeat(60));
+      console.error('📍 File: server.js:~114 (connectToMongo error handler)');
+      console.error('⏰ Error Time:', new Date().toISOString());
+      console.error('🌍 Environment:', process.env.NODE_ENV || 'development');
+      
+      console.error('\n❌ ERROR DETAILS:');
+      console.error('   Error Type:', error.name);
+      console.error('   Error Message:', error.message);
+      console.error('   Error Code:', error.code || 'N/A');
+      
+      console.error('\n💾 CONNECTION DETAILS:');
+      console.error('   Database Name:', DB_NAME);
+      console.error('   Using:', isProduction ? 'PRODUCTION DB (MONGODB_URI_PROD)' : 'DEVELOPMENT DB (MONGODB_URI)');
+      const maskedURI = MONGODB_URI ? MONGODB_URI.replace(/:[^:@]*@/, ':****@') : 'NOT SET';
+      console.error('   MongoDB URI:', maskedURI);
+      
+      console.error('\n🔍 TROUBLESHOOTING:');
       
       if (error.message.includes('SSL') || error.message.includes('TLS')) {
+        console.error('   Issue: SSL/TLS Certificate Problem');
+        console.error('   Solutions:');
         console.error('   1. Whitelist your IP in MongoDB Atlas:');
         console.error('      - Go to Network Access → Add IP → Allow Access from Anywhere (0.0.0.0/0)');
         console.error('   2. Verify username and password in Database Access');
         console.error('   3. Wait 1-2 minutes after making changes');
       } else if (error.message.includes('Authentication failed')) {
-        console.error('   - Check your username and password in .env file');
+        console.error('   Issue: Authentication Failed');
+        console.error('   Solutions:');
+        console.error('   - Check your username and password');
         console.error('   - Verify user exists in Database Access in MongoDB Atlas');
-      } else if (error.message.includes('ENOTFOUND')) {
-        console.error('   - Check your MongoDB cluster address in connection string');
+        console.error('   - Ensure password special characters are URL-encoded');
+      } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
+        console.error('   Issue: Cannot Reach MongoDB Server');
+        console.error('   Solutions:');
+        console.error('   - Check MongoDB cluster address in connection string');
         console.error('   - Verify internet connection');
+        console.error('   - Check if MongoDB service is running (if local)');
+      } else {
+        console.error('   Issue: Unknown Error');
+        console.error('   Check the error message and stack trace above');
       }
       
-      console.error('\n📝 Your .env should look like:');
-      console.error('   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/');
-      console.error('   DB_NAME=baisWebData');
-      console.error('\n📖 See ENV_SETUP_GUIDE.md for detailed help\n');
+      console.error('\n📝 Environment Variables Check:');
+      console.error('   MONGODB_URI:', !!process.env.MONGODB_URI ? 'SET ✓' : 'NOT SET ✗');
+      console.error('   MONGODB_URI_PROD:', !!process.env.MONGODB_URI_PROD ? 'SET ✓' : 'NOT SET ✗');
+      console.error('   DB_NAME:', !!process.env.DB_NAME ? 'SET ✓' : 'NOT SET ✗');
+      console.error('   DB_NAME_PROD:', !!process.env.DB_NAME_PROD ? 'SET ✓' : 'NOT SET ✗');
+      
+      console.error('\n' + '='.repeat(60) + '\n');
       
       throw error;
     }
@@ -138,34 +235,125 @@ app.get('/api/blogs', async (req, res) => {
 
 app.post('/api/query', async (req, res) => {
    try {
-     console.log('\n=== New Query Submission ===');
-     console.log('📝 User query data:', JSON.stringify(req.body, null, 2));
+     console.log('\n' + '='.repeat(70));
+     console.log('                    NEW QUERY SUBMISSION');
+     console.log('='.repeat(70));
+     console.log('📍 File: server.js:~165 (POST /api/query endpoint)');
+     console.log('⏰ Timestamp:', new Date().toISOString());
+     console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+     console.log('💾 Using Database:', isProduction ? 'PRODUCTION ⚠️' : 'DEVELOPMENT');
      
+     console.log('\n📝 REQUEST DETAILS:');
+     console.log('   Method: POST');
+     console.log('   Endpoint: /api/query');
+     console.log('   Source: Query.vue (frontend form submission)');
+     console.log('   Content-Type:', req.headers['content-type']);
+     
+     console.log('\n📋 USER DATA RECEIVED:');
+     console.log('   Name:', req.body.name || 'NOT PROVIDED');
+     console.log('   Company:', req.body.companyName || 'NOT PROVIDED');
+     console.log('   Email:', req.body.email || 'NOT PROVIDED');
+     console.log('   Phone:', req.body.contactNumber || 'NOT PROVIDED');
+     console.log('   Services Selected:', req.body.selectedOptions?.length || 0, 'items');
+     if (req.body.selectedOptions?.length > 0) {
+       req.body.selectedOptions.forEach((service, idx) => {
+         console.log(`      ${idx + 1}. ${service}`);
+       });
+     }
+     console.log('   Message Length:', req.body.userMessage?.length || 0, 'characters');
+     
+     console.log('\n🔗 MONGODB CONNECTION:');
+     console.log('   Step 1: Connecting to MongoDB...');
+     console.log('   File: server.js:~180');
      await connectToMongo();
-     console.log(`💾 Saving to database: ${DB_NAME}`);
-     console.log(`📁 Collection: ${collectionName}`);
+     console.log('   ✅ Connected successfully');
+     
+     console.log('\n💾 DATABASE DETAILS:');
+     console.log('   Database Name:', DB_NAME);
+     console.log('   Collection:', collectionName);
+     console.log('   MongoDB Type:', isProduction ? 'Production (Dokploy)' : 'Development (Atlas/Local)');
+     
+     console.log('\n📤 INSERTING DOCUMENT:');
+     console.log('   Step 2: Inserting document into MongoDB...');
+     console.log('   File: server.js:~195');
+     console.log('   Data to insert:');
+     console.log(JSON.stringify(req.body, null, 2));
      
      let result = await db.collection(collectionName).insertOne(req.body);
      
-     console.log('✅ Insertion successful!');
-     console.log('📋 Inserted ID:', result.insertedId);
-     console.log('📊 Acknowledged:', result.acknowledged);
+     console.log('\n✅ INSERTION SUCCESS:');
+     console.log('   Inserted ID:', result.insertedId);
+     console.log('   Acknowledged:', result.acknowledged ? 'YES ✓' : 'NO ✗');
+     console.log('   Insertion Time:', new Date().toISOString());
      
-     // Verify the document was saved
+     console.log('\n🔍 VERIFICATION:');
+     console.log('   Step 3: Verifying document was saved...');
+     console.log('   File: server.js:~210');
      const savedDoc = await db.collection(collectionName).findOne({ _id: result.insertedId });
-     console.log('✅ Verified document exists in DB:', !!savedDoc);
-     console.log('==========================\n');
+     console.log('   Document Found?:', !!savedDoc ? 'YES ✓' : 'NO ✗');
+     
+     if (savedDoc) {
+       console.log('   ✅ Verified: Document successfully saved to database');
+       console.log('   Document _id:', savedDoc._id);
+       console.log('   Document name:', savedDoc.name);
+       console.log('   Document email:', savedDoc.email);
+     } else {
+       console.log('   ⚠️ WARNING: Document not found after insertion!');
+     }
+     
+     console.log('\n📨 SENDING RESPONSE:');
+     console.log('   Status: 200 OK');
+     console.log('   Response Data:');
+     console.log('   - status: ok');
+     console.log('   - insertedId:', result.insertedId);
+     console.log('   - database:', DB_NAME);
+     console.log('   - collection:', collectionName);
+     
+     console.log('\n' + '='.repeat(70));
+     console.log('           QUERY SUBMISSION COMPLETED SUCCESSFULLY');
+     console.log('='.repeat(70) + '\n');
      
      res.send({ 
        'status': 'ok',
        'insertedId': result.insertedId,
        'database': DB_NAME,
-       'collection': collectionName
+       'collection': collectionName,
+       'environment': process.env.NODE_ENV || 'development'
      });
    } catch (err) {
-     console.error('❌ Error inserting data:', err);
-     console.error('Error details:', err.message);
-     res.status(500).send({ 'status': 'error', 'message': err.message });
+     console.log('\n' + '='.repeat(70));
+     console.log('                    ❌ ERROR OCCURRED');
+     console.log('='.repeat(70));
+     console.log('📍 File: server.js:~240 (catch block)');
+     console.log('⏰ Error Time:', new Date().toISOString());
+     console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+     console.log('\n❌ ERROR DETAILS:');
+     console.log('   Error Type:', err.name);
+     console.log('   Error Message:', err.message);
+     console.log('   Error Code:', err.code || 'N/A');
+     
+     if (err.stack) {
+       console.log('\n📚 STACK TRACE:');
+       console.log(err.stack);
+     }
+     
+     console.log('\n🔍 REQUEST DATA THAT FAILED:');
+     console.log(JSON.stringify(req.body, null, 2));
+     
+     console.log('\n💾 DATABASE INFO:');
+     console.log('   Attempted Database:', DB_NAME);
+     console.log('   Attempted Collection:', collectionName);
+     console.log('   MongoDB Connected?:', !!db ? 'YES' : 'NO');
+     
+     console.log('\n' + '='.repeat(70));
+     console.log('              END OF ERROR LOG');
+     console.log('='.repeat(70) + '\n');
+     
+     res.status(500).send({ 
+       'status': 'error', 
+       'message': err.message,
+       'environment': process.env.NODE_ENV || 'development'
+     });
    }
 });
 
@@ -199,29 +387,59 @@ app.get('/api/queries', async (req, res) => {
 app.get('/api/content/:key', async (req, res) => {
   try {
     const { key } = req.params;
-    console.log(`\n=== Fetching Content: ${key} ===`);
+    console.log('\n' + '-'.repeat(60));
+    console.log(`📖 FETCHING CONTENT: ${key}`);
+    console.log('-'.repeat(60));
+    console.log('📍 File: server.js:~280 (GET /api/content/:key)');
+    console.log('⏰ Time:', new Date().toISOString());
+    console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+    console.log('💾 Database:', DB_NAME);
+    console.log('📁 Collection: contentLoader');
+    console.log('🔑 Requested Key:', key);
     
     await connectToMongo();
+    
+    console.log('\n🔍 Searching for document...');
     const content = await db.collection('contentLoader').findOne({ key: key });
     
     if (!content) {
-      console.log(`⚠️ Content not found for key: ${key}`);
+      console.log(`⚠️  NOT FOUND: No content with key "${key}"`);
+      console.log('💡 Available keys in database:');
+      const allKeys = await db.collection('contentLoader').find({}, { projection: { key: 1 } }).toArray();
+      console.log('   ', allKeys.map(doc => doc.key).join(', '));
+      console.log('-'.repeat(60) + '\n');
+      
       return res.status(404).json({ 
         status: 'error', 
-        message: `Content not found for key: ${key}` 
+        message: `Content not found for key: ${key}`,
+        availableKeys: allKeys.map(doc => doc.key)
       });
     }
     
     console.log(`✅ Content found for key: ${key}`);
-    console.log('===========================\n');
+    console.log('📋 Document fields:', Object.keys(content).filter(k => k !== '_id').join(', '));
+    console.log('-'.repeat(60) + '\n');
     
     res.json({ 
       status: 'success',
-      data: content 
+      data: content,
+      environment: process.env.NODE_ENV || 'development'
     });
   } catch (err) {
-    console.error('❌ Error fetching content:', err);
-    res.status(500).json({ 'status': 'error', 'message': err.message });
+    console.error('\n' + '='.repeat(60));
+    console.error('❌ ERROR FETCHING CONTENT');
+    console.error('='.repeat(60));
+    console.error('📍 File: server.js:~315 (content fetch error)');
+    console.error('⏰ Error Time:', new Date().toISOString());
+    console.error('🔑 Requested Key:', req.params.key);
+    console.error('❌ Error:', err.message);
+    console.error('='.repeat(60) + '\n');
+    
+    res.status(500).json({ 
+      'status': 'error', 
+      'message': err.message,
+      'environment': process.env.NODE_ENV || 'development'
+    });
   }
 });
 
