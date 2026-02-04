@@ -618,9 +618,21 @@ export default {
 /* ==================== BENEFITS GRID ==================== */
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 20px;
   margin-top: 30px;
+}
+
+.benefit-card {
+  grid-column: span 2;
+}
+
+.benefit-card:nth-child(4) {
+  grid-column: 2 / 4;
+}
+
+.benefit-card:nth-child(5) {
+  grid-column: 4 / 6;
 }
 
 .benefit-card {
@@ -1031,6 +1043,12 @@ export default {
 
   .benefit-card {
     padding: 35px;
+    grid-column: auto;
+  }
+  
+  .benefit-card:nth-child(4),
+  .benefit-card:nth-child(5) {
+    grid-column: auto;
   }
 
   .hero-cta {
@@ -1139,6 +1157,12 @@ export default {
 
   .benefit-card {
     padding: 20px 18px;
+    grid-column: auto;
+  }
+  
+  .benefit-card:nth-child(4),
+  .benefit-card:nth-child(5) {
+    grid-column: auto;
   }
 
   .benefit-svg {
