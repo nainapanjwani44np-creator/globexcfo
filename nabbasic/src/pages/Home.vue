@@ -355,7 +355,7 @@ export default {
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 40px;
+  padding: 40px 40px;
   position: relative;
   z-index: 1;
 }
@@ -369,22 +369,22 @@ export default {
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   letter-spacing: -0.01em;
 }
 
 .hero-subtitle {
   font-size: 1.05rem;
   line-height: 1.6;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   opacity: 0.95;
   font-weight: 400;
 }
 
 .hero-cta {
   display: flex;
-  gap: 16px;
-  margin-bottom: 60px;
+  gap: 12px;
+  margin-bottom: 32px;
   flex-wrap: wrap;
 }
 
@@ -529,7 +529,7 @@ export default {
 
 /* ==================== SECTIONS ==================== */
 .section {
-  padding: 100px 40px;
+  padding: 40px 40px;
   position: relative;
 }
 
@@ -544,7 +544,7 @@ export default {
 
 .section-header {
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 30px;
 }
 
 .section-title {
@@ -568,16 +568,16 @@ export default {
   color: #475569;
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 50px;
+  margin: 0 auto 30px;
   line-height: 1.7;
 }
 
 .section-quote {
   text-align: center;
-  margin-top: 50px;
-  padding: 32px;
+  margin-top: 30px;
+  padding: 24px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 16px;
+  border-radius: 12px;
   color: white;
   box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
 }
@@ -592,16 +592,16 @@ export default {
 /* ==================== BENEFITS GRID ==================== */
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
 }
 
 .benefit-card {
   background: white;
-  padding: 45px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border: 1px solid #e2e8f0;
   text-align: center;
@@ -614,14 +614,14 @@ export default {
 }
 
 .benefit-icon-svg {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: center;
 }
 
 .benefit-svg {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   color: #3b82f6;
   stroke-width: 1.5;
 }
@@ -629,14 +629,14 @@ export default {
 .benefit-title {
   font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: #0f172a;
 }
 
 .benefit-description {
   font-size: 0.95rem;
   color: #64748b;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -644,16 +644,16 @@ export default {
 .features-list {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 16px;
 }
 
 .feature-item {
   display: flex;
-  gap: 32px;
-  padding: 45px;
+  gap: 20px;
+  padding: 24px;
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border: 1px solid #e2e8f0;
 }
@@ -666,17 +666,17 @@ export default {
 
 .feature-number {
   flex-shrink: 0;
-  width: 65px;
-  height: 65px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 
 .feature-content {
@@ -684,14 +684,14 @@ export default {
 }
 
 .feature-icon-svg {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: flex-start;
 }
 
 .feature-svg {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   color: #3b82f6;
   stroke-width: 1.5;
 }
@@ -699,14 +699,14 @@ export default {
 .feature-title {
   font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: #0f172a;
 }
 
 .feature-description {
   font-size: 0.95rem;
   color: #64748b;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -714,10 +714,10 @@ export default {
 .models-intro {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 60px;
-  padding: 40px;
+  margin: 0 auto 30px;
+  padding: 28px;
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border-radius: 20px;
+  border-radius: 14px;
 }
 
 .models-intro h3 {
@@ -735,16 +735,16 @@ export default {
 
 .models-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 26px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
 }
 
 .model-card {
   background: white;
-  padding: 36px;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   text-align: center;
   border: 1px solid #e2e8f0;
@@ -757,9 +757,9 @@ export default {
 }
 
 .model-svg-icon {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 20px;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 14px;
   color: #2563eb;
   stroke-width: 2;
 }
@@ -774,7 +774,7 @@ export default {
 
 /* ==================== CTA SECTION ==================== */
 .cta-section {
-  padding: 100px 40px;
+  padding: 50px 40px;
   background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   color: white;
   position: relative;
@@ -852,11 +852,11 @@ export default {
   }
 
   .section {
-    padding: 60px 24px;
+    padding: 32px 24px;
   }
 
   .section-header {
-    margin-bottom: 50px;
+    margin-bottom: 24px;
   }
 
   .section-title {
@@ -889,12 +889,12 @@ export default {
   }
 
   .section-quote {
-    padding: 35px 25px;
-    margin-top: 50px;
+    padding: 24px 20px;
+    margin-top: 28px;
   }
 
   .section-quote p {
-    font-size: 1.3rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -950,11 +950,11 @@ export default {
   }
 
   .section {
-    padding: 50px 20px;
+    padding: 28px 20px;
   }
 
   .section-header {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 
   .section-title {
@@ -970,15 +970,15 @@ export default {
 
   .section-description {
     font-size: 0.85rem;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
   }
 
   .benefits-grid {
-    gap: 20px;
+    gap: 16px;
   }
 
   .benefit-card {
-    padding: 28px 24px;
+    padding: 20px 18px;
   }
 
   .benefit-svg {
@@ -999,8 +999,8 @@ export default {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 28px 20px;
-    gap: 20px;
+    padding: 20px 16px;
+    gap: 14px;
   }
 
   .feature-number {
@@ -1029,8 +1029,8 @@ export default {
   }
 
   .models-intro {
-    padding: 30px 24px;
-    margin-bottom: 40px;
+    padding: 20px 18px;
+    margin-bottom: 24px;
   }
 
   .models-intro h3 {
@@ -1044,11 +1044,11 @@ export default {
 
   .models-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 14px;
   }
 
   .model-card {
-    padding: 28px 24px;
+    padding: 20px 18px;
   }
 
   .model-svg-icon {
@@ -1062,18 +1062,18 @@ export default {
   }
 
   .section-quote {
-    padding: 28px 20px;
-    margin-top: 40px;
-    border-radius: 16px;
+    padding: 20px 16px;
+    margin-top: 24px;
+    border-radius: 12px;
   }
 
   .section-quote p {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .cta-section {
-    padding: 60px 20px;
+    padding: 36px 20px;
   }
 
   .cta-container h2 {
