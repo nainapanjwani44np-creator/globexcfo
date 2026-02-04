@@ -1,0 +1,32 @@
+# Environment variables - NEVER commit passwords!
+.env
+.env.local
+.env.production
+.env.development
+
+# Node modules
+node_modules/
+*/node_modules/
+
+# Build output
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Dependencies
+package-lock.json
+yarn.lock
