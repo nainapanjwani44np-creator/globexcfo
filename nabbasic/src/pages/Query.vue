@@ -3,9 +3,9 @@
     <div class="homepage">
       <!-- HERO SECTION -->
       <section class="hero box">
-        <h1>Get in Touch</h1>
+        <h1>Contact Us</h1>
         <p class="subheading">
-          Let's discuss how we can help your business grow. Fill out the form below and we'll get back to you shortly.
+          We welcome the opportunity to discuss how our financial expertise can support your business objectives. Please complete the form below, and our team will respond to your inquiry within 24 hours.
         </p>
       </section>
 
@@ -14,12 +14,12 @@
 
         <h2 class="section-heading">Your Details</h2>
 
-        <!-- Friendly Validation Error Banner -->
+        <!-- Validation Error Banner -->
         <div v-if="showValidationError" class="validation-banner">
-          <div class="banner-icon">⚠️</div>
+          <div class="banner-icon">⚠</div>
           <div class="banner-content">
-            <h3 class="banner-title">Oops! We need a bit more information</h3>
-            <p class="banner-text">Please check the highlighted fields below and make sure everything is filled in correctly.</p>
+            <h3 class="banner-title">Required Information Missing</h3>
+            <p class="banner-text">Please review and complete the highlighted fields below to proceed with your submission.</p>
           </div>
         </div>
 
@@ -115,7 +115,7 @@
           <label>Message: <span class="char-count">{{ messageCharCount }}/500</span></label>
       <textarea 
         v-model="userMessage" 
-        placeholder="Enter your message here (max 500 characters)"
+        placeholder="Please describe your inquiry or requirements (maximum 500 characters)"
         :class="{ 'input-error': errors.userMessage }"
         @input="validateMessage"
         maxlength="500"
@@ -129,10 +129,10 @@
           class="submit-btn"
           :disabled="isSubmitting"
         >
-          <span v-if="!isSubmitting">✉️ Submit Your Query</span>
+          <span v-if="!isSubmitting">Submit Inquiry</span>
           <span v-else class="submitting-text">
             <span class="spinner"></span>
-            Sending...
+            Processing...
           </span>
         </button>
 
@@ -172,7 +172,7 @@ const messageCharCount = computed(() => userMessage.value.length);
 // Validate Name
 const validateName = () => {
   if (!name.value.trim()) {
-    errors.value.name = "👤 Please tell us your name so we can address you properly";
+    errors.value.name = "Please enter your full name";
     return false;
   }
   errors.value.name = "";
@@ -182,20 +182,20 @@ const validateName = () => {
 // Validate Email - Must contain @
 const validateEmail = () => {
   if (!email.value.trim()) {
-    errors.value.email = "📧 We'll need your email to get back to you";
+    errors.value.email = "Please provide a valid email address";
     return false;
   }
   
   // Check if email contains @
   if (!email.value.includes('@')) {
-    errors.value.email = "📧 Hmm, looks like you're missing the @ symbol (e.g., name@example.com)";
+    errors.value.email = "Email address must contain '@' symbol (e.g., name@example.com)";
     return false;
   }
   
   // Additional email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email.value)) {
-    errors.value.email = "📧 Please check your email format (e.g., john@company.com)";
+    errors.value.email = "Please enter a valid email format (e.g., john@company.com)";
     return false;
   }
   
@@ -206,27 +206,27 @@ const validateEmail = () => {
 // Validate Contact Number - Only numbers and + allowed
 const validateContactNumber = () => {
   if (!contactNumber.value.trim()) {
-    errors.value.contactNumber = "📱 A contact number helps us reach you faster";
+    errors.value.contactNumber = "Please provide a contact number";
     return false;
   }
   
   // Check if it contains only numbers and +
   const phoneRegex = /^[+]?[0-9]+$/;
   if (!phoneRegex.test(contactNumber.value)) {
-    errors.value.contactNumber = "📱 Please use only numbers and + (e.g., +911234567890)";
+    errors.value.contactNumber = "Contact number should contain only digits and '+' symbol (e.g., +911234567890)";
     return false;
   }
   
   // Check if it starts with + (international format)
   if (!contactNumber.value.startsWith('+')) {
-    errors.value.contactNumber = "📱 Please start with + and your country code (e.g., +91 for India)";
+    errors.value.contactNumber = "Please include country code with '+' prefix (e.g., +91 for India)";
     return false;
   }
   
   // Check length (international phone numbers: 7-15 digits after +)
   const digitsOnly = contactNumber.value.replace('+', '');
   if (digitsOnly.length < 7 || digitsOnly.length > 15) {
-    errors.value.contactNumber = "📱 Phone number should be 7-15 digits with country code";
+    errors.value.contactNumber = "Contact number must be between 7-15 digits including country code";
     return false;
   }
   
@@ -253,7 +253,7 @@ const formatPhoneNumber = (event) => {
 const validateMessage = () => {
   if (userMessage.value.length > 500) {
     const excess = userMessage.value.length - 500;
-    errors.value.userMessage = `💬 Please shorten your message by ${excess} character${excess > 1 ? 's' : ''} (max 500)`;
+    errors.value.userMessage = `Message exceeds maximum length by ${excess} character${excess > 1 ? 's' : ''} (500 character limit)`;
     return false;
   }
   errors.value.userMessage = "";
@@ -332,7 +332,7 @@ const submit = async () => {
     router.push('/Success');
   } catch (error) {
     isSubmitting.value = false;
-    alert("Oops! Something went wrong. Please check your internet connection and try again.");
+    alert("We apologize for the inconvenience. An error occurred while submitting your inquiry. Please verify your internet connection and try again, or contact us directly via phone or email.");
   }
 };
 
