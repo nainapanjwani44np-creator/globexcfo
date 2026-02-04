@@ -621,8 +621,8 @@ export default {
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-  margin-top: 30px;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .benefit-card {
@@ -639,7 +639,7 @@ export default {
 
 .benefit-card {
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  padding: 28px;
+  padding: 20px;
   border-radius: 14px;
   box-shadow: 0 6px 24px rgba(59, 130, 246, 0.15);
   transition: all 0.3s ease;
@@ -661,14 +661,14 @@ export default {
 }
 
 .benefit-svg {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   color: #3b82f6;
   stroke-width: 1.5;
 }
 
 .benefit-title {
-  font-size: 1.65rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 8px;
   background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
@@ -679,9 +679,9 @@ export default {
 }
 
 .benefit-description {
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   color: #64748b;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
   font-weight: 300;
 }
