@@ -633,29 +633,31 @@ export default {
 /* ==================== UNIFIED FEATURES CARD ==================== */
 .unified-features-card {
   background: white;
-  border-radius: 16px;
-  padding: 36px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   border: 2px solid #e2e8f0;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .unified-card-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .unified-card-title {
-  font-size: 1.85rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   color: #0f172a;
   letter-spacing: -0.01em;
 }
 
 .unified-card-subtitle {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: #475569;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -663,23 +665,23 @@ export default {
   width: 100%;
   height: 2px;
   background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .features-unified-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 28px;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .feature-unified-item {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 28px;
+  gap: 10px;
+  padding: 18px;
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  border-radius: 16px;
+  border-radius: 12px;
   border: 2px solid #e2e8f0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -716,23 +718,23 @@ export default {
 
 .feature-unified-number {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  border-radius: 14px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
   transition: all 0.3s ease;
 }
 
 .feature-unified-item:hover .feature-unified-number {
   transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 
 .feature-unified-content {
@@ -740,30 +742,30 @@ export default {
 }
 
 .feature-unified-title {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #0f172a;
 }
 
 .feature-unified-description {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: #64748b;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
 .unified-quote {
   text-align: center;
-  padding: 24px;
+  padding: 16px 18px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 12px;
+  border-radius: 10px;
   color: white;
-  margin-top: 28px;
+  margin-top: 20px;
 }
 
 .unified-quote p {
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-style: italic;
   margin: 0;
   line-height: 1.6;
@@ -1055,43 +1057,43 @@ export default {
   }
 
   .unified-features-card {
-    padding: 24px;
-    border-radius: 12px;
+    padding: 18px;
+    border-radius: 10px;
   }
 
   .unified-card-header {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .unified-card-title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
   }
 
   .unified-card-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .unified-header-divider {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .features-unified-list {
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 16px;
   }
 
   .feature-unified-item {
     flex-direction: column;
-    gap: 12px;
-    padding: 22px;
+    gap: 10px;
+    padding: 16px;
   }
 
   .feature-unified-number {
-    width: 44px;
-    height: 44px;
-    font-size: 1.15rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 
   .feature-unified-title {
@@ -1211,40 +1213,40 @@ export default {
   }
 
   .unified-features-card {
-    padding: 20px;
+    padding: 16px;
   }
 
   .unified-card-header {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
   .unified-card-title {
-    font-size: 1.3rem;
-    margin-bottom: 8px;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
   }
 
   .unified-card-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .unified-header-divider {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
   .features-unified-list {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
   .feature-unified-item {
-    gap: 12px;
-    padding: 20px;
+    gap: 10px;
+    padding: 16px;
   }
 
   .feature-unified-number {
-    width: 40px;
-    height: 40px;
-    font-size: 1.05rem;
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
   }
 
   .unified-quote {
