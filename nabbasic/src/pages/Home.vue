@@ -350,18 +350,27 @@ export default {
 
 .hero-title {
   font-size: 2.75rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
   margin-bottom: 16px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3);
+  filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.5));
 }
 
 .hero-subtitle {
   font-size: 1.55rem;
   line-height: 1.6;
   margin-bottom: 24px;
-  opacity: 0.95;
-  font-weight: 400;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-style: italic;
+  opacity: 0.98;
 }
 
 .hero-cta {
@@ -377,12 +386,15 @@ export default {
   gap: 8px;
   padding: 12px 28px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.45rem;
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 1.2rem;
 }
 
 .btn-text {
@@ -532,10 +544,27 @@ export default {
 
 .section-title {
   font-size: 2.35rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 16px;
-  color: #0f172a;
-  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 2px;
 }
 
 .section-subtitle {
@@ -544,6 +573,9 @@ export default {
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  font-style: italic;
 }
 
 .section-description {
@@ -552,6 +584,8 @@ export default {
   text-align: center;
   max-width: 800px;
   margin: 0 auto 30px;
+  line-height: 1.7;
+  font-weight: 300;
   line-height: 1.7;
 }
 
@@ -569,7 +603,21 @@ export default {
   font-size: 1.55rem;
   font-style: italic;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.section-quote p::before {
+  content: '"';
+  position: absolute;
+  left: -30px;
+  top: -10px;
+  font-size: 3rem;
+  opacity: 0.2;
+  font-family: Georgia, serif;
+  color: currentColor;
 }
 
 /* ==================== BENEFITS GRID ==================== */
@@ -613,14 +661,19 @@ export default {
   font-size: 1.65rem;
   font-weight: 700;
   margin-bottom: 8px;
-  color: #0f172a;
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
 }
 
 .benefit-description {
   font-size: 1.45rem;
   color: #64748b;
-  line-height: 1.5;
+  line-height: 1.7;
   margin: 0;
+  font-weight: 300;
 }
 
 /* ==================== UNIFIED FEATURES CARD ==================== */
@@ -641,17 +694,25 @@ export default {
 
 .unified-card-title {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 8px;
-  color: #0f172a;
-  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  font-style: normal;
 }
 
 .unified-card-subtitle {
   font-size: 1.45rem;
   color: #475569;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.01em;
 }
 
 .unified-header-divider {
@@ -739,13 +800,18 @@ export default {
   font-weight: 700;
   margin-bottom: 4px;
   color: #0f172a;
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-left: 0;
 }
 
 .feature-unified-description {
   font-size: 1.35rem;
   color: #64748b;
-  line-height: 1.5;
+  line-height: 1.7;
   margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.01em;
 }
 
 .unified-quote {
@@ -755,12 +821,29 @@ export default {
   border-radius: 10px;
   color: white;
   margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.unified-quote::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 4rem;
+  opacity: 0.15;
+  font-family: Georgia, serif;
+  color: white;
 }
 
 .unified-quote p {
   font-size: 1.4rem;
   font-style: italic;
   margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
   line-height: 1.6;
 }
 
@@ -776,15 +859,21 @@ export default {
 
 .models-intro h3 {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 14px;
-  color: #1e40af;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
 }
 
 .models-intro p {
   font-size: 1.45rem;
   color: #1e40af;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 300;
+  letter-spacing: 0.01em;
 }
 
 .models-grid {
@@ -820,10 +909,14 @@ export default {
 
 .model-card h4 {
   font-size: 1.45rem;
-  font-weight: 600;
-  color: #0f172a;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
   line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
 /* ==================== CTA SECTION ==================== */
@@ -856,15 +949,24 @@ export default {
 
 .cta-container h2 {
   font-size: 2.35rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 20px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.4));
 }
 
 .cta-container p {
   font-size: 1.55rem;
   margin-bottom: 36px;
-  opacity: 0.95;
+  opacity: 0.98;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  font-style: italic;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-cta {
