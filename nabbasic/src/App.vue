@@ -1,42 +1,8 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 
-// Logo state
-const logoLoaded = ref(false);
-const logoError = ref(false);
-
-// Handle logo loading
+// Smooth animations and mobile optimization
 onMounted(() => {
-  const logo = document.querySelector('.logo');
-  
-  if (logo) {
-    // Add loading indicator
-    logo.style.opacity = '0';
-    logo.style.transition = 'opacity 0.3s ease';
-    
-    // Handle successful load
-    logo.addEventListener('load', () => {
-      logoLoaded.value = true;
-      logo.style.opacity = '1';
-      console.log('✅ Logo loaded successfully');
-    });
-    
-    // Handle error
-    logo.addEventListener('error', () => {
-      logoError.value = true;
-      console.error('❌ Logo failed to load');
-      // Fallback: Show text instead
-      const container = logo.parentElement;
-      if (container) {
-        container.innerHTML = '<span style="font-size: 1.5rem; font-weight: 700; color: #1e3a8a;">GLOBEX CFO</span>';
-      }
-    });
-    
-    // Optimize image rendering
-    logo.setAttribute('loading', 'eager');
-    logo.setAttribute('decoding', 'async');
-  }
-  
   // Add smooth scroll behavior
   document.documentElement.style.scrollBehavior = 'smooth';
   
@@ -50,6 +16,19 @@ onMounted(() => {
   
   preventHorizontalScroll();
   window.addEventListener('resize', preventHorizontalScroll);
+  
+  // Add fade-in animation to logo text
+  const logoText = document.querySelector('.logo-text');
+  if (logoText) {
+    logoText.style.opacity = '0';
+    logoText.style.transform = 'translateX(-10px)';
+    
+    setTimeout(() => {
+      logoText.style.transition = 'all 0.5s ease';
+      logoText.style.opacity = '1';
+      logoText.style.transform = 'translateX(0)';
+    }, 100);
+  }
 });
 </script>
 
@@ -87,8 +66,11 @@ onMounted(() => {
     <nav class="menu">
       <div class="menu-container">
         <div class="logo-container">
-          <router-link to="/Home">
-            <img src="./images/logo.png" alt="Globex CFO Logo" class="logo" />
+          <router-link to="/Home" class="logo-link">
+            <div class="logo-text">
+              <span class="logo-primary">GLOBEX CFO</span>
+              <span class="logo-secondary">& Financial Advisory</span>
+            </div>
           </router-link>
         </div>
         <ul>
@@ -247,69 +229,126 @@ html, body {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.3rem 0.8rem;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  justify-content: flex-start;
+  padding: 0;
+  margin-right: 2rem;
 }
 
-.logo-container:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
-}
-
-.logo {
-  height: 50px;
-  width: auto;
-  max-width: 200px;
+.logo-link {
+  text-decoration: none;
   display: block;
   transition: all 0.3s ease;
-  object-fit: contain;
-  
-  /* Handle transparent PNG backgrounds */
-  background: transparent;
-  
-  /* Ensure crisp rendering */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  
-  /* If background is white, this will help blend */
-  mix-blend-mode: normal;
-  
-  /* Filter for better clarity */
-  filter: brightness(1) contrast(1.05);
 }
 
-.logo:hover {
-  transform: scale(1.08);
-  filter: brightness(1.05) contrast(1.1);
+.logo-link:hover {
+  transform: scale(1.05);
 }
 
-/* Logo responsive sizing */
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  letter-spacing: 0.5px;
+}
+
+.logo-primary {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  
+  /* Stretch effect */
+  transform: scaleX(1.1);
+  display: inline-block;
+}
+
+.logo-secondary {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  white-space: nowrap;
+  margin-top: -2px;
+  
+  /* Stretch effect */
+  transform: scaleX(1.15);
+  display: inline-block;
+}
+
+/* Logo hover effects */
+.logo-link:hover .logo-primary {
+  color: #fef08a;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  transform: scaleX(1.12);
+}
+
+.logo-link:hover .logo-secondary {
+  color: #ffffff;
+  transform: scaleX(1.17);
+}
+
+/* Responsive Logo Text */
 @media (max-width: 1024px) {
-  .logo {
-    height: 45px;
+  .logo-primary {
+    font-size: 1.6rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .logo-secondary {
+    font-size: 0.7rem;
+    letter-spacing: 1.2px;
+  }
+  
+  .logo-container {
+    margin-right: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .logo {
-    height: 40px;
-    max-width: 160px;
+  .logo-primary {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    transform: scaleX(1.05);
+  }
+  
+  .logo-secondary {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    transform: scaleX(1.1);
   }
   
   .logo-container {
-    padding: 0.25rem 0.6rem;
+    margin-right: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .logo {
-    height: 35px;
-    max-width: 140px;
+  .logo-text {
+    gap: 0.1rem;
+  }
+  
+  .logo-primary {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    transform: scaleX(1.02);
+  }
+  
+  .logo-secondary {
+    font-size: 0.55rem;
+    letter-spacing: 0.8px;
+    transform: scaleX(1.05);
+  }
+  
+  .logo-container {
+    margin-right: 0.5rem;
   }
 }
 
