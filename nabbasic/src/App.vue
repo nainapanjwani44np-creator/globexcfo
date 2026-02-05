@@ -248,18 +248,15 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
   transition: all 0.3s ease;
   overflow: hidden;
 }
 
 .logo-container:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
+  transform: scale(1.03);
 }
 
 .logo {
@@ -277,20 +274,23 @@ html, body {
   /* Clip the right side to remove Gemini symbol */
   clip-path: inset(0 50px 15px 0);
   
-  /* Handle blue background logo */
+  /* Blue background blends with nav bar */
   background: transparent;
   
   /* Ensure crisp rendering */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   
-  /* Enhance clarity */
-  filter: brightness(1.02) contrast(1.08) saturate(1.1);
+  /* Slightly enhance for visibility on blue nav */
+  filter: brightness(1.05) contrast(1.1) saturate(1.05);
+  
+  /* Optional: Add subtle shadow for depth */
+  drop-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo:hover {
-  transform: scale(1.05);
-  filter: brightness(1.05) contrast(1.1) saturate(1.15);
+  filter: brightness(1.08) contrast(1.12) saturate(1.1);
+  drop-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Logo responsive sizing */
@@ -301,10 +301,6 @@ html, body {
     max-width: 320px;
     clip-path: inset(0 45px 12px 0);
   }
-  
-  .logo-container {
-    padding: 0.35rem 0.9rem;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -313,10 +309,6 @@ html, body {
     min-width: 220px;
     max-width: 300px;
     clip-path: inset(0 40px 10px 0);
-  }
-  
-  .logo-container {
-    padding: 0.3rem 0.8rem;
   }
 }
 
@@ -327,10 +319,6 @@ html, body {
     max-width: 250px;
     clip-path: inset(0 35px 8px 0);
   }
-  
-  .logo-container {
-    padding: 0.25rem 0.7rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -339,10 +327,6 @@ html, body {
     min-width: 160px;
     max-width: 220px;
     clip-path: inset(0 30px 6px 0);
-  }
-  
-  .logo-container {
-    padding: 0.2rem 0.6rem;
   }
 }
 
