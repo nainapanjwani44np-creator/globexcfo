@@ -44,9 +44,20 @@ console.log('\n💾 DATABASE CONFIGURATION:');
 console.log('   Using:', isProduction ? 'PRODUCTION Database' : 'DEVELOPMENT Database');
 console.log('   Database Name:', DB_NAME);
 
+// Extract username from MongoDB URI
+let username = 'N/A';
+if (MONGODB_URI) {
+  // Match username in mongodb://username:password@... or mongodb+srv://username:password@...
+  const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
+  if (usernameMatch) {
+    username = usernameMatch[1];
+  }
+}
+
 // Mask the password in URI for security
 const maskedURI = MONGODB_URI ? MONGODB_URI.replace(/:[^:@]*@/, ':****@') : 'NOT SET';
 console.log('   MongoDB URI:', maskedURI);
+console.log('   MongoDB Username:', username);
 console.log('   URI Source:', isProduction ? 'MONGODB_URI_PROD' : 'MONGODB_URI');
 console.log('   URI Exists?:', !!MONGODB_URI ? 'YES ✓' : 'NO ✗');
 
@@ -81,8 +92,18 @@ async function connectToMongo(){
       console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
       console.log('💾 Target Database:', DB_NAME);
       
+      // Extract username from MongoDB URI
+      let username = 'N/A';
+      if (MONGODB_URI) {
+        const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
+        if (usernameMatch) {
+          username = usernameMatch[1];
+        }
+      }
+      
       const maskedURI = MONGODB_URI ? MONGODB_URI.replace(/:[^:@]*@/, ':****@') : 'NOT SET';
       console.log('🔗 MongoDB URI:', maskedURI);
+      console.log('👤 MongoDB Username:', username);
       console.log('📂 Database Type:', isProduction ? 'PRODUCTION (Dokploy)' : 'DEVELOPMENT (Atlas/Local)');
       
       console.log('\nConnecting...');
@@ -271,6 +292,16 @@ app.post('/api/query', async (req, res) => {
      console.log('\n💾 DATABASE DETAILS:');
      console.log('   Database Name:', DB_NAME);
      console.log('   Collection:', collectionName);
+     
+     // Extract username for query submission
+     let queryUsername = 'N/A';
+     if (MONGODB_URI) {
+       const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
+       if (usernameMatch) {
+         queryUsername = usernameMatch[1];
+       }
+     }
+     console.log('   MongoDB Username:', queryUsername);
      console.log('   MongoDB Type:', isProduction ? 'Production (Dokploy)' : 'Development (Atlas/Local)');
      
      console.log('\n📤 INSERTING DOCUMENT:');
@@ -301,6 +332,15 @@ app.post('/api/query', async (req, res) => {
        console.log('   ⚠️ WARNING: Document not found after insertion!');
      }
      
+     // Extract username for response
+     let responseUsername = 'N/A';
+     if (MONGODB_URI) {
+       const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
+       if (usernameMatch) {
+         responseUsername = usernameMatch[1];
+       }
+     }
+     
      console.log('\n📨 SENDING RESPONSE:');
      console.log('   Status: 200 OK');
      console.log('   Response Data:');
@@ -308,6 +348,8 @@ app.post('/api/query', async (req, res) => {
      console.log('   - insertedId:', result.insertedId);
      console.log('   - database:', DB_NAME);
      console.log('   - collection:', collectionName);
+     console.log('   - mongoUsername:', responseUsername);
+     console.log('   - environment:', process.env.NODE_ENV || 'development');
      
      console.log('\n' + '='.repeat(70));
      console.log('           QUERY SUBMISSION COMPLETED SUCCESSFULLY');
@@ -318,6 +360,7 @@ app.post('/api/query', async (req, res) => {
        'insertedId': result.insertedId,
        'database': DB_NAME,
        'collection': collectionName,
+       'mongoUsername': responseUsername,
        'environment': process.env.NODE_ENV || 'development'
      });
    } catch (err) {

@@ -316,6 +316,7 @@ async function sendData(data) {
       console.log('   Environment:', response.data.environment);
       console.log('   Database:', response.data.database || 'N/A');
       console.log('   Collection:', response.data.collection || 'N/A');
+      console.log('   MongoDB Username:', response.data.mongoUsername || 'N/A');
       console.log('   Inserted ID:', response.data.insertedId || 'N/A');
     }
     
