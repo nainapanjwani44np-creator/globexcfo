@@ -1,4 +1,56 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+
+// Logo state
+const logoLoaded = ref(false);
+const logoError = ref(false);
+
+// Handle logo loading
+onMounted(() => {
+  const logo = document.querySelector('.logo');
+  
+  if (logo) {
+    // Add loading indicator
+    logo.style.opacity = '0';
+    logo.style.transition = 'opacity 0.3s ease';
+    
+    // Handle successful load
+    logo.addEventListener('load', () => {
+      logoLoaded.value = true;
+      logo.style.opacity = '1';
+      console.log('✅ Logo loaded successfully');
+    });
+    
+    // Handle error
+    logo.addEventListener('error', () => {
+      logoError.value = true;
+      console.error('❌ Logo failed to load');
+      // Fallback: Show text instead
+      const container = logo.parentElement;
+      if (container) {
+        container.innerHTML = '<span style="font-size: 1.5rem; font-weight: 700; color: #1e3a8a;">GLOBEX CFO</span>';
+      }
+    });
+    
+    // Optimize image rendering
+    logo.setAttribute('loading', 'eager');
+    logo.setAttribute('decoding', 'async');
+  }
+  
+  // Add smooth scroll behavior
+  document.documentElement.style.scrollBehavior = 'smooth';
+  
+  // Prevent horizontal scroll on mobile
+  const preventHorizontalScroll = () => {
+    if (window.innerWidth <= 768) {
+      document.body.style.overflowX = 'hidden';
+      document.documentElement.style.overflowX = 'hidden';
+    }
+  };
+  
+  preventHorizontalScroll();
+  window.addEventListener('resize', preventHorizontalScroll);
+});
 </script>
 
 <template>
@@ -193,17 +245,72 @@ html, body {
 
 .logo-container {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .logo {
   height: 50px;
   width: auto;
+  max-width: 200px;
   display: block;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  object-fit: contain;
+  
+  /* Handle transparent PNG backgrounds */
+  background: transparent;
+  
+  /* Ensure crisp rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  
+  /* If background is white, this will help blend */
+  mix-blend-mode: normal;
+  
+  /* Filter for better clarity */
+  filter: brightness(1) contrast(1.05);
 }
 
 .logo:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.05) contrast(1.1);
+}
+
+/* Logo responsive sizing */
+@media (max-width: 1024px) {
+  .logo {
+    height: 45px;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    height: 40px;
+    max-width: 160px;
+  }
+  
+  .logo-container {
+    padding: 0.25rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    height: 35px;
+    max-width: 140px;
+  }
 }
 
 .menu ul {
