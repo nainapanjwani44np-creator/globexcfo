@@ -261,42 +261,35 @@ html, body {
 }
 
 .logo {
-  height: 45px;
+  height: 50px;
   width: auto;
-  min-width: 180px;
-  max-width: 220px;
   display: block;
   transition: all 0.3s ease;
   
-  /* Crop out Gemini symbol (bottom-right corner) */
-  object-fit: cover;
+  /* Transparent PNG support */
+  object-fit: contain;
   object-position: left center;
   
-  /* Clip to show just main logo and text, remove Gemini symbol */
-  clip-path: inset(0 50px 15px 0);
-  
-  /* Clean rendering */
+  /* No clipping needed - clean transparent PNG */
   background: transparent;
   
   /* Ensure crisp display */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   
-  /* Optimize for blue nav background */
-  filter: brightness(1.1) contrast(1.1);
+  /* Enhance visibility on blue gradient */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) brightness(1.05);
 }
 
 .logo:hover {
-  filter: brightness(1.15) contrast(1.15);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3)) brightness(1.1);
+  transform: scale(1.05);
 }
 
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
   .logo {
-    height: 42px;
-    min-width: 170px;
-    max-width: 210px;
-    clip-path: inset(0 45px 12px 0);
+    height: 48px;
   }
   
   .logo-container {
@@ -306,10 +299,7 @@ html, body {
 
 @media (max-width: 1024px) {
   .logo {
-    height: 40px;
-    min-width: 160px;
-    max-width: 200px;
-    clip-path: inset(0 40px 10px 0);
+    height: 45px;
   }
   
   .logo-container {
@@ -319,10 +309,7 @@ html, body {
 
 @media (max-width: 768px) {
   .logo {
-    height: 36px;
-    min-width: 140px;
-    max-width: 180px;
-    clip-path: inset(0 35px 8px 0);
+    height: 40px;
   }
   
   .logo-container {
@@ -332,10 +319,7 @@ html, body {
 
 @media (max-width: 480px) {
   .logo {
-    height: 32px;
-    min-width: 120px;
-    max-width: 160px;
-    clip-path: inset(0 30px 6px 0);
+    height: 35px;
   }
   
   .logo-container {
