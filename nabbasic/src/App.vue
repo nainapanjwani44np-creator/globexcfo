@@ -247,26 +247,24 @@ html, body {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  /* Match the navigation bar gradient */
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%);
-  border-radius: 8px;
+  justify-content: flex-start;
+  padding: 0;
+  margin-right: 3rem;
+  background: transparent;
+  border-radius: 0;
   transition: all 0.3s ease;
   overflow: hidden;
-  position: relative;
 }
 
 .logo-container:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .logo {
-  height: 55px;
+  height: 45px;
   width: auto;
-  min-width: 250px;
-  max-width: 350px;
+  min-width: 180px;
+  max-width: 220px;
   display: block;
   transition: all 0.3s ease;
   
@@ -274,80 +272,74 @@ html, body {
   object-fit: cover;
   object-position: left center;
   
-  /* Clip the right side to remove Gemini symbol */
+  /* Clip to show just main logo and text, remove Gemini symbol */
   clip-path: inset(0 50px 15px 0);
   
-  /* Blend logo's blue with gradient background */
+  /* Clean rendering */
   background: transparent;
   
-  /* Make logo background blend with container gradient */
-  mix-blend-mode: screen;
-  opacity: 0.95;
-  
-  /* Ensure crisp rendering */
+  /* Ensure crisp display */
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   
-  /* Enhance visibility and color harmony */
-  filter: brightness(1.15) contrast(1.05) saturate(1.1);
+  /* Optimize for blue nav background */
+  filter: brightness(1.1) contrast(1.1);
 }
 
 .logo:hover {
-  opacity: 1;
-  filter: brightness(1.2) contrast(1.08) saturate(1.15);
-  transform: scale(1.02);
+  filter: brightness(1.15) contrast(1.15);
 }
 
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
   .logo {
-    height: 50px;
-    min-width: 230px;
-    max-width: 320px;
+    height: 42px;
+    min-width: 170px;
+    max-width: 210px;
     clip-path: inset(0 45px 12px 0);
   }
   
   .logo-container {
-    padding: 0.45rem 0.9rem;
+    margin-right: 2.5rem;
   }
 }
 
 @media (max-width: 1024px) {
   .logo {
-    height: 48px;
-    min-width: 220px;
-    max-width: 300px;
+    height: 40px;
+    min-width: 160px;
+    max-width: 200px;
     clip-path: inset(0 40px 10px 0);
   }
   
   .logo-container {
-    padding: 0.4rem 0.8rem;
+    margin-right: 2rem;
   }
 }
 
 @media (max-width: 768px) {
   .logo {
-    height: 42px;
-    min-width: 180px;
-    max-width: 250px;
+    height: 36px;
+    min-width: 140px;
+    max-width: 180px;
     clip-path: inset(0 35px 8px 0);
   }
   
   .logo-container {
-    padding: 0.35rem 0.7rem;
+    margin-right: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-    height: 38px;
-    min-width: 160px;
-    max-width: 220px;
+    height: 32px;
+    min-width: 120px;
+    max-width: 160px;
     clip-path: inset(0 30px 6px 0);
   }
   
   .logo-container {
-    padding: 0.3rem 0.6rem;
+    margin-right: 1rem;
   }
 }
 
