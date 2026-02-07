@@ -57,42 +57,22 @@ onMounted(() => {
           <router-link to="/Home" class="logo-link">
             <div class="logo-design">
               <svg class="logo-globe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-                <!-- Outer dark blue circle (globe base) -->
-                <circle cx="60" cy="60" r="45" fill="#2c5f8d" stroke="#1e4a6f" stroke-width="2"/>
+                <!-- Outer circle (globe) -->
+                <circle cx="60" cy="60" r="45" fill="#1e5a8e" stroke="#3b82f6" stroke-width="2"/>
                 
-                <!-- Inner circle with gradient effect -->
-                <circle cx="60" cy="60" r="42" fill="#3a7ca5" opacity="0.9"/>
+                <!-- Inner circle (globe highlight) -->
+                <circle cx="60" cy="60" r="40" fill="#2563eb" opacity="0.8"/>
                 
-                <!-- Latitude lines (horizontal curves) - 3D perspective -->
-                <ellipse cx="60" cy="60" rx="42" ry="18" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
-                <ellipse cx="60" cy="60" rx="42" ry="30" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
-                <ellipse cx="60" cy="60" rx="42" ry="38" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.4"/>
+                <!-- Latitude lines -->
+                <ellipse cx="60" cy="60" rx="40" ry="18" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.7"/>
+                <ellipse cx="60" cy="60" rx="40" ry="28" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
                 
-                <!-- Longitude lines (vertical curves) - 3D perspective -->
-                <ellipse cx="60" cy="60" rx="18" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
-                <ellipse cx="60" cy="60" rx="30" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
+                <!-- Longitude lines -->
+                <ellipse cx="60" cy="60" rx="18" ry="40" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.7"/>
+                <ellipse cx="60" cy="60" rx="28" ry="40" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
                 
-                <!-- Arrow arc from bottom-left to top-right (like Amazon smile) -->
-                <defs>
-                  <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
-                    <stop offset="50%" style="stop-color:#7dd3fc;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
-                  </linearGradient>
-                </defs>
-                
-                <!-- Arrow body - diagonal arc from bottom-left to top-right -->
-                <path d="M 22 85 Q 60 75 100 25" 
-                      fill="none" 
-                      stroke="url(#arrowGradient)" 
-                      stroke-width="11" 
-                      stroke-linecap="round"
-                      opacity="0.95"/>
-                
-                <!-- Arrow head pointing top-right -->
-                <path d="M 100 25 L 93 28 L 97 33 Z" 
-                      fill="#93c5fd" 
-                      opacity="0.95"/>
+                <!-- Equator line -->
+                <line x1="20" y1="60" x2="100" y2="60" stroke="#60a5fa" stroke-width="2" opacity="0.8"/>
               </svg>
               <div class="logo-text-container">
                 <span class="logo-title">GLOBEX CFO</span>
