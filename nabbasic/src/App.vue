@@ -87,8 +87,8 @@ onMounted(() => {
     <nav class="menu">
       <div class="menu-container">
         <div class="logo-container">
-          <router-link to="/Home">
-            <img src="./images/logo.png" alt="Globex CFO Logo" class="logo" />
+          <router-link to="/Home" class="logo-link">
+            <span class="logo-text">Globex</span>
           </router-link>
         </div>
         <ul>
@@ -251,45 +251,42 @@ html, body {
   padding: 0;
   margin-right: 3rem;
   background: transparent;
-  border-radius: 0;
   transition: all 0.3s ease;
-  overflow: hidden;
 }
 
-.logo-container:hover {
-  transform: scale(1.05);
-}
-
-.logo {
-  height: 50px;
-  width: auto;
+.logo-link {
+  text-decoration: none;
   display: block;
   transition: all 0.3s ease;
-  
-  /* Transparent PNG support */
-  object-fit: contain;
-  object-position: left center;
-  
-  /* No clipping needed - clean transparent PNG */
-  background: transparent;
-  
-  /* Ensure crisp display */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  
-  /* Enhance visibility on blue gradient */
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) brightness(1.05);
 }
 
-.logo:hover {
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3)) brightness(1.1);
-  transform: scale(1.05);
+.logo-link:hover {
+  transform: scale(1.08);
+}
+
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-text {
+  color: #fef08a;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 2px;
 }
 
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
-  .logo {
-    height: 48px;
+  .logo-text {
+    font-size: 1.9rem;
+    letter-spacing: 1.3px;
   }
   
   .logo-container {
@@ -298,8 +295,9 @@ html, body {
 }
 
 @media (max-width: 1024px) {
-  .logo {
-    height: 45px;
+  .logo-text {
+    font-size: 1.8rem;
+    letter-spacing: 1.2px;
   }
   
   .logo-container {
@@ -308,8 +306,9 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .logo {
-    height: 40px;
+  .logo-text {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
   }
   
   .logo-container {
@@ -318,8 +317,9 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  .logo {
-    height: 35px;
+  .logo-text {
+    font-size: 1.4rem;
+    letter-spacing: 0.8px;
   }
   
   .logo-container {
