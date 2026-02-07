@@ -1,42 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 
-// Logo state
-const logoLoaded = ref(false);
-const logoError = ref(false);
-
-// Handle logo loading
 onMounted(() => {
-  const logo = document.querySelector('.logo-image');
-  
-  if (logo) {
-    // Add loading indicator
-    logo.style.opacity = '0';
-    logo.style.transition = 'opacity 0.3s ease';
-    
-    // Handle successful load
-    logo.addEventListener('load', () => {
-      logoLoaded.value = true;
-      logo.style.opacity = '1';
-      console.log('✅ Logo loaded successfully');
-    });
-    
-    // Handle error
-    logo.addEventListener('error', () => {
-      logoError.value = true;
-      console.error('❌ Logo failed to load');
-      // Fallback: Show text instead
-      const container = logo.parentElement;
-      if (container) {
-        container.innerHTML = '<span style="font-size: 2rem; font-weight: 700; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Globex</span>';
-      }
-    });
-    
-    // Optimize image rendering
-    logo.setAttribute('loading', 'eager');
-    logo.setAttribute('decoding', 'async');
-  }
-  
   // Add smooth scroll behavior
   document.documentElement.style.scrollBehavior = 'smooth';
   
@@ -50,6 +15,8 @@ onMounted(() => {
   
   preventHorizontalScroll();
   window.addEventListener('resize', preventHorizontalScroll);
+  
+  console.log('✅ Globex logo initialized');
 });
 </script>
 
@@ -88,7 +55,34 @@ onMounted(() => {
       <div class="menu-container">
         <div class="logo-container">
           <router-link to="/Home" class="logo-link">
-            <img src="./images/globex-logo.png" alt="Globex Logo" class="logo-image" />
+            <div class="logo-design">
+              <svg class="logo-globe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <!-- Outer circle (globe) -->
+                <circle cx="50" cy="50" r="40" fill="#1e5a8e" stroke="#3b82f6" stroke-width="2"/>
+                
+                <!-- Inner circle (globe highlight) -->
+                <circle cx="50" cy="50" r="35" fill="#2563eb" opacity="0.8"/>
+                
+                <!-- Latitude lines -->
+                <ellipse cx="50" cy="50" rx="35" ry="15" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
+                <ellipse cx="50" cy="50" rx="35" ry="25" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                
+                <!-- Longitude lines -->
+                <ellipse cx="50" cy="50" rx="15" ry="35" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
+                <ellipse cx="50" cy="50" rx="25" ry="35" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                
+                <!-- Equator line -->
+                <line x1="10" y1="50" x2="90" y2="50" stroke="#60a5fa" stroke-width="2" opacity="0.7"/>
+                
+                <!-- Upward arrow -->
+                <path d="M 70 70 Q 85 50 70 30" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 70 30 L 65 38 M 70 30 L 75 38" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <div class="logo-text-container">
+                <span class="logo-title">GLOBEX</span>
+                <span class="logo-subtitle">Financial Advisory</span>
+              </div>
+            </div>
           </router-link>
         </div>
         <ul>
@@ -265,23 +259,85 @@ html, body {
   transform: scale(1.05);
 }
 
-.logo-image {
-  height: 70px;
-  width: auto;
-  object-fit: contain;
+.logo-design {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   transition: all 0.3s ease;
-  filter: brightness(1.1) drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-.logo-link:hover .logo-image {
-  filter: brightness(1.2) drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.3));
-  transform: scale(1.03);
+.logo-globe {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-globe {
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
+  transform: rotate(5deg);
+}
+
+.logo-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+}
+
+.logo-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.logo-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #e0e7ff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-title {
+  color: #fef08a;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 2.5px;
+}
+
+.logo-link:hover .logo-subtitle {
+  color: #fef9c3;
+  letter-spacing: 2px;
 }
 
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
-  .logo-image {
-    height: 65px;
+  .logo-globe {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .logo-title {
+    font-size: 1.7rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.65rem;
+  }
+  
+  .logo-design {
+    gap: 0.7rem;
   }
   
   .logo-container {
@@ -290,8 +346,21 @@ html, body {
 }
 
 @media (max-width: 1024px) {
-  .logo-image {
-    height: 60px;
+  .logo-globe {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .logo-title {
+    font-size: 1.5rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.6rem;
+  }
+  
+  .logo-design {
+    gap: 0.65rem;
   }
   
   .logo-container {
@@ -300,8 +369,22 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .logo-image {
-    height: 50px;
+  .logo-globe {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .logo-title {
+    font-size: 1.3rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+  }
+  
+  .logo-design {
+    gap: 0.6rem;
   }
   
   .logo-container {
@@ -310,8 +393,23 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  .logo-image {
+  .logo-globe {
+    width: 40px;
     height: 40px;
+  }
+  
+  .logo-title {
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.5rem;
+    letter-spacing: 0.8px;
+  }
+  
+  .logo-design {
+    gap: 0.5rem;
   }
   
   .logo-container {
