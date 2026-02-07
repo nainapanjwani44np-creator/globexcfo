@@ -72,7 +72,7 @@ onMounted(() => {
                 <ellipse cx="60" cy="60" rx="18" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
                 <ellipse cx="60" cy="60" rx="30" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
                 
-                <!-- Diagonal upward arrow from bottom-left to top-right -->
+                <!-- Arrow wrapping around globe from bottom-left to top-right -->
                 <defs>
                   <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
                     <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
@@ -81,20 +81,20 @@ onMounted(() => {
                   </linearGradient>
                 </defs>
                 
-                <!-- Arrow body - diagonal curve from bottom-left to top-right -->
-                <path d="M 20 95 Q 30 80 45 70 Q 60 60 75 50 Q 90 40 100 30 Q 108 22 115 15" 
+                <!-- Arrow body - wraps around the edge/circumference of globe -->
+                <path d="M 18 88 Q 12 75 12 60 Q 12 45 18 32 Q 25 20 38 12 Q 52 5 68 5 Q 84 5 98 12 Q 108 18 114 28" 
                       fill="none" 
                       stroke="url(#arrowGradient)" 
-                      stroke-width="9" 
+                      stroke-width="10" 
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       opacity="0.95"/>
                 
                 <!-- Arrow head pointing top-right -->
-                <path d="M 115 15 L 108 18 L 112 22 Z" 
+                <path d="M 114 28 L 106 26 L 110 34 Z" 
                       fill="#93c5fd" 
                       opacity="0.95"/>
-                <path d="M 115 15 L 112 8 L 108 18 Z" 
+                <path d="M 114 28 L 110 21 L 106 26 Z" 
                       fill="#bfdbfe" 
                       opacity="0.95"/>
               </svg>
