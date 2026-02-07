@@ -72,35 +72,30 @@ onMounted(() => {
                 <ellipse cx="60" cy="60" rx="18" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
                 <ellipse cx="60" cy="60" rx="30" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
                 
-                <!-- Large upward arrow wrapping around globe -->
+                <!-- Diagonal upward arrow from bottom-left to top-right -->
                 <defs>
-                  <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
                     <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#7dd3fc;stop-opacity:1" />
                     <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
                   </linearGradient>
                 </defs>
                 
-                <!-- Arrow body - smooth curve wrapping around -->
-                <path d="M 25 85 Q 15 70 20 50 Q 25 30 45 18" 
+                <!-- Arrow body - diagonal curve from bottom-left to top-right -->
+                <path d="M 20 95 Q 30 80 45 70 Q 60 60 75 50 Q 90 40 100 30 Q 108 22 115 15" 
                       fill="none" 
                       stroke="url(#arrowGradient)" 
-                      stroke-width="8" 
+                      stroke-width="9" 
                       stroke-linecap="round"
-                      opacity="0.9"/>
+                      stroke-linejoin="round"
+                      opacity="0.95"/>
                 
-                <path d="M 45 25 Q 65 15 85 25 Q 100 35 105 50" 
-                      fill="none" 
-                      stroke="url(#arrowGradient)" 
-                      stroke-width="8" 
-                      stroke-linecap="round"
-                      opacity="0.9"/>
-                
-                <!-- Arrow head -->
-                <path d="M 105 50 L 95 45 L 100 55 Z" 
+                <!-- Arrow head pointing top-right -->
+                <path d="M 115 15 L 108 18 L 112 22 Z" 
                       fill="#93c5fd" 
                       opacity="0.95"/>
-                <path d="M 105 50 L 100 55 L 110 58 Z" 
-                      fill="#7dd3fc" 
+                <path d="M 115 15 L 112 8 L 108 18 Z" 
+                      fill="#bfdbfe" 
                       opacity="0.95"/>
               </svg>
               <div class="logo-text-container">
