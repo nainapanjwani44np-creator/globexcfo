@@ -72,26 +72,26 @@ onMounted(() => {
                 <ellipse cx="60" cy="60" rx="18" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
                 <ellipse cx="60" cy="60" rx="30" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
                 
-                <!-- Arrow arcing over the top of globe from left to right -->
+                <!-- Arrow arc from bottom-left to top-right (like Amazon smile) -->
                 <defs>
-                  <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#7dd3fc;stop-opacity:0.9" />
-                    <stop offset="50%" style="stop-color:#93c5fd;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#bfdbfe;stop-opacity:0.9" />
+                  <linearGradient id="arrowGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#7dd3fc;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
                   </linearGradient>
                 </defs>
                 
-                <!-- Arrow body - smooth arc over the top of globe -->
-                <path d="M 25 55 Q 35 20 60 10 Q 85 20 95 55" 
+                <!-- Arrow body - diagonal arc from bottom-left to top-right -->
+                <path d="M 22 85 Q 60 75 100 25" 
                       fill="none" 
                       stroke="url(#arrowGradient)" 
                       stroke-width="11" 
                       stroke-linecap="round"
                       opacity="0.95"/>
                 
-                <!-- Arrow head pointing right -->
-                <path d="M 95 55 L 88 52 L 90 60 Z" 
-                      fill="#bfdbfe" 
+                <!-- Arrow head pointing top-right -->
+                <path d="M 100 25 L 93 28 L 97 33 Z" 
+                      fill="#93c5fd" 
                       opacity="0.95"/>
               </svg>
               <div class="logo-text-container">
