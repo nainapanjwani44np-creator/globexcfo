@@ -56,27 +56,52 @@ onMounted(() => {
         <div class="logo-container">
           <router-link to="/Home" class="logo-link">
             <div class="logo-design">
-              <svg class="logo-globe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <!-- Outer circle (globe) -->
-                <circle cx="50" cy="50" r="40" fill="#1e5a8e" stroke="#3b82f6" stroke-width="2"/>
+              <svg class="logo-globe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+                <!-- Outer dark blue circle (globe base) -->
+                <circle cx="60" cy="60" r="45" fill="#2c5f8d" stroke="#1e4a6f" stroke-width="2"/>
                 
-                <!-- Inner circle (globe highlight) -->
-                <circle cx="50" cy="50" r="35" fill="#2563eb" opacity="0.8"/>
+                <!-- Inner circle with gradient effect -->
+                <circle cx="60" cy="60" r="42" fill="#3a7ca5" opacity="0.9"/>
                 
-                <!-- Latitude lines -->
-                <ellipse cx="50" cy="50" rx="35" ry="15" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
-                <ellipse cx="50" cy="50" rx="35" ry="25" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                <!-- Latitude lines (horizontal curves) - 3D perspective -->
+                <ellipse cx="60" cy="60" rx="42" ry="18" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
+                <ellipse cx="60" cy="60" rx="42" ry="30" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
+                <ellipse cx="60" cy="60" rx="42" ry="38" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.4"/>
                 
-                <!-- Longitude lines -->
-                <ellipse cx="50" cy="50" rx="15" ry="35" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
-                <ellipse cx="50" cy="50" rx="25" ry="35" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                <!-- Longitude lines (vertical curves) - 3D perspective -->
+                <ellipse cx="60" cy="60" rx="18" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2.5" opacity="0.8"/>
+                <ellipse cx="60" cy="60" rx="30" ry="42" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.6"/>
                 
-                <!-- Equator line -->
-                <line x1="10" y1="50" x2="90" y2="50" stroke="#60a5fa" stroke-width="2" opacity="0.7"/>
+                <!-- Large upward arrow wrapping around globe -->
+                <defs>
+                  <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
+                  </linearGradient>
+                </defs>
                 
-                <!-- Upward arrow -->
-                <path d="M 70 70 Q 85 50 70 30" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 70 30 L 65 38 M 70 30 L 75 38" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+                <!-- Arrow body - smooth curve wrapping around -->
+                <path d="M 25 85 Q 15 70 20 50 Q 25 30 45 18" 
+                      fill="none" 
+                      stroke="url(#arrowGradient)" 
+                      stroke-width="8" 
+                      stroke-linecap="round"
+                      opacity="0.9"/>
+                
+                <path d="M 45 25 Q 65 15 85 25 Q 100 35 105 50" 
+                      fill="none" 
+                      stroke="url(#arrowGradient)" 
+                      stroke-width="8" 
+                      stroke-linecap="round"
+                      opacity="0.9"/>
+                
+                <!-- Arrow head -->
+                <path d="M 105 50 L 95 45 L 100 55 Z" 
+                      fill="#93c5fd" 
+                      opacity="0.95"/>
+                <path d="M 105 50 L 100 55 L 110 58 Z" 
+                      fill="#7dd3fc" 
+                      opacity="0.95"/>
               </svg>
               <div class="logo-text-container">
                 <span class="logo-title">GLOBEX CFO</span>
