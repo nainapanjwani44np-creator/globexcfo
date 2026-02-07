@@ -79,7 +79,7 @@ onMounted(() => {
                 <path d="M 70 30 L 65 38 M 70 30 L 75 38" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
               </svg>
               <div class="logo-text-container">
-                <span class="logo-title">GLOBEX</span>
+                <span class="logo-title">GLOBEX CFO</span>
                 <span class="logo-subtitle">Financial Advisory</span>
               </div>
             </div>
