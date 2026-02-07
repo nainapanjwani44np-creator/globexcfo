@@ -80,7 +80,7 @@ onMounted(() => {
               </svg>
               <div class="logo-text-container">
                 <span class="logo-title">GLOBEX CFO</span>
-                <span class="logo-subtitle">Financial Advisory</span>
+                <span class="logo-subtitle">& Financial Advisory</span>
               </div>
             </div>
           </router-link>
@@ -267,8 +267,8 @@ html, body {
 }
 
 .logo-globe {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
   transition: all 0.3s ease;
@@ -324,8 +324,8 @@ html, body {
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
   .logo-globe {
-    width: 55px;
-    height: 55px;
+    width: 53px;
+    height: 53px;
   }
   
   .logo-title {
@@ -347,8 +347,8 @@ html, body {
 
 @media (max-width: 1024px) {
   .logo-globe {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
   
   .logo-title {
@@ -370,8 +370,8 @@ html, body {
 
 @media (max-width: 768px) {
   .logo-globe {
-    width: 45px;
-    height: 45px;
+    width: 43px;
+    height: 43px;
   }
   
   .logo-title {
@@ -394,8 +394,8 @@ html, body {
 
 @media (max-width: 480px) {
   .logo-globe {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   
   .logo-title {
