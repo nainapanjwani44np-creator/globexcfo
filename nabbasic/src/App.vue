@@ -28,7 +28,7 @@ onMounted(() => {
       // Fallback: Show text instead
       const container = logo.parentElement;
       if (container) {
-        container.innerHTML = '<span style="font-size: 1.5rem; font-weight: 700; color: #1e3a8a;">GLOBEX CFO</span>';
+        container.innerHTML = '<span style="font-size: 2rem; font-weight: 700; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Globex</span>';
       }
     });
     
