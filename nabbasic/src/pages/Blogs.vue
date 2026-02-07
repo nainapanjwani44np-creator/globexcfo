@@ -15,28 +15,49 @@
           <h2 class="info-title">What to Expect</h2>
           <ul class="features-list">
             <li>
-              <span class="feature-icon">📊</span>
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="20" x2="12" y2="10"></line>
+                  <line x1="18" y1="20" x2="18" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="16"></line>
+                </svg>
+              </div>
               <div class="feature-content">
                 <strong>Financial Strategy Insights</strong>
                 <p>Expert guidance on CFO services, financial planning, and business growth strategies</p>
               </div>
             </li>
             <li>
-              <span class="feature-icon">💡</span>
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+              </div>
               <div class="feature-content">
                 <strong>Industry Best Practices</strong>
                 <p>Practical tips and proven methodologies for financial management excellence</p>
               </div>
             </li>
             <li>
-              <span class="feature-icon">📈</span>
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
               <div class="feature-content">
                 <strong>Market Trends & Analysis</strong>
                 <p>Up-to-date insights on financial markets, compliance, and emerging opportunities</p>
               </div>
             </li>
             <li>
-              <span class="feature-icon">🎯</span>
+              <div class="feature-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
               <div class="feature-content">
                 <strong>Case Studies & Success Stories</strong>
                 <p>Real-world examples of how strategic financial guidance drives business success</p>
@@ -213,8 +234,22 @@
 }
 
 .feature-icon {
-  font-size: 2rem;
   flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon svg {
+  width: 28px;
+  height: 28px;
+  color: white;
+  stroke-width: 2.5;
 }
 
 .feature-content {
@@ -308,7 +343,13 @@
   }
 
   .feature-icon {
-    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
   }
 
   .feature-content strong {
