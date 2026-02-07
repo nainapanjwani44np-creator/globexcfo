@@ -76,7 +76,7 @@ onMounted(() => {
               </svg>
               <div class="logo-text-container">
                 <span class="logo-title">GLOBEX CFO</span>
-                <span class="logo-subtitle">& Financial Advisory</span>
+                <span class="logo-subtitle">& FINANCIAL ADVISORY LLP</span>
               </div>
             </div>
           </router-link>
