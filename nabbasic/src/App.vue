@@ -88,6 +88,11 @@ onMounted(() => {
       <div class="menu-container">
         <div class="logo-container">
           <router-link to="/Home" class="logo-link">
+            <svg class="logo-globe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
             <span class="logo-text">Globex</span>
           </router-link>
         </div>
@@ -256,12 +261,28 @@ html, body {
 
 .logo-link {
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   transition: all 0.3s ease;
 }
 
 .logo-link:hover {
   transform: scale(1.08);
+}
+
+.logo-globe {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #ffffff;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo-globe {
+  color: #fef08a;
+  filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.4));
+  transform: rotate(15deg);
 }
 
 .logo-text {
@@ -284,9 +305,18 @@ html, body {
 
 /* Logo responsive sizing */
 @media (max-width: 1200px) {
+  .logo-globe {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+  
   .logo-text {
     font-size: 1.9rem;
     letter-spacing: 1.3px;
+  }
+  
+  .logo-link {
+    gap: 0.7rem;
   }
   
   .logo-container {
@@ -295,9 +325,18 @@ html, body {
 }
 
 @media (max-width: 1024px) {
+  .logo-globe {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+  
   .logo-text {
     font-size: 1.8rem;
     letter-spacing: 1.2px;
+  }
+  
+  .logo-link {
+    gap: 0.65rem;
   }
   
   .logo-container {
@@ -306,9 +345,18 @@ html, body {
 }
 
 @media (max-width: 768px) {
+  .logo-globe {
+    width: 2rem;
+    height: 2rem;
+  }
+  
   .logo-text {
     font-size: 1.6rem;
     letter-spacing: 1px;
+  }
+  
+  .logo-link {
+    gap: 0.6rem;
   }
   
   .logo-container {
@@ -317,9 +365,18 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  .logo-globe {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  
   .logo-text {
     font-size: 1.4rem;
     letter-spacing: 0.8px;
+  }
+  
+  .logo-link {
+    gap: 0.5rem;
   }
   
   .logo-container {
