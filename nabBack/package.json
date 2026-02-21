@@ -6,7 +6,9 @@
     "dev": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
     "debug-brk": "nodemon --inspect-brk server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "admin": "node adminServer.js",
+    "admin:dev": "nodemon adminServer.js"
   },
   "keywords": [],
   "author": "",

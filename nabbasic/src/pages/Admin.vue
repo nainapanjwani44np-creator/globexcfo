@@ -335,13 +335,16 @@ onMounted(() => {
   }
 });
 
+// Admin API base URL (can be configured via environment variable)
+const ADMIN_API_BASE = import.meta.env.VITE_ADMIN_API_URL || window.location.origin;
+
 // Login handler
 const handleLogin = async () => {
   loggingIn.value = true;
   loginError.value = null;
   
   try {
-    const response = await axios.post('/api/admin/login', {
+    const response = await axios.post(`${ADMIN_API_BASE}/api/admin/login`, {
       username: loginForm.value.username,
       password: loginForm.value.password
     });
@@ -351,6 +354,7 @@ const handleLogin = async () => {
       sessionStorage.setItem('adminToken', response.data.token);
       isAuthenticated.value = true;
       console.log('✅ Login successful');
+      console.log('🔒 Using Admin API:', ADMIN_API_BASE);
       
       // Fetch submissions after successful login
       await fetchSubmissions();
@@ -379,7 +383,7 @@ const fetchSubmissions = async () => {
   error.value = null;
   
   try {
-    const response = await axios.get('/api/admin/submissions', {
+    const response = await axios.get(`${ADMIN_API_BASE}/api/admin/submissions`, {
       headers: {
         'Authorization': `Bearer ${authToken.value}`
       }
