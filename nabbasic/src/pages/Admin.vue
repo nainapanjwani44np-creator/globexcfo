@@ -1,5 +1,67 @@
 <template>
-  <div class="admin-container">
+  <!-- Login Form -->
+  <div v-if="!isAuthenticated" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <svg xmlns="http://www.w3.org/2000/svg" class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <h1>Admin Login</h1>
+        <p>Enter your credentials to access the dashboard</p>
+      </div>
+      
+      <form @submit.prevent="handleLogin" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input 
+            v-model="loginForm.username" 
+            type="text" 
+            id="username" 
+            placeholder="Enter username"
+            required
+            :disabled="loggingIn"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            v-model="loginForm.password" 
+            type="password" 
+            id="password" 
+            placeholder="Enter password"
+            required
+            :disabled="loggingIn"
+          />
+        </div>
+        
+        <div v-if="loginError" class="error-message">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          {{ loginError }}
+        </div>
+        
+        <button type="submit" class="login-button" :disabled="loggingIn">
+          <span v-if="!loggingIn">Login</span>
+          <span v-else class="login-spinner">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinning">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Logging in...
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard (only shown when authenticated) -->
+  <div v-else class="admin-container">
     <!-- Header -->
     <div class="admin-header">
       <div class="header-content">
@@ -14,14 +76,24 @@
             <p class="header-subtitle">Form Submissions Management</p>
           </div>
         </div>
-        <button @click="fetchSubmissions" class="refresh-button" :disabled="loading">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :class="{ 'spinning': loading }">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <polyline points="1 20 1 14 7 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-          </svg>
-          {{ loading ? 'Loading...' : 'Refresh' }}
-        </button>
+        <div class="header-actions">
+          <button @click="fetchSubmissions" class="refresh-button" :disabled="loading">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :class="{ 'spinning': loading }">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            {{ loading ? 'Loading...' : 'Refresh' }}
+          </button>
+          <button @click="handleLogout" class="logout-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+          </button>
+        </div>
       </div>
     </div>
 
@@ -236,23 +308,92 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
+// Authentication state
+const isAuthenticated = ref(false);
+const authToken = ref(null);
+const loginForm = ref({
+  username: '',
+  password: ''
+});
+const loggingIn = ref(false);
+const loginError = ref(null);
+
+// Admin data
 const submissions = ref([]);
 const loading = ref(false);
 const error = ref(null);
 const searchQuery = ref('');
 const selectedSubmission = ref(null);
 
-// Fetch submissions from API
+// Check if already authenticated on mount
+onMounted(() => {
+  const savedToken = sessionStorage.getItem('adminToken');
+  if (savedToken) {
+    authToken.value = savedToken;
+    isAuthenticated.value = true;
+    fetchSubmissions();
+  }
+});
+
+// Login handler
+const handleLogin = async () => {
+  loggingIn.value = true;
+  loginError.value = null;
+  
+  try {
+    const response = await axios.post('/api/admin/login', {
+      username: loginForm.value.username,
+      password: loginForm.value.password
+    });
+    
+    if (response.data.status === 'success') {
+      authToken.value = response.data.token;
+      sessionStorage.setItem('adminToken', response.data.token);
+      isAuthenticated.value = true;
+      console.log('✅ Login successful');
+      
+      // Fetch submissions after successful login
+      await fetchSubmissions();
+    }
+  } catch (err) {
+    loginError.value = err.response?.data?.message || 'Login failed. Please try again.';
+    console.error('❌ Login error:', err);
+  } finally {
+    loggingIn.value = false;
+  }
+};
+
+// Logout handler
+const handleLogout = () => {
+  authToken.value = null;
+  isAuthenticated.value = false;
+  sessionStorage.removeItem('adminToken');
+  submissions.value = [];
+  loginForm.value = { username: '', password: '' };
+  console.log('✅ Logged out');
+};
+
+// Fetch submissions from API (with authentication)
 const fetchSubmissions = async () => {
   loading.value = true;
   error.value = null;
   
   try {
-    const response = await axios.get('/api/admin/submissions');
+    const response = await axios.get('/api/admin/submissions', {
+      headers: {
+        'Authorization': `Bearer ${authToken.value}`
+      }
+    });
     submissions.value = response.data.data || [];
     console.log('✅ Loaded', submissions.value.length, 'submissions');
   } catch (err) {
-    error.value = err.response?.data?.message || err.message || 'Failed to load submissions';
+    if (err.response?.status === 401) {
+      // Unauthorized - token expired or invalid
+      handleLogout();
+      error.value = 'Session expired. Please login again.';
+    } else {
+      error.value = err.response?.data?.message || err.message || 'Failed to load submissions';
+    }
     console.error('❌ Error loading submissions:', err);
   } finally {
     loading.value = false;
@@ -330,14 +471,146 @@ const viewDetails = (submission) => {
 const closeModal = () => {
   selectedSubmission.value = null;
 };
-
-// Load data on mount
-onMounted(() => {
-  fetchSubmissions();
-});
 </script>
 
 <style scoped>
+/* Login Container */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-icon {
+  width: 64px;
+  height: 64px;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.error-message svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.login-button {
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-spinner svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* Container */
 .admin-container {
   min-height: calc(100vh - 150px);
@@ -388,12 +661,18 @@ onMounted(() => {
   margin: 0.25rem 0 0 0;
 }
 
-.refresh-button {
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.refresh-button,
+.logout-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -401,6 +680,10 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+}
+
+.refresh-button {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
 .refresh-button:hover:not(:disabled) {
@@ -413,7 +696,17 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
-.refresh-button svg {
+.logout-button {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.refresh-button svg,
+.logout-button svg {
   width: 20px;
   height: 20px;
 }
@@ -924,7 +1217,13 @@ onMounted(() => {
     font-size: 1.5rem;
   }
 
-  .refresh-button {
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .refresh-button,
+  .logout-button {
     width: 100%;
     justify-content: center;
   }
