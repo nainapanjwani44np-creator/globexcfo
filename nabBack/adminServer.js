@@ -41,10 +41,7 @@ async function connectToMongo() {
     console.log('🔗 Connecting to MongoDB...');
     console.log('   URI Type:', isProduction ? 'Production' : 'Development');
     
-    const client = await MongoClient.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const client = await MongoClient.connect(MONGODB_URI);
     
     db = client.db(DB_NAME);
     console.log('✅ Connected to MongoDB successfully');
@@ -220,8 +217,8 @@ app.get('/api/admin/health', (req, res) => {
 // Serve admin static files
 app.use(express.static(path.join(__dirname, 'admin-dist')));
 
-// Serve admin dashboard for all routes
-app.get('*', (req, res) => {
+// Serve admin dashboard for all routes (Express 5 compatible)
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'admin-dist', 'index.html'));
 });
 
