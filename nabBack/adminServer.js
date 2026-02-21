@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
+const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +17,17 @@ const ADMIN_PORT = process.env.ADMIN_PORT || 4000;
 const ADMIN_HOST = process.env.ADMIN_HOST || '127.0.0.1'; // localhost only by default
 
 let db = null;
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-set-JWT_SECRET-in-env';
+
+// Rate limiter: max 10 login attempts per 15 minutes per IP
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many login attempts. Please try again in 15 minutes.' }
+});
 
 // Middleware
 app.use(cors());
@@ -66,8 +79,8 @@ connectToMongo().catch(err => {
   process.exit(1);
 });
 
-// Admin authentication endpoint
-app.post('/api/admin/login', async (req, res) => {
+// Admin authentication endpoint (rate-limited)
+app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
   try {
     console.log('\n' + '='.repeat(70));
     console.log('                ADMIN: LOGIN ATTEMPT');
@@ -88,8 +101,11 @@ app.post('/api/admin/login', async (req, res) => {
       console.log('✅ Authentication successful');
       console.log('='.repeat(70) + '\n');
       
-      // Generate a simple token (in production, use JWT)
-      const token = Buffer.from(`${username}:${password}:${Date.now()}`).toString('base64');
+      const token = jwt.sign(
+        { username, role: 'admin' },
+        JWT_SECRET,
+        { expiresIn: '8h' }
+      );
       
       res.json({
         status: 'success',
@@ -133,27 +149,19 @@ const verifyAdmin = (req, res, next) => {
   const token = authHeader.substring(7);
   
   try {
-    const decoded = Buffer.from(token, 'base64').toString('utf-8');
-    const [username, password] = decoded.split(':');
-    
-    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-    
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      console.log('✅ Token verified - Admin access granted');
-      next();
-    } else {
-      console.log('❌ Invalid token');
-      res.status(401).json({
-        status: 'error',
-        message: 'Unauthorized - Invalid token'
-      });
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      console.log('❌ Token does not have admin role');
+      return res.status(401).json({ status: 'error', message: 'Unauthorized - Insufficient role' });
     }
+    console.log('✅ Token verified - Admin access granted');
+    req.admin = decoded;
+    next();
   } catch (error) {
     console.log('❌ Token verification failed:', error.message);
     res.status(401).json({
       status: 'error',
-      message: 'Unauthorized - Invalid token format'
+      message: error.name === 'TokenExpiredError' ? 'Session expired - please log in again' : 'Unauthorized - Invalid token'
     });
   }
 };
@@ -214,12 +222,12 @@ app.get('/api/admin/health', (req, res) => {
   });
 });
 
-// Serve admin static files
-app.use(express.static(path.join(__dirname, 'admin-dist')));
+// Serve the same Vue SPA build — /Admin route is handled by Vue Router
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Serve admin dashboard for all routes (Express 5 compatible)
+// SPA fallback for all non-API routes (Express 5 compatible)
 app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin-dist', 'admin.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Start admin server (bind to localhost only by default)
