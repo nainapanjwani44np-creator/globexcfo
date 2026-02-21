@@ -7,6 +7,7 @@ import Blogs from '../pages/Blogs.vue'
 import Success from '../pages/Success.vue'
 import Error from '../pages/Error.vue'
 import ComingSoon from '../pages/ComingSoon.vue'
+import Admin from '../pages/Admin.vue'
 const routes = [
   { path:'/',component:Home},
   { path: '/Home', component: Home },
@@ -16,7 +17,8 @@ const routes = [
   { path: '/Blogs', component: Blogs},
   { path: '/Success', component: Success},
   { path: '/Error', component: Error},
-  { path: '/ComingSoon', component: ComingSoon}
+  { path: '/ComingSoon', component: ComingSoon},
+  { path: '/Admin', component: Admin}
 ]
 
 export default createRouter({

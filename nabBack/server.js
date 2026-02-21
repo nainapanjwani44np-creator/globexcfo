@@ -426,6 +426,50 @@ app.get('/api/queries', async (req, res) => {
   }
 });
 
+// Admin endpoint to fetch all form submissions with details
+app.get('/api/admin/submissions', async (req, res) => {
+  try {
+    console.log('\n' + '='.repeat(70));
+    console.log('                ADMIN: FETCHING ALL SUBMISSIONS');
+    console.log('='.repeat(70));
+    console.log('📍 Endpoint: GET /api/admin/submissions');
+    console.log('⏰ Timestamp:', new Date().toISOString());
+    console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+    console.log('💾 Database:', DB_NAME);
+    console.log('📁 Collection:', collectionName);
+    
+    await connectToMongo();
+    
+    // Fetch all submissions, sorted by newest first
+    const submissions = await db.collection(collectionName)
+      .find({})
+      .sort({ _id: -1 })
+      .toArray();
+    
+    console.log('✅ Retrieved', submissions.length, 'submissions');
+    console.log('='.repeat(70) + '\n');
+    
+    res.json({
+      status: 'success',
+      count: submissions.length,
+      database: DB_NAME,
+      collection: collectionName,
+      data: submissions
+    });
+  } catch (error) {
+    console.error('\n❌ ERROR FETCHING SUBMISSIONS:');
+    console.error('   Error:', error.message);
+    console.error('   Stack:', error.stack);
+    console.error('='.repeat(70) + '\n');
+    
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch submissions',
+      error: error.message
+    });
+  }
+});
+
 // Get content by key from contentLoader collection
 app.get('/api/content/:key', async (req, res) => {
   try {
