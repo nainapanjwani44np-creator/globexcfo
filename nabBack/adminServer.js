@@ -219,7 +219,7 @@ app.use(express.static(path.join(__dirname, 'admin-dist')));
 
 // Serve admin dashboard for all routes (Express 5 compatible)
 app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin-dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'admin-dist', 'admin.html'));
 });
 
 // Start admin server (bind to localhost only by default)
