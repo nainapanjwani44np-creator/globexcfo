@@ -264,10 +264,13 @@ async function connectToMongo(){
   return db;
 }
 
-// Connect on startup
-connectToMongo().catch(err => {
-  console.error('Failed to connect to MongoDB on startup:', err);
-});
+// Connect on startup, then start cron jobs
+const { startCronJobs } = require('./cronJobs');
+connectToMongo()
+  .then(() => startCronJobs(db, collectionName))
+  .catch(err => {
+    console.error('Failed to connect to MongoDB on startup:', err);
+  });
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
