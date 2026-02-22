@@ -85,6 +85,24 @@
             </svg>
             {{ loading ? 'Loading...' : 'Refresh' }}
           </button>
+          <button @click="exportCSV" class="export-button csv" :disabled="submissions.length === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            Export CSV
+          </button>
+          <button @click="exportPDF" class="export-button pdf" :disabled="submissions.length === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="13" x2="12" y2="17"></line>
+              <line x1="10" y1="15" x2="14" y2="15"></line>
+            </svg>
+            Export PDF
+          </button>
           <button @click="handleLogout" class="logout-button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -404,6 +422,88 @@ const fetchSubmissions = async () => {
   }
 };
 
+// Export to CSV
+const exportCSV = () => {
+  const headers = ['#', 'Name', 'Company', 'Email', 'Phone', 'Services', 'Message', 'Date'];
+  const rows = submissions.value.map((sub, index) => [
+    index + 1,
+    sub.name || '',
+    sub.companyName || '',
+    sub.email || '',
+    sub.contactNumber || '',
+    (sub.selectedOptions || []).join(' | '),
+    (sub.userMessage || '').replace(/"/g, '""'),
+    formatDate(sub._id)
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map(row => row.map(cell => `"${cell}"`).join(','))
+    .join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `globexcfo-submissions-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+};
+
+// Export to PDF (uses browser print)
+const exportPDF = () => {
+  const rows = submissions.value.map((sub, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${sub.name || ''}</td>
+      <td>${sub.companyName || ''}</td>
+      <td>${sub.email || ''}</td>
+      <td>${sub.contactNumber || ''}</td>
+      <td>${(sub.selectedOptions || []).join(', ')}</td>
+      <td>${sub.userMessage || ''}</td>
+      <td>${formatDate(sub._id)}</td>
+    </tr>
+  `).join('');
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>GlobexCFO Submissions - ${new Date().toLocaleDateString()}</title>
+      <style>
+        body { font-family: Arial, sans-serif; font-size: 11px; margin: 20px; }
+        h1 { color: #1a365d; font-size: 18px; margin-bottom: 4px; }
+        p { color: #666; margin: 0 0 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #1a365d; color: white; padding: 8px 6px; text-align: left; font-size: 10px; }
+        td { padding: 6px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+        tr:nth-child(even) { background: #f7fafc; }
+        @media print { body { margin: 0; } }
+      </style>
+    </head>
+    <body>
+      <h1>GlobexCFO - Form Submissions</h1>
+      <p>Exported on ${new Date().toLocaleString()} &nbsp;|&nbsp; Total: ${submissions.value.length}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Company</th><th>Email</th>
+            <th>Phone</th><th>Services</th><th>Message</th><th>Date</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(html);
+  printWindow.document.close();
+  printWindow.onload = () => {
+    printWindow.print();
+  };
+};
+
 // Computed properties
 const filteredSubmissions = computed(() => {
   if (!searchQuery.value) return submissions.value;
@@ -710,9 +810,47 @@ const closeModal = () => {
 }
 
 .refresh-button svg,
-.logout-button svg {
+.logout-button svg,
+.export-button svg {
   width: 20px;
   height: 20px;
+}
+
+.export-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.export-button.csv {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.export-button.csv:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.export-button.pdf {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.export-button.pdf:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.export-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .spinning {
@@ -1227,7 +1365,8 @@ const closeModal = () => {
   }
 
   .refresh-button,
-  .logout-button {
+  .logout-button,
+  .export-button {
     width: 100%;
     justify-content: center;
   }
