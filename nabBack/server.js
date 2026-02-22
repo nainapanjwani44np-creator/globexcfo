@@ -546,8 +546,8 @@ app.get('/api/content', async (req, res) => {
 app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
-    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'globexcfo_admin';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Gx@Cfo#2026$Secure!';
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
