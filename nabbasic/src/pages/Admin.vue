@@ -449,18 +449,28 @@ const exportCSV = () => {
   URL.revokeObjectURL(url);
 };
 
+// Escape HTML to prevent XSS in the PDF print window
+const escapeHTML = (str) => {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
 // Export to PDF (uses browser print)
 const exportPDF = () => {
   const rows = submissions.value.map((sub, index) => `
     <tr>
       <td>${index + 1}</td>
-      <td>${sub.name || ''}</td>
-      <td>${sub.companyName || ''}</td>
-      <td>${sub.email || ''}</td>
-      <td>${sub.contactNumber || ''}</td>
-      <td>${(sub.selectedOptions || []).join(', ')}</td>
-      <td>${sub.userMessage || ''}</td>
-      <td>${formatDate(sub._id)}</td>
+      <td>${escapeHTML(sub.name)}</td>
+      <td>${escapeHTML(sub.companyName)}</td>
+      <td>${escapeHTML(sub.email)}</td>
+      <td>${escapeHTML(sub.contactNumber)}</td>
+      <td>${escapeHTML((sub.selectedOptions || []).join(', '))}</td>
+      <td>${escapeHTML(sub.userMessage)}</td>
+      <td>${escapeHTML(formatDate(sub._id))}</td>
     </tr>
   `).join('');
 

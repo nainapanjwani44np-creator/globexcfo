@@ -1,6 +1,7 @@
 // server.js
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
+const crypto = require('crypto');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
@@ -118,7 +119,7 @@ const JWT_SECRET_VALUE = JWT_SECRET || 'dev-fallback-secret-do-not-use-in-produc
 
 const adminLoginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 5, // 5 attempts per 15 min — tighter brute-force window
   standardHeaders: true,
   legacyHeaders: false,
   message: { status: 'error', message: 'Too many login attempts. Please try again in 15 minutes.' }
@@ -131,6 +132,15 @@ const queryLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { status: 'error', message: 'Too many submissions. Please try again in 10 minutes.' }
+});
+
+// Rate limiter for public read endpoints (max 60 per 10 min per IP)
+const readLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many requests. Please slow down.' }
 });
 
 const verifyAdmin = (req, res, next) => {
@@ -185,23 +195,6 @@ async function connectToMongo(){
       
       db = client.db(DB_NAME);
       console.log(`✅ Database selected: ${DB_NAME}`);
-      
-      // Test the connection by listing collections
-      console.log('\n📋 Listing available collections...');
-      const collections = await db.listCollections().toArray();
-      console.log('   Available collections:', collections.map(c => c.name).join(', '));
-      console.log('   Total collections:', collections.length);
-      
-      // Count documents in key collections
-      try {
-        const userDataCount = await db.collection('UserData').countDocuments();
-        const contentCount = await db.collection('contentLoader').countDocuments();
-        console.log('\n📊 Collection Stats:');
-        console.log('   UserData documents:', userDataCount);
-        console.log('   contentLoader documents:', contentCount);
-      } catch (e) {
-        console.log('   (Could not fetch collection stats)');
-      }
       
       console.log('-'.repeat(60) + '\n');
       
@@ -275,15 +268,14 @@ connectToMongo()
 app.use(express.static(path.join(__dirname, 'dist')));
 
 
-// Basic route
-app.get('/api/blogs', async (req, res) => {
+app.get('/api/blogs', readLimiter, async (req, res) => {
   try {
     await connectToMongo();
     const blogs = await db.collection('blogs').find({}).toArray();
     res.json(blogs);
   } catch (err) {
-    console.error('Error fetching blogs:', err);
-    res.status(500).send({ 'status': 'error', 'message': err.message });
+    console.error('Error fetching blogs:', err.message);
+    res.status(500).send({ status: 'error', message: 'Failed to fetch blogs' });
   }
 });
 
@@ -339,68 +331,30 @@ app.get('/api/queries', verifyAdmin, async (req, res) => {
 
 
 // Get content by key from contentLoader collection
-app.get('/api/content/:key', async (req, res) => {
+app.get('/api/content/:key', readLimiter, async (req, res) => {
   try {
     const { key } = req.params;
-    console.log('\n' + '-'.repeat(60));
-    console.log(`📖 FETCHING CONTENT: ${key}`);
-    console.log('-'.repeat(60));
-    console.log('📍 File: server.js:~280 (GET /api/content/:key)');
-    console.log('⏰ Time:', new Date().toISOString());
-    console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
-    console.log('💾 Database:', DB_NAME);
-    console.log('📁 Collection: contentLoader');
-    console.log('🔑 Requested Key:', key);
-    
     await connectToMongo();
-    
-    console.log('\n🔍 Searching for document...');
-    const content = await db.collection('contentLoader').findOne({ key: key });
-    
+    const content = await db.collection('contentLoader').findOne({ key });
     if (!content) {
-      console.log(`⚠️  NOT FOUND: No content with key "${key}"`);
-      console.log('💡 Available keys in database:');
-      const allKeys = await db.collection('contentLoader').find({}, { projection: { key: 1 } }).toArray();
-      console.log('   ', allKeys.map(doc => doc.key).join(', '));
-      console.log('-'.repeat(60) + '\n');
-      
-      return res.status(404).json({ 
-        status: 'error', 
-        message: `Content not found for key: ${key}`,
-        availableKeys: allKeys.map(doc => doc.key)
-      });
+      return res.status(404).json({ status: 'error', message: 'Content not found' });
     }
-    
-    console.log(`✅ Content found for key: ${key}`);
-    console.log('📋 Document fields:', Object.keys(content).filter(k => k !== '_id').join(', '));
-    console.log('-'.repeat(60) + '\n');
-    
     res.json({ status: 'success', data: content });
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] Error fetching content key: ${req.params.key}:`, err.message);
+    console.error(`[${new Date().toISOString()}] Error fetching content key:`, err.message);
     res.status(500).json({ status: 'error', message: 'Failed to fetch content' });
   }
 });
 
 // Get all content from contentLoader collection
-app.get('/api/content', async (req, res) => {
+app.get('/api/content', readLimiter, async (req, res) => {
   try {
-    console.log('\n=== Fetching All Content ===');
     await connectToMongo();
-    
     const allContent = await db.collection('contentLoader').find({}).toArray();
-    
-    console.log(`✅ Found ${allContent.length} content items`);
-    console.log('===========================\n');
-    
-    res.json({ 
-      status: 'success',
-      count: allContent.length,
-      data: allContent 
-    });
+    res.json({ status: 'success', count: allContent.length, data: allContent });
   } catch (err) {
-    console.error('❌ Error fetching all content:', err);
-    res.status(500).json({ 'status': 'error', 'message': err.message });
+    console.error('❌ Error fetching all content:', err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to fetch content' });
   }
 });
 
@@ -415,7 +369,17 @@ app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
       return res.status(500).json({ status: 'error', message: 'Admin credentials not configured' });
     }
 
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    // Constant-time comparison to prevent timing attacks
+    const userMatch = crypto.timingSafeEqual(
+      Buffer.from(username || ''),
+      Buffer.from(ADMIN_USERNAME)
+    );
+    const passMatch = crypto.timingSafeEqual(
+      Buffer.from(password || ''),
+      Buffer.from(ADMIN_PASSWORD)
+    );
+
+    if (userMatch && passMatch) {
       const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET_VALUE, { expiresIn: '8h' });
       console.log('✅ Admin login successful');
       res.json({ status: 'success', message: 'Authentication successful', token });
@@ -434,7 +398,7 @@ app.get('/api/admin/submissions', verifyAdmin, async (req, res) => {
     await connectToMongo();
     const submissions = await db.collection(collectionName).find({}).sort({ _id: -1 }).toArray();
     console.log('✅ Admin fetched', submissions.length, 'submissions');
-    res.json({ status: 'success', count: submissions.length, database: DB_NAME, collection: collectionName, data: submissions });
+    res.json({ status: 'success', count: submissions.length, data: submissions });
   } catch (error) {
     res.status(500).json({ status: 'error', message: 'Failed to fetch submissions' });
   }
