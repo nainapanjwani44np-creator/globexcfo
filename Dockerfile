@@ -7,8 +7,8 @@ COPY package.json ./
 COPY nabbasic/ ./nabbasic/
 COPY nabBack/ ./nabBack/
 
-# Build frontend (outputs to nabBack/dist)
-RUN npm run build
+# Install frontend deps and build (outputs to nabBack/dist)
+RUN cd nabbasic && npm install && npm run build
 
 # Production stage
 FROM node:20-alpine
