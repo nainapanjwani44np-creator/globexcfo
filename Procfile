@@ -1,1 +1,1 @@
-web: sh -c "cd nabbasic && npm install && npm run build && cd ../nabBack && npm install --production && node server.js & node adminServer.js & wait"
+web: sh -c "cd nabbasic && npm install && npm run build && cd ../nabBack && npm install --production && node server.js"

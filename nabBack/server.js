@@ -2,6 +2,8 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const path = require('path');
+const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 
 // Determine environment
 const isProduction = process.env.NODE_ENV === 'production';
@@ -80,6 +82,37 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-set-JWT_SECRET-in-env';
+
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many login attempts. Please try again in 15 minutes.' }
+});
+
+const verifyAdmin = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized - No token provided' });
+  }
+  const token = authHeader.substring(7);
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      return res.status(401).json({ status: 'error', message: 'Unauthorized - Insufficient role' });
+    }
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({
+      status: 'error',
+      message: error.name === 'TokenExpiredError' ? 'Session expired - please log in again' : 'Unauthorized - Invalid token'
+    });
+  }
+};
 
 async function connectToMongo(){
   if(!db){
@@ -509,8 +542,39 @@ app.get('/api/content', async (req, res) => {
   }
 });
 
+// Admin login endpoint (rate limited)
+app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
+      console.log('✅ Admin login successful');
+      res.json({ status: 'success', message: 'Authentication successful', token });
+    } else {
+      console.log('❌ Admin login failed - invalid credentials');
+      res.status(401).json({ status: 'error', message: 'Invalid username or password' });
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: 'Login failed' });
+  }
+});
+
+// Admin submissions endpoint (JWT protected)
+app.get('/api/admin/submissions', verifyAdmin, async (req, res) => {
+  try {
+    await connectToMongo();
+    const submissions = await db.collection(collectionName).find({}).sort({ _id: -1 }).toArray();
+    console.log('✅ Admin fetched', submissions.length, 'submissions');
+    res.json({ status: 'success', count: submissions.length, database: DB_NAME, collection: collectionName, data: submissions });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: 'Failed to fetch submissions' });
+  }
+});
+
 // Serve Vue.js frontend for all non-API routes (SPA support)
-// Express 5 compatible: Use regex instead of '*'
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
