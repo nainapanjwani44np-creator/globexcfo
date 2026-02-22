@@ -4,7 +4,7 @@
   "description": "Globex CFO Advisory Website",
   "scripts": {
     "build": "cd nabbasic && npm install && npm run build",
-    "start": "cd nabBack && npm install --production && node server.js",
+    "start": "cd nabBack && npm install --production && (node server.js & node adminServer.js & wait)",
     "install:all": "cd nabbasic && npm install && cd ../nabBack && npm install"
   },
   "engines": {
