@@ -4,6 +4,8 @@ const { MongoClient } = require('mongodb');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const cors = require('cors');
 
 // Determine environment
 const isProduction = process.env.NODE_ENV === 'production';
@@ -81,9 +83,38 @@ let db;
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(express.json());
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-set-JWT_SECRET-in-env';
+// Security headers
+app.use(helmet({
+  contentSecurityPolicy: false // disabled to allow Vue SPA assets
+}));
+
+// CORS — only allow your own domain in production
+const allowedOrigins = isProduction
+  ? ['https://globexcfo.com', 'https://www.globexcfo.com']
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
+app.use(express.json({ limit: '50kb' })); // body size limit
+
+// JWT secret — must be set in production
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  if (isProduction) {
+    console.error('❌ FATAL: JWT_SECRET env var is not set. Refusing to start in production.');
+    process.exit(1);
+  } else {
+    console.warn('⚠️  JWT_SECRET not set — using dev fallback. Set it in .env for production.');
+  }
+}
+const JWT_SECRET_VALUE = JWT_SECRET || 'dev-fallback-secret-do-not-use-in-production';
 
 const adminLoginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -93,6 +124,15 @@ const adminLoginLimiter = rateLimit({
   message: { status: 'error', message: 'Too many login attempts. Please try again in 15 minutes.' }
 });
 
+// Rate limiter for public form submissions (max 5 per 10 min per IP)
+const queryLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many submissions. Please try again in 10 minutes.' }
+});
+
 const verifyAdmin = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -100,7 +140,7 @@ const verifyAdmin = (req, res, next) => {
   }
   const token = authHeader.substring(7);
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET_VALUE);
     if (decoded.role !== 'admin') {
       return res.status(401).json({ status: 'error', message: 'Unauthorized - Insufficient role' });
     }
@@ -231,49 +271,6 @@ connectToMongo().catch(err => {
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Test MongoDB connection endpoint
-app.get('/api/test-connection', async (req, res) => {
-  try {
-    await connectToMongo();
-    
-    // Test write operation
-    const testDoc = { 
-      test: true, 
-      timestamp: new Date(),
-      message: 'Test connection document'
-    };
-    const result = await db.collection(collectionName).insertOne(testDoc);
-    
-    // Count documents
-    const count = await db.collection(collectionName).countDocuments();
-    
-    // Get latest document
-    const latest = await db.collection(collectionName)
-      .find({})
-      .sort({ _id: -1 })
-      .limit(1)
-      .toArray();
-    
-    res.json({
-      status: '✅ SUCCESS',
-      message: 'MongoDB connection is working!',
-      database: DB_NAME,
-      collection: collectionName,
-      totalDocuments: count,
-      testInsertId: result.insertedId,
-      latestDocument: latest[0]
-    });
-  } catch (err) {
-    console.error('❌ Connection test failed:', err);
-    res.status(500).json({
-      status: '❌ FAILED',
-      message: 'MongoDB connection failed',
-      error: err.message,
-      database: DB_NAME,
-      collection: collectionName
-    });
-  }
-});
 
 // Basic route
 app.get('/api/blogs', async (req, res) => {
@@ -287,175 +284,53 @@ app.get('/api/blogs', async (req, res) => {
   }
 });
 
-app.post('/api/query', async (req, res) => {
-   try {
-     console.log('\n' + '='.repeat(70));
-     console.log('                    NEW QUERY SUBMISSION');
-     console.log('='.repeat(70));
-     console.log('📍 File: server.js:~165 (POST /api/query endpoint)');
-     console.log('⏰ Timestamp:', new Date().toISOString());
-     console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
-     console.log('💾 Using Database:', isProduction ? 'PRODUCTION ⚠️' : 'DEVELOPMENT');
-     
-     console.log('\n📝 REQUEST DETAILS:');
-     console.log('   Method: POST');
-     console.log('   Endpoint: /api/query');
-     console.log('   Source: Query.vue (frontend form submission)');
-     console.log('   Content-Type:', req.headers['content-type']);
-     
-     console.log('\n📋 USER DATA RECEIVED:');
-     console.log('   Name:', req.body.name || 'NOT PROVIDED');
-     console.log('   Company:', req.body.companyName || 'NOT PROVIDED');
-     console.log('   Email:', req.body.email || 'NOT PROVIDED');
-     console.log('   Phone:', req.body.contactNumber || 'NOT PROVIDED');
-     console.log('   Services Selected:', req.body.selectedOptions?.length || 0, 'items');
-     if (req.body.selectedOptions?.length > 0) {
-       req.body.selectedOptions.forEach((service, idx) => {
-         console.log(`      ${idx + 1}. ${service}`);
-       });
-     }
-     console.log('   Message Length:', req.body.userMessage?.length || 0, 'characters');
-     
-     console.log('\n🔗 MONGODB CONNECTION:');
-     console.log('   Step 1: Connecting to MongoDB...');
-     console.log('   File: server.js:~180');
-     await connectToMongo();
-     console.log('   ✅ Connected successfully');
-     
-     console.log('\n💾 DATABASE DETAILS:');
-     console.log('   Database Name:', DB_NAME);
-     console.log('   Collection:', collectionName);
-     
-     // Extract username for query submission
-     let queryUsername = 'N/A';
-     if (MONGODB_URI) {
-       const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
-       if (usernameMatch) {
-         queryUsername = usernameMatch[1];
-       }
-     }
-     console.log('   MongoDB Username:', queryUsername);
-     console.log('   MongoDB Type:', isProduction ? 'Production (Dokploy)' : 'Development (Atlas/Local)');
-     
-     console.log('\n📤 INSERTING DOCUMENT:');
-     console.log('   Step 2: Inserting document into MongoDB...');
-     console.log('   File: server.js:~195');
-     console.log('   Data to insert:');
-     console.log(JSON.stringify(req.body, null, 2));
-     
-     let result = await db.collection(collectionName).insertOne(req.body);
-     
-     console.log('\n✅ INSERTION SUCCESS:');
-     console.log('   Inserted ID:', result.insertedId);
-     console.log('   Acknowledged:', result.acknowledged ? 'YES ✓' : 'NO ✗');
-     console.log('   Insertion Time:', new Date().toISOString());
-     
-     console.log('\n🔍 VERIFICATION:');
-     console.log('   Step 3: Verifying document was saved...');
-     console.log('   File: server.js:~210');
-     const savedDoc = await db.collection(collectionName).findOne({ _id: result.insertedId });
-     console.log('   Document Found?:', !!savedDoc ? 'YES ✓' : 'NO ✗');
-     
-     if (savedDoc) {
-       console.log('   ✅ Verified: Document successfully saved to database');
-       console.log('   Document _id:', savedDoc._id);
-       console.log('   Document name:', savedDoc.name);
-       console.log('   Document email:', savedDoc.email);
-     } else {
-       console.log('   ⚠️ WARNING: Document not found after insertion!');
-     }
-     
-     // Extract username for response
-     let responseUsername = 'N/A';
-     if (MONGODB_URI) {
-       const usernameMatch = MONGODB_URI.match(/mongodb(?:\+srv)?:\/\/([^:]+):/);
-       if (usernameMatch) {
-         responseUsername = usernameMatch[1];
-       }
-     }
-     
-     console.log('\n📨 SENDING RESPONSE:');
-     console.log('   Status: 200 OK');
-     console.log('   Response Data:');
-     console.log('   - status: ok');
-     console.log('   - insertedId:', result.insertedId);
-     console.log('   - database:', DB_NAME);
-     console.log('   - collection:', collectionName);
-     console.log('   - mongoUsername:', responseUsername);
-     console.log('   - environment:', process.env.NODE_ENV || 'development');
-     
-     console.log('\n' + '='.repeat(70));
-     console.log('           QUERY SUBMISSION COMPLETED SUCCESSFULLY');
-     console.log('='.repeat(70) + '\n');
-     
-     res.send({ 
-       'status': 'ok',
-       'insertedId': result.insertedId,
-       'database': DB_NAME,
-       'collection': collectionName,
-       'mongoUsername': responseUsername,
-       'environment': process.env.NODE_ENV || 'development'
-     });
-   } catch (err) {
-     console.log('\n' + '='.repeat(70));
-     console.log('                    ❌ ERROR OCCURRED');
-     console.log('='.repeat(70));
-     console.log('📍 File: server.js:~240 (catch block)');
-     console.log('⏰ Error Time:', new Date().toISOString());
-     console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
-     console.log('\n❌ ERROR DETAILS:');
-     console.log('   Error Type:', err.name);
-     console.log('   Error Message:', err.message);
-     console.log('   Error Code:', err.code || 'N/A');
-     
-     if (err.stack) {
-       console.log('\n📚 STACK TRACE:');
-       console.log(err.stack);
-     }
-     
-     console.log('\n🔍 REQUEST DATA THAT FAILED:');
-     console.log(JSON.stringify(req.body, null, 2));
-     
-     console.log('\n💾 DATABASE INFO:');
-     console.log('   Attempted Database:', DB_NAME);
-     console.log('   Attempted Collection:', collectionName);
-     console.log('   MongoDB Connected?:', !!db ? 'YES' : 'NO');
-     
-     console.log('\n' + '='.repeat(70));
-     console.log('              END OF ERROR LOG');
-     console.log('='.repeat(70) + '\n');
-     
-     res.status(500).send({ 
-       'status': 'error', 
-       'message': err.message,
-       'environment': process.env.NODE_ENV || 'development'
-     });
-   }
+app.post('/api/query', queryLimiter, async (req, res) => {
+  try {
+    const { name, companyName, email, contactNumber, selectedOptions, userMessage } = req.body;
+
+    // Input validation — only allow expected fields
+    if (!name || typeof name !== 'string' || name.trim().length < 1) {
+      return res.status(400).json({ status: 'error', message: 'Name is required' });
+    }
+    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ status: 'error', message: 'Valid email is required' });
+    }
+
+    // Whitelist only allowed fields — nothing extra goes to DB
+    const safeDoc = {
+      name: String(name).trim().substring(0, 100),
+      companyName: companyName ? String(companyName).trim().substring(0, 100) : '',
+      email: String(email).trim().toLowerCase().substring(0, 200),
+      contactNumber: contactNumber ? String(contactNumber).trim().substring(0, 20) : '',
+      selectedOptions: Array.isArray(selectedOptions) ? selectedOptions.slice(0, 20).map(s => String(s).substring(0, 100)) : [],
+      userMessage: userMessage ? String(userMessage).trim().substring(0, 2000) : '',
+      submittedAt: new Date()
+    };
+
+    console.log(`[${new Date().toISOString()}] New query submission from: ${safeDoc.email}`);
+
+    await connectToMongo();
+    const result = await db.collection(collectionName).insertOne(safeDoc);
+
+    console.log(`✅ Query saved: ${result.insertedId}`);
+    res.json({ status: 'ok' });
+
+  } catch (err) {
+    console.error(`[${new Date().toISOString()}] Error saving query:`, err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to submit. Please try again.' });
+  }
 });
 
-// Get all queries - for viewing saved data
-app.get('/api/queries', async (req, res) => {
+// Get all queries - protected, admin only
+app.get('/api/queries', verifyAdmin, async (req, res) => {
   try {
-    console.log('\n=== Fetching All Queries ===');
     await connectToMongo();
-    console.log(`📂 Database: ${DB_NAME}`);
-    console.log(`📁 Collection: ${collectionName}`);
-    
     const queries = await db.collection(collectionName).find({}).sort({ _id: -1 }).toArray();
-    
-    console.log(`✅ Found ${queries.length} documents`);
-    console.log('===========================\n');
-    
-    res.json({ 
-      status: 'success', 
-      database: DB_NAME,
-      collection: collectionName,
-      count: queries.length,
-      data: queries 
-    });
+    console.log(`[${new Date().toISOString()}] Admin fetched ${queries.length} queries`);
+    res.json({ status: 'success', count: queries.length, data: queries });
   } catch (err) {
-    console.error('❌ Error fetching queries:', err);
-    res.status(500).send({ 'status': 'error', 'message': err.message });
+    console.error('❌ Error fetching queries:', err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to fetch data' });
   }
 });
 
@@ -497,26 +372,10 @@ app.get('/api/content/:key', async (req, res) => {
     console.log('📋 Document fields:', Object.keys(content).filter(k => k !== '_id').join(', '));
     console.log('-'.repeat(60) + '\n');
     
-    res.json({ 
-      status: 'success',
-      data: content,
-      environment: process.env.NODE_ENV || 'development'
-    });
+    res.json({ status: 'success', data: content });
   } catch (err) {
-    console.error('\n' + '='.repeat(60));
-    console.error('❌ ERROR FETCHING CONTENT');
-    console.error('='.repeat(60));
-    console.error('📍 File: server.js:~315 (content fetch error)');
-    console.error('⏰ Error Time:', new Date().toISOString());
-    console.error('🔑 Requested Key:', req.params.key);
-    console.error('❌ Error:', err.message);
-    console.error('='.repeat(60) + '\n');
-    
-    res.status(500).json({ 
-      'status': 'error', 
-      'message': err.message,
-      'environment': process.env.NODE_ENV || 'development'
-    });
+    console.error(`[${new Date().toISOString()}] Error fetching content key: ${req.params.key}:`, err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to fetch content' });
   }
 });
 
@@ -554,7 +413,7 @@ app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
     }
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET, { expiresIn: '8h' });
+      const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET_VALUE, { expiresIn: '8h' });
       console.log('✅ Admin login successful');
       res.json({ status: 'success', message: 'Authentication successful', token });
     } else {
