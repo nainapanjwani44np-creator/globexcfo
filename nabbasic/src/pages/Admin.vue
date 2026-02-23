@@ -328,11 +328,7 @@ import axios from 'axios';
 
 // Authentication state
 const isAuthenticated = ref(false);
-const authToken = ref(null);
-const loginForm = ref({
-  username: '',
-  password: ''
-});
+const loginForm = ref({ username: '', password: '' });
 const loggingIn = ref(false);
 const loginError = ref(null);
 
@@ -343,80 +339,73 @@ const error = ref(null);
 const searchQuery = ref('');
 const selectedSubmission = ref(null);
 
-// Check if already authenticated on mount
-onMounted(() => {
-  const savedToken = sessionStorage.getItem('adminToken');
-  if (savedToken) {
-    authToken.value = savedToken;
-    isAuthenticated.value = true;
-    fetchSubmissions();
-  }
+// Admin API base URL
+const ADMIN_API_BASE = import.meta.env.VITE_ADMIN_API_URL || window.location.origin;
+
+// Shared axios instance — always sends the httpOnly cookie automatically
+const api = axios.create({
+  baseURL: ADMIN_API_BASE,
+  withCredentials: true  // sends the adminToken cookie on every request
 });
 
-// Admin API base URL (can be configured via environment variable)
-const ADMIN_API_BASE = import.meta.env.VITE_ADMIN_API_URL || window.location.origin;
+// On page load, silently check if an existing session cookie is still valid
+onMounted(async () => {
+  try {
+    await api.get('/api/admin/verify');
+    isAuthenticated.value = true;
+    await fetchSubmissions();
+  } catch {
+    // No valid session — show login form (normal state)
+    isAuthenticated.value = false;
+  }
+});
 
 // Login handler
 const handleLogin = async () => {
   loggingIn.value = true;
   loginError.value = null;
-  
   try {
-    const response = await axios.post(`${ADMIN_API_BASE}/api/admin/login`, {
+    // Server sets httpOnly cookie in the response — no token ever touches JS memory
+    await api.post('/api/admin/login', {
       username: loginForm.value.username,
       password: loginForm.value.password
     });
-    
-    if (response.data.status === 'success') {
-      authToken.value = response.data.token;
-      sessionStorage.setItem('adminToken', response.data.token);
-      isAuthenticated.value = true;
-      console.log('✅ Login successful');
-      console.log('🔒 Using Admin API:', ADMIN_API_BASE);
-      
-      // Fetch submissions after successful login
-      await fetchSubmissions();
-    }
+    isAuthenticated.value = true;
+    loginForm.value = { username: '', password: '' };
+    await fetchSubmissions();
   } catch (err) {
     loginError.value = err.response?.data?.message || 'Login failed. Please try again.';
-    console.error('❌ Login error:', err);
   } finally {
     loggingIn.value = false;
   }
 };
 
-// Logout handler
-const handleLogout = () => {
-  authToken.value = null;
+// Logout handler — asks server to clear the cookie
+const handleLogout = async () => {
+  try {
+    await api.post('/api/admin/logout');
+  } catch {
+    // proceed regardless
+  }
   isAuthenticated.value = false;
-  sessionStorage.removeItem('adminToken');
   submissions.value = [];
   loginForm.value = { username: '', password: '' };
-  console.log('✅ Logged out');
 };
 
-// Fetch submissions from API (with authentication)
+// Fetch submissions — cookie is sent automatically by the browser
 const fetchSubmissions = async () => {
   loading.value = true;
   error.value = null;
-  
   try {
-    const response = await axios.get(`${ADMIN_API_BASE}/api/admin/submissions`, {
-      headers: {
-        'Authorization': `Bearer ${authToken.value}`
-      }
-    });
+    const response = await api.get('/api/admin/submissions');
     submissions.value = response.data.data || [];
-    console.log('✅ Loaded', submissions.value.length, 'submissions');
   } catch (err) {
     if (err.response?.status === 401) {
-      // Unauthorized - token expired or invalid
       handleLogout();
       error.value = 'Session expired. Please login again.';
     } else {
-      error.value = err.response?.data?.message || err.message || 'Failed to load submissions';
+      error.value = err.response?.data?.message || 'Failed to load submissions';
     }
-    console.error('❌ Error loading submissions:', err);
   } finally {
     loading.value = false;
   }

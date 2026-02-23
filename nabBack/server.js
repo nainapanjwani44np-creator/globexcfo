@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // Determine environment
 const isProduction = process.env.NODE_ENV === 'production';
@@ -103,7 +104,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json({ limit: '50kb' })); // body size limit
+app.use(express.json({ limit: '50kb' }));
+app.use(cookieParser());
 
 // JWT secret — must be set in production
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -144,11 +146,11 @@ const readLimiter = rateLimit({
 });
 
 const verifyAdmin = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ status: 'error', message: 'Unauthorized - No token provided' });
+  // Read token from httpOnly cookie (preferred — not accessible to JS)
+  const token = req.cookies?.adminToken;
+  if (!token) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized - No session' });
   }
-  const token = authHeader.substring(7);
   try {
     const decoded = jwt.verify(token, JWT_SECRET_VALUE);
     if (decoded.role !== 'admin') {
@@ -381,8 +383,17 @@ app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
 
     if (userMatch && passMatch) {
       const token = jwt.sign({ username, role: 'admin' }, JWT_SECRET_VALUE, { expiresIn: '8h' });
+
+      // Set token as httpOnly cookie — JS cannot read or steal it
+      res.cookie('adminToken', token, {
+        httpOnly: true,                    // not accessible via document.cookie
+        secure: isProduction,              // HTTPS only in production
+        sameSite: 'strict',                // blocks cross-site CSRF requests
+        maxAge: 8 * 60 * 60 * 1000        // 8 hours — matches JWT expiry
+      });
+
       console.log('✅ Admin login successful');
-      res.json({ status: 'success', message: 'Authentication successful', token });
+      res.json({ status: 'success', message: 'Authentication successful' });
     } else {
       console.log('❌ Admin login failed - invalid credentials');
       res.status(401).json({ status: 'error', message: 'Invalid username or password' });
@@ -390,6 +401,21 @@ app.post('/api/admin/login', adminLoginLimiter, async (req, res) => {
   } catch (error) {
     res.status(500).json({ status: 'error', message: 'Login failed' });
   }
+});
+
+// Verify session on page load — returns 200 if cookie is valid, 401 if not
+app.get('/api/admin/verify', verifyAdmin, (req, res) => {
+  res.json({ status: 'success', message: 'Session valid' });
+});
+
+// Logout — clears the httpOnly cookie
+app.post('/api/admin/logout', (req, res) => {
+  res.clearCookie('adminToken', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'strict'
+  });
+  res.json({ status: 'success', message: 'Logged out' });
 });
 
 // Admin submissions endpoint (JWT protected)
