@@ -430,7 +430,12 @@ app.get('/api/admin/submissions', verifyAdmin, async (req, res) => {
   }
 });
 
-// Serve Vue.js frontend for all non-API routes (SPA support)
+// Block any request to /admin or /Admin — return 404, reveal nothing
+app.get(/^\/[Aa]dmin(\/.*)?$/, (req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// Serve Vue.js frontend for all other non-API routes (SPA support)
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
