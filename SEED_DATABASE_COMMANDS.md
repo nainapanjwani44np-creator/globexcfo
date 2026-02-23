@@ -15,7 +15,7 @@ cd /Users/naina/Documents/globexcfogit/nabBack
 
 # Set production environment
 export NODE_ENV=production
-export MONGODB_URI_PROD=mongodb://mongo_admin_root:HardPassCode%409351@globalcfo-globexcfodb-m0uggj:27017
+export MONGODB_URI_PROD=mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017
 export DB_NAME_PROD=baisWebData_production
 
 # Seed Home page content
@@ -90,11 +90,11 @@ Seeds 6 documents:
 
 ### **Production:**
 ```bash
-cd /Users/naina/Documents/globexcfogit/nabBack && NODE_ENV=production MONGODB_URI_PROD=mongodb://mongo_admin_root:HardPassCode%409351@globalcfo-globexcfodb-m0uggj:27017 DB_NAME_PROD=baisWebData_production node seedContent.js
+cd /Users/naina/Documents/globexcfogit/nabBack && NODE_ENV=production MONGODB_URI_PROD=mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017 DB_NAME_PROD=baisWebData_production node seedContent.js
 ```
 
 ```bash
-cd /Users/naina/Documents/globexcfogit/nabBack && NODE_ENV=production MONGODB_URI_PROD=mongodb://mongo_admin_root:HardPassCode%409351@globalcfo-globexcfodb-m0uggj:27017 DB_NAME_PROD=baisWebData_production node seedAboutContent.js
+cd /Users/naina/Documents/globexcfogit/nabBack && NODE_ENV=production MONGODB_URI_PROD=mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017 DB_NAME_PROD=baisWebData_production node seedAboutContent.js
 ```
 
 ---
@@ -173,7 +173,7 @@ curl https://yourdomain.com/api/content/cfo-section
 
 ### **Test 3: Via MongoDB Shell**
 ```bash
-mongosh "mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0uggj:27017"
+mongosh "mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017"
 
 use baisWebData_production
 
@@ -189,11 +189,11 @@ db.contentLoader.find({ key: 'hero' })
 ## ⚠️ Important Notes
 
 ### **Password Encoding:**
-Your password contains `@` which is encoded as `%40` in the URL!
+If your password contains `@` it must be encoded as `%40` in the URL.
 
 ```
-Password: HardPassCode@9351
-Encoded:  HardPassCode%409351
+Password: <YOUR_PASSWORD>
+Encoded:  <YOUR_PASSWORD_URL_ENCODED>
 ```
 
 ### **Seed Scripts Auto-Detect Environment:**
@@ -229,17 +229,13 @@ ping globalcfo-globexcfodb-m0uggj
 
 # Try with different MongoDB URL format
 # Remove port if not needed:
-mongodb://mongo_admin_root:HardPassCode%409351@globalcfo-globexcfodb-m0uggj
+mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>
 ```
 
 ### **Error: "Authentication failed"**
 ```bash
-# Verify credentials
-Username: mongo_admin_root
-Password: HardPassCode@9351 (with @ not encoded in actual password)
-
-# In URL, @ must be encoded:
-HardPassCode%409351
+# Verify credentials match what is set in your Dokploy environment variables
+# Remember: if password contains @, it must be URL-encoded as %40 in the connection string
 ```
 
 ---
@@ -251,7 +247,7 @@ HardPassCode%409351
 cd /Users/naina/Documents/globexcfogit/nabBack
 
 export NODE_ENV=production
-export MONGODB_URI_PROD=mongodb://mongo_admin_root:HardPassCode%409351@globalcfo-globexcfodb-m0uggj:27017
+export MONGODB_URI_PROD=mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017
 export DB_NAME_PROD=baisWebData_production
 ```
 

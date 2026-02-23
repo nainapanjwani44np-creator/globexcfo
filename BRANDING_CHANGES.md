@@ -217,12 +217,12 @@ NODE_ENV=production bash UPDATE_GLOBEX_BRANDING.sh
 
 **For DEVELOPMENT:**
 ```bash
-mongosh "mongodb+srv://nainapanjwani44np_db_user:SQwdg5CsGnonFztD@cluster0.ee9bw2k.mongodb.net/basicWebDataBase?appName=Cluster0" < UPDATE_GLOBEX_BRANDING.js
+mongosh "mongodb+srv://<DB_USER>:<DB_PASS>@<CLUSTER>.mongodb.net/basicWebDataBase?appName=Cluster0" < UPDATE_GLOBEX_BRANDING.js
 ```
 
 **For PRODUCTION:**
 ```bash
-mongosh "mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0uggj:27017/basicWebDataBase" < UPDATE_GLOBEX_BRANDING.js
+mongosh "mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017/basicWebDataBase" < UPDATE_GLOBEX_BRANDING.js
 ```
 
 ### Option 3: Manual Updates (Copy-Paste into mongosh)
@@ -230,10 +230,10 @@ mongosh "mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0ug
 **Step 1:** Connect to MongoDB
 ```bash
 # For development
-mongosh "mongodb+srv://nainapanjwani44np_db_user:SQwdg5CsGnonFztD@cluster0.ee9bw2k.mongodb.net/basicWebDataBase?appName=Cluster0"
+mongosh "mongodb+srv://<DB_USER>:<DB_PASS>@<CLUSTER>.mongodb.net/basicWebDataBase?appName=Cluster0"
 
 # For production
-mongosh "mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0uggj:27017/basicWebDataBase"
+mongosh "mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017/basicWebDataBase"
 ```
 
 **Step 2:** Copy and paste each update command:

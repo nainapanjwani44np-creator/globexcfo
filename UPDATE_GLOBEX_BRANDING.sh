@@ -20,11 +20,11 @@ echo ""
 # Check environment
 if [ "$NODE_ENV" = "production" ]; then
     echo "🌍 Environment: PRODUCTION"
-    MONGO_URI="mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0uggj:27017"
+    MONGO_URI="${MONGODB_URI_PROD}"
     DB_NAME="basicWebDataBase"
 else
     echo "🌍 Environment: DEVELOPMENT"
-    MONGO_URI="mongodb+srv://nainapanjwani44np_db_user:SQwdg5CsGnonFztD@cluster0.ee9bw2k.mongodb.net/?appName=Cluster0"
+    MONGO_URI="${MONGODB_URI}"
     DB_NAME="basicWebDataBase"
 fi
 

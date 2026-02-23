@@ -4,10 +4,10 @@
 // Run this script with mongosh:
 //
 // For DEVELOPMENT:
-// mongosh "mongodb+srv://nainapanjwani44np_db_user:SQwdg5CsGnonFztD@cluster0.ee9bw2k.mongodb.net/basicWebDataBase?appName=Cluster0" < UPDATE_GLOBEX_BRANDING.js
+// mongosh "mongodb+srv://<DB_USER>:<DB_PASS>@<CLUSTER>.mongodb.net/basicWebDataBase?appName=Cluster0" < UPDATE_GLOBEX_BRANDING.js
 //
 // For PRODUCTION:
-// mongosh "mongodb://mongo_admin_root:HardPassCode@9351@globalcfo-globexcfodb-m0uggj:27017/basicWebDataBase" < UPDATE_GLOBEX_BRANDING.js
+// mongosh "mongodb://<PROD_DB_USER>:<PROD_DB_PASS>@<PROD_HOST>:27017/basicWebDataBase" < UPDATE_GLOBEX_BRANDING.js
 //
 // ========================================================================
 
